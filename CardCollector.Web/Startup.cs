@@ -1,16 +1,15 @@
-using CardCollector.Web.Data;
-using CardCollector.Web.Models;
+using CardCollector.Data.Configurations;
+using CardCollector.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MediatR;
+using CardCollector.Business;
 
 namespace CardCollector.Web
 {
@@ -38,6 +37,8 @@ namespace CardCollector.Web
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
+            services.AddMediatR(typeof(CardCollectorMediator));
+
             services.AddAuthentication()
                 .AddIdentityServerJwt();
             services.AddControllersWithViews();
@@ -63,6 +64,9 @@ namespace CardCollector.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            // Seeds Data
+            app.SeedData(Configuration);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

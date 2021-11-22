@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace CardCollector.Web.Data.Migrations
+namespace CardCollector.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {
