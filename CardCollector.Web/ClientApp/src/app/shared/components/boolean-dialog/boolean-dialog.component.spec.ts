@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { BooleanDialogComponent } from './boolean-dialog.component';
 
@@ -6,7 +6,7 @@ describe('BooleanDialogComponent', () => {
   let component: BooleanDialogComponent;
   let fixture: ComponentFixture<BooleanDialogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ BooleanDialogComponent ]
     })
