@@ -1,0 +1,17 @@
+<div class="modal-header" [class]="properties.headerCcs">
+  <h4 class="modal-title">{{properties.header}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.close(false)">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row mb-3">
+    <div class="col">
+      {{properties.message}}
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button (click)="activeModel.close(false)" class="btn btn-sm btn-secondary">{{properties.cancelText}}</button>
+  <button (click)="onOk()" [class]="properties.okClass" class="btn btn-sm">{{properties.cancelText}}</button>
+</div>

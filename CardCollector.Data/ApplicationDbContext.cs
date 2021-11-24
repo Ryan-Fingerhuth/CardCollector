@@ -27,6 +27,7 @@ namespace CardCollector.Data
         }
     }
 
+    // This is called within the Startup.cs we are using this to trigger the application to run some seeding sql files.
     public static class AppDbContextExtensions
     {
         public static void SeedData(this IApplicationBuilder app, IConfiguration configuration)
