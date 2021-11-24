@@ -1,4 +1,4 @@
-<div class="modal-header" [class]="properties.headerCcs">
+<div class="modal-header" [class]="properties.headerCss">
   <h4 class="modal-title">{{properties.header}}</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.close(false)">
     <span aria-hidden="true">&times;</span>
@@ -12,6 +12,6 @@
   </div>
 </div>
 <div class="modal-footer">
-  <button (click)="activeModel.close(false)" class="btn btn-sm btn-secondary">{{properties.cancelText}}</button>
-  <button (click)="onOk()" [class]="properties.okClass" class="btn btn-sm">{{properties.cancelText}}</button>
+  <button (click)="activeModal.close(false)" class="btn btn-sm btn-secondary">{{properties.cancelText}}</button>
+  <button (click)="onOk()" [class]="properties.okCss" class="btn btn-sm">{{properties.cancelText}}</button>
 </div>

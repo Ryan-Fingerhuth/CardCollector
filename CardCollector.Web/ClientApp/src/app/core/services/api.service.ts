@@ -30,7 +30,7 @@ export class ApiService {
   }
 
   protected path(url: string): string {
-    return `${this.apiUrl}/${url}`;
+    return `${this.apiUrl}${url}`;
   }
 
   protected formatErrors(error: any) {

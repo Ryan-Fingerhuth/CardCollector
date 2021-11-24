@@ -1,6 +1,7 @@
 ﻿using CardCollector.Data;
 using CardCollector.Library.Dtos;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,7 +36,15 @@ namespace CardCollector.Business.Commands
                 return result;
             }
 
-            // TODO add Card into db's Card Table
+            request.Card.IsActive = true;
+            request.Card.DateCreated = DateTime.Now;
+            request.Card.DateModified = DateTime.Now;
+
+            await _dbContext.Cards.AddAsync(request.Card, cancellationToken);
+
+            await _dbContext.SaveChangesAsync();
+
+            result.Result = request.Card;
 
             return result;
         }

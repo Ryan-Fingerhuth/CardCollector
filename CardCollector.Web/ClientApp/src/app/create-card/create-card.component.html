@@ -11,13 +11,13 @@
       <div class="container-fluid">
         <form *ngIf="cardForm" [formGroup]="cardForm">
           <div class="form-group">
-            <i class="fas fa-start-of-life fa-xs text-danger"><label>Card Name</label></i>
+            <label>Card Name</label>
             <input formControlName="cardName" type="text" class="form-control form-control-sm">
           </div>
 
           <div class="form-group">
-            <i class="fas fa-start-of-life fa-xs text-danger"><label>Card Name</label></i>
-            <input formControlName="cardName" type="text" class="form-control form-control-sm">
+            <label>Card Description</label>
+            <input formControlName="cardDescription" type="text" class="form-control form-control-sm">
           </div>
 
           <button class="btn btn-sm btn-success" [disabled]="cardForm.invalid" (click)="onSave()">Create Card</button>

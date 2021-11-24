@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { BooleanDialogComponent } from './components/boolean-dialog/boolean-dialog.component';
 
@@ -8,18 +8,16 @@ import { BooleanDialogComponent } from './components/boolean-dialog/boolean-dial
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    NgbModal,
+    NgbModule,
   ],
-  providers: [
-
-  ],
+  providers: [],
   declarations: [
     BooleanDialogComponent
   ],
   exports: [
     FormsModule,
     ReactiveFormsModule,
-    NgbModal
+    NgbModule
   ],
   entryComponents: [
     BooleanDialogComponent
