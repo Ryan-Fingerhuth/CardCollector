@@ -4,7 +4,7 @@
     "baseUrl": "./",
     "paths": {
       "@core/*": ["src/app/core/*"],
-      "@shared/*": ["src/app/shared/*"],
+      "@shared/*": ["src/app/shared/*"]
     },
     "module": "esnext",
     "outDir": "./dist/out-tsc",
