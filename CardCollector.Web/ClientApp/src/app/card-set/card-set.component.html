@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col">
+    <div class="example-container">
+      <h2>First Row Cards</h2>
+    
+      <div
+        id="firstRow"
+        cdkDropList
+        cdkDropListOrientation="horizontal"
+        [cdkDropListData]="firstRowCards"
+        cdkDropListConnectedTo="secondRow"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div
+          class="example-box"
+          *ngFor="let card of firstRowCards"
+          [cdkDragData]="card"
+          cdkDrag>{{card.cardName}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="example-container">
+      <h2>Second Row Cards</h2>
+    
+      <div
+        id="secondRow"
+        cdkDropList
+        cdkDropListOrientation="horizontal"
+        [cdkDropListData]="secondRowCards"
+        cdkDropListConnectedTo="firstRow"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div
+          class="example-box"
+          *ngFor="let card of secondRowCards"
+          cdkDrag
+          [cdkDragData]="card">{{card.cardName}}</div>
+      </div>
+    </div>
+  </div>
+</div>
