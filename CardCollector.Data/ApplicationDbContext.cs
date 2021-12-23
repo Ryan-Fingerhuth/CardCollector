@@ -19,11 +19,15 @@ namespace CardCollector.Data
         }
 
         public DbSet<Card> Cards { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<CardTag> CardTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new CardConfiguration());
+            builder.ApplyConfiguration(new TagConfiguration());
+            builder.ApplyConfiguration(new CardTagConfiguration());
         }
     }
 
