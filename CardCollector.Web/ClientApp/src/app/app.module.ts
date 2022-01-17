@@ -16,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { SharedModule } from '@shared/shared.module';
 import { CoreModule } from '@core/core.module';
+import { SearchCardComponent } from './search-card/search-card.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { CoreModule } from '@core/core.module';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    CreateCardComponent
+    CreateCardComponent,
+    SearchCardComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

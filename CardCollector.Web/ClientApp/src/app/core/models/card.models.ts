@@ -3,3 +3,8 @@ export interface ICardDto {
   cardName: string;
   cardDescription: string;
 }
+
+export interface ISearchDto {
+  cardName: string;
+}
+
