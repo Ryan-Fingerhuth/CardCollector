@@ -15,7 +15,7 @@ namespace CardCollector.Web.Controllers
 
         [HttpPost]
         [Route("api/card/createCard")]
-        public async Task<IActionResult> CreateCard(Card request)
+        public async Task<IActionResult> CreateCard(CardDto request)
         {
             var result = await Mediator.Send(new CreateCardCommand(request));
             return Ok(result);

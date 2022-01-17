@@ -11,12 +11,15 @@ import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { CreateCardComponent } from './create-card/create-card.component';
+import { CardSetComponent } from './card-set/card-set.component';
 
 import { AppRoutingModule } from './app-routing.module';
 
 import { SharedModule } from '@shared/shared.module';
 import { CoreModule } from '@core/core.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchCardComponent } from './search-card/search-card.component';
+
 
 @NgModule({
   declarations: [
@@ -26,6 +29,7 @@ import { SearchCardComponent } from './search-card/search-card.component';
     CounterComponent,
     FetchDataComponent,
     CreateCardComponent,
+    CardSetComponent
     SearchCardComponent
   ],
   imports: [
@@ -34,7 +38,8 @@ import { SearchCardComponent } from './search-card/search-card.component';
     AppRoutingModule,
     ApiAuthorizationModule,
     CoreModule,
-    SharedModule
+    SharedModule,
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }
