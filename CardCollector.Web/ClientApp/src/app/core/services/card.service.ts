@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { ICardDto } from "../models";
+import { ISearchDto } from "../models";
 import { IApiResponse } from "../models/common.models";
 import { ApiService } from "./api.service";
 
@@ -20,4 +21,12 @@ export class CardService {
 
     return this.apiService.post('api/card/createCard', formData);
   }
+  
+  public searchCard(request: ISearchDto): Observable<IApiResponse<ISearchDto>> {
+    return this.apiService.post('api/query/searchCard', request);
+  } 
+
+/*  public searchCard(request: string): Observable<IApiResponse<string>> {
+    return this.apiService.post('api/query/searchCard', request);
+  }*/
 }

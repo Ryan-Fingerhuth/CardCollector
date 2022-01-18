@@ -12,6 +12,7 @@ import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { CreateCardComponent } from './create-card/create-card.component';
 import { CardSetComponent } from './card-set/card-set.component';
+import { SearchCardComponent } from './search-card/search-card.component';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -30,6 +31,7 @@ import { ToastrModule } from 'ngx-toastr';
     FetchDataComponent,
     CreateCardComponent,
     CardSetComponent
+    SearchCardComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -38,8 +40,7 @@ import { ToastrModule } from 'ngx-toastr';
     ApiAuthorizationModule,
     CoreModule,
     SharedModule,
-    BrowserAnimationsModule,
-    //ToastrModule.forRoot()
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }

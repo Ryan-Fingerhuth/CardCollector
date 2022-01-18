@@ -27,3 +27,8 @@ export interface ICardSet {
   numberOfColumns: number;
   cards: ICardDto[];
 }
+
+export interface ISearchDto {
+  cardName: string;
+}
+
