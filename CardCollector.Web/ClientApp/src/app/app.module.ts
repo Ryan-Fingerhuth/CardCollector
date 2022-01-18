@@ -19,8 +19,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from '@shared/shared.module';
 import { CoreModule } from '@core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastrModule } from 'ngx-toastr';
-
 
 @NgModule({
   declarations: [
@@ -30,7 +28,7 @@ import { ToastrModule } from 'ngx-toastr';
     CounterComponent,
     FetchDataComponent,
     CreateCardComponent,
-    CardSetComponent
+    CardSetComponent,
     SearchCardComponent
   ],
   imports: [

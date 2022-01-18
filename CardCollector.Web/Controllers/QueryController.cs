@@ -13,15 +13,13 @@ namespace CardCollector.Web.Controllers
         {
         }
         
-        [HttpPost]
-        [Route("api/query/searchCard")]
-        public async Task<IActionResult> SearchCard(string request)
+        [HttpGet]
+        [Route("api/query/searchCardGet/{request}")]
+        public async Task<IActionResult> SearchCardGet(string request)
         {
-
-            //var result = await Mediator.Send(new SearchCardCommand(request));
-            var result = await Mediator.Send(new SearchCardCommand("pikachu"));
+            var result = await Mediator.Send(new SearchCardCommand(request));
             return Ok(result);
         }
-        
+
     }
 }

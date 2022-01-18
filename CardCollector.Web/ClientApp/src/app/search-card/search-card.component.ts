@@ -27,8 +27,7 @@ export class SearchCardComponent implements OnInit {
       return;
     }
     const request: ISearchDto = {
-      'cardName' : "pikachu"
-      //...this.searchForm.getRawValue()
+      ...this.searchForm.getRawValue()
     } 
     
     //const request: string = { ...this.searchForm.value }
