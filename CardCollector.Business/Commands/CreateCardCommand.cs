@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CardCollector.Business.Commands
 {
-    public class CreateCardCommand : IRequest<ApiResponseBase<Card>>
+    public class CreateCardCommand : IRequest<ApiResponseBase<bool>>
     {
         public CardDto Card { get; set; }
 
@@ -20,7 +20,7 @@ namespace CardCollector.Business.Commands
         }
     }
 
-    public class CreateCardCommandHandler : IRequestHandler<CreateCardCommand, ApiResponseBase<Card>>
+    public class CreateCardCommandHandler : IRequestHandler<CreateCardCommand, ApiResponseBase<bool>>
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IFileService _fileService;
@@ -31,25 +31,32 @@ namespace CardCollector.Business.Commands
             _fileService = fileService;
         }
 
-        public async Task<ApiResponseBase<Card>> Handle(CreateCardCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponseBase<bool>> Handle(CreateCardCommand request, CancellationToken cancellationToken)
         {
-            var result = new ApiResponseBase<Card>();
-
-            if (request.Card.Id > 0)
+            var result = new ApiResponseBase<bool>();
+            try
             {
-                result.Errors.Add("Card already created");
+                if (request.Card.Id > 0)
+                {
+                    result.Errors.Add("Card already created");
+                    return result;
+                }
+
+                await CreateCard(request, cancellationToken);
+
+                await CreateTags(request, cancellationToken);
+
+                await UploadImage(request, cancellationToken);
+
+                result.Result = true;
+
                 return result;
             }
-
-            await CreateCard(request, cancellationToken);
-
-            await CreateTags(request, cancellationToken);
-
-            await UploadImage(request, cancellationToken);
-
-            result.Result = request.Card;
-
-            return result;
+            catch (Exception ex)
+            {
+                result.Errors.Add(ex.Message);
+                return result;
+            }
         }
 
         private async Task UploadImage(CreateCardCommand request, CancellationToken cancellationToken)

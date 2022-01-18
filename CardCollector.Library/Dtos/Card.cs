@@ -11,12 +11,12 @@ namespace CardCollector.Library.Dtos
         public int Year { get; set; }
         public string FullImageGuid { get; set; }
         public string ThumbnailImageGuid { get; set; }
-        public virtual ICollection<CardTag> CardTags { get; set; }
+        public virtual ICollection<CardTag> CardTags { get; set; } = new List<CardTag>();
     }
 
     public class CardDto : Card
     {
         public byte[] ImageData { get; set; }
-        public List<string> Tags { get; set; }
+        public List<string> Tags { get; set; } = new List<string>();
     }
 }

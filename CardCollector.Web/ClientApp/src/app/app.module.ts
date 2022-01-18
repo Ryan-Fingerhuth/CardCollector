@@ -18,6 +18,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from '@shared/shared.module';
 import { CoreModule } from '@core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ApiAuthorizationModule,
     CoreModule,
     SharedModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    //ToastrModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }

@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MediatR;
 using CardCollector.Business;
+using CardCollector.Business.Abstractions;
+using CardCollector.Business.Services;
 
 namespace CardCollector.Web
 {
@@ -43,6 +45,9 @@ namespace CardCollector.Web
                 .AddIdentityServerJwt();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.RegisterStuff();
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -101,5 +106,11 @@ namespace CardCollector.Web
                 }
             });
         }
+
+        //private void RegisterDependencies(this IServiceCollection services)
+        //{
+        //    services.AddTransient<IApplicationSettings, ApplicationSettings>();
+        //    services.AddTransient<IFileService, FileService>();
+        //}
     }
 }

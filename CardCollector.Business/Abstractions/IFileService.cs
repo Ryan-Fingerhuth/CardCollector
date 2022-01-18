@@ -1,6 +1,5 @@
 ﻿using CardCollector.Library.Dtos.Common;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CardCollector.Business.Abstractions
 {

@@ -9,7 +9,15 @@ export class CardService {
   constructor(private apiService: ApiService) {
   }
 
-  public createCard(request: ICardDto): Observable<IApiResponse<ICardDto>> {
-    return this.apiService.post('api/card/createCard', request);
+  public createCard(imageFile, request): Observable<IApiResponse<ICardDto>> {
+    const formData = new FormData();
+
+    if (imageFile) {
+      formData.append('imageFile', imageFile);
+    }
+
+    formData.append('cardRequest', JSON.stringify(request));
+
+    return this.apiService.post('api/card/createCard', formData);
   }
 }
