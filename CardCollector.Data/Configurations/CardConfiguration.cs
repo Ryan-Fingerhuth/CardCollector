@@ -16,7 +16,7 @@ namespace CardCollector.Data.Configurations
             builder.Property(x => x.Year);
             builder.Property(x => x.FullImageGuid).HasMaxLength(40);
             builder.Property(x => x.ThumbnailImageGuid).HasMaxLength(40);
-            builder.HasQueryFilter(x => !x.IsActive);
+            builder.HasQueryFilter(x => x.IsActive);
         }
     }
 }

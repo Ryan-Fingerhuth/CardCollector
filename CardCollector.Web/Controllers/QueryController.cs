@@ -1,5 +1,4 @@
 ﻿using CardCollector.Business.Commands;
-using CardCollector.Library.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -14,8 +13,8 @@ namespace CardCollector.Web.Controllers
         }
         
         [HttpGet]
-        [Route("api/query/searchCardGet/{request}")]
-        public async Task<IActionResult> SearchCardGet(string request)
+        [Route("api/query/searchCard/{request}")]
+        public async Task<IActionResult> SearchCard(string request)
         {
             var result = await Mediator.Send(new SearchCardCommand(request));
             return Ok(result);

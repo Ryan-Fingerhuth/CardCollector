@@ -11,7 +11,7 @@ namespace CardCollector.Data.Configurations
             builder.ToTable("Tags");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Description).IsRequired();
-            builder.HasQueryFilter(x => !x.IsActive);
+            builder.HasQueryFilter(x => x.IsActive);
         }
     }
 }
