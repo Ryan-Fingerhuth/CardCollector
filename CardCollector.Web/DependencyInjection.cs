@@ -13,20 +13,17 @@ namespace CardCollector.Web
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            var what = configuration.GetConnectionString("DefaultConnection");
+            var sqlDbConnection = configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(
-                    configuration.GetConnectionString("DefaultConnection")));
-
-            //services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<AppDbContext>());
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(sqlDbConnection));
 
             services
                 .AddDefaultIdentity<ApplicationUser>()
-                .AddEntityFrameworkStores<AppDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, AppDbContext>();
+                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddTransient<IApplicationSettings, ApplicationSettings>();
             services.AddTransient<IFileService, FileService>();

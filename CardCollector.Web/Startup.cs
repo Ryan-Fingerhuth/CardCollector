@@ -33,7 +33,6 @@ namespace CardCollector.Web
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddMediatR(typeof(CardCollectorMediator));
-            //services.AddMediatR(Assembly.GetExecutingAssembly());
 
             services.AddControllersWithViews();
 
