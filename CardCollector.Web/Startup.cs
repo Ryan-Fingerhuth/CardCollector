@@ -12,6 +12,7 @@ using MediatR;
 using CardCollector.Business;
 using CardCollector.Business.Abstractions;
 using CardCollector.Business.Services;
+using System.Reflection;
 
 namespace CardCollector.Web
 {
@@ -27,26 +28,15 @@ namespace CardCollector.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddInfrastructure(Configuration);
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
-
             services.AddMediatR(typeof(CardCollectorMediator));
 
-            services.AddAuthentication()
-                .AddIdentityServerJwt();
             services.AddControllersWithViews();
-            services.AddRazorPages();
 
-            services.RegisterStuff();
+            services.AddRazorPages();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -106,11 +96,5 @@ namespace CardCollector.Web
                 }
             });
         }
-
-        //private void RegisterDependencies(this IServiceCollection services)
-        //{
-        //    services.AddTransient<IApplicationSettings, ApplicationSettings>();
-        //    services.AddTransient<IFileService, FileService>();
-        //}
     }
 }
