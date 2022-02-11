@@ -42,9 +42,6 @@ namespace CardCollector.Business.Commands
 
                 var results = await (_dbContext.Cards.Where(n => n.CardName.ToLower().IndexOf(request.SearchTerm.ToLower()) > -1).Select(c => c.CardName)).ToListAsync();
 
-               
-               /* List<string> results2 = new List<string>();
-                results2.Add("pikachu"); results2.Add("charizard");*/
                 
                 result.Result = results;
 

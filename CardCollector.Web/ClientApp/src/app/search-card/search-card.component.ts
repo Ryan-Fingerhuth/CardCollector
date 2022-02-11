@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ISearchDto } from '@core/models';
 import { CardService } from '@core/services';
 import { ToastService } from '@core/services/toast.service';
-import { Observable, OperatorFunction, zip } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, switchMap, catchError} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, catchError} from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-card',

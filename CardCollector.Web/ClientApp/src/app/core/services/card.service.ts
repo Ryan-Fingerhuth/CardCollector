@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { ICardDto, ISearchDto, ILookUpDto} from "../models";
+import { ICardDto, ISearchDto} from "../models";
 import { IApiResponse } from "../models/common.models";
 import { ApiService } from "./api.service";
 

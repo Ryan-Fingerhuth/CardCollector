@@ -21,7 +21,7 @@ import { CoreModule } from '@core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms'
 
-import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+//import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -42,8 +42,7 @@ import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
     CoreModule,
     FormsModule,
     SharedModule,
-    BrowserAnimationsModule,
-    NgbTypeaheadModule
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }
