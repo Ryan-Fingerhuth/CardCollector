@@ -32,3 +32,7 @@ export interface ISearchDto {
   cardName: string;
 }
 
+export interface ILookUpDto {
+  cardNames: string[];
+}
+

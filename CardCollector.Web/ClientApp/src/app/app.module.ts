@@ -19,6 +19,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from '@shared/shared.module';
 import { CoreModule } from '@core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms'
+
+import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -37,8 +40,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     ApiAuthorizationModule,
     CoreModule,
+    FormsModule,
     SharedModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgbTypeaheadModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }

@@ -5,14 +5,21 @@
             <hr>
         </div>
     </div>
-  
+    
     <div class="row">
         <div class="col">
             <div class="container-fluid">
                 <form *ngIf="searchForm" [formGroup]="searchForm">
                     <div class="form-group">
-                        <label>Card Name</label>
-                        <input formControlName="cardName" type="text" class="form-control form-control-sm">
+                        <label for="cardName"> Card Name</label>
+                        <input id = "cardName" 
+                            formControlName = "cardName" 
+                            type = "text" 
+                            class = "form-control form-control-sm" 
+                            [(ngModel)] = "model"
+                            [ngbTypeahead] = "typeAheadSearch" 
+                            [resultFormatter] = "resultFormatCardListValue" 
+                            [inputFormatter] = "inputFormatCardListValue">
                     </div>
 
                     <button class="btn btn-sm btn-success" [disabled]="searchForm.invalid" (click)="search()">Search Card</button>
