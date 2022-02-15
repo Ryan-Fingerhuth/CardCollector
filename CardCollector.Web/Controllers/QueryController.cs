@@ -3,6 +3,7 @@ using CardCollector.Business.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace CardCollector.Web.Controllers
 {
@@ -19,6 +20,14 @@ namespace CardCollector.Web.Controllers
         {
             var result = await Mediator.Send(new SearchCardCommand(request));
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("api/query/cardLookUp/{request}")]
+        public async Task<List<string>> CardLookUp(string request)
+        {
+            var result = await Mediator.Send(new CardLookUpCommand(request));
+            return result.Result;
         }
 
         [HttpGet]

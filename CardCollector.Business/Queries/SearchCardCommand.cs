@@ -34,29 +34,14 @@ namespace CardCollector.Business.Commands
             var result = new ApiResponseBase<List<Card>>();
             try
             {
-                
-
-
-                //if (request.CardName.Equals(""))
-                //{
-                //    result.Errors.Add("Invalid Name");
-                //    return result;
-                //}
+             
                 var temps = _dbContext.Cards.ToList();
 
                 var users = _dbContext.Users.ToList();
 
-                var results = await (_dbContext.Cards.Where(n => n.CardName.Equals("pikachu")).ToListAsync());
-                //var results =  await (_dbContext.Cards.Where(n => n.CardName.Equals(request.CardName)).ToListAsync());
-                /*
-                var results = await (from c in _dbContext.Cards
-                              where c.CardName.Equals(request.CardName)
-                              select c).ToListAsync();
-                *//*
-                await _dbContext.Cards.AddAsync(request.Card, cancellationToken);
+                var results =  await (_dbContext.Cards.Where(n => n.CardName.Equals(request.CardName)).ToListAsync());
+                
 
-                await _dbContext.SaveChangesAsync();
-                */
                 result.Result = results;
 
                 return result;

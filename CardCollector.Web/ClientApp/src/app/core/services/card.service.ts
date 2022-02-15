@@ -25,6 +25,10 @@ export class CardService {
     return this.apiService.get(`api/query/searchCard/${encodeURI(request.cardName)}`);
   } 
 
+  public cardLookUp(request: string): Observable<any> {
+    return this.apiService.get(`api/query/cardLookUp/${encodeURI(request)}`);
+  }
+
   public getSet(setId: number): Observable<IApiResponse<ISet>> {
     return this.apiService.get(`api/query/getSet/${setId}`);
   }
