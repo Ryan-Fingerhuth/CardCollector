@@ -29,6 +29,12 @@ export class ApiService {
       .pipe(catchError((e) => this.formatErrors(e)));
   }
 
+  file(url: string): Observable<Blob> {
+    const options = { responseType: 'blob' as 'json' };
+    return this.http.get<Blob>(this.path(url), options)
+      .pipe(catchError((e) => this.formatErrors(e)));
+  }
+
   protected path(url: string): string {
     return `${this.apiUrl}${url}`;
   }

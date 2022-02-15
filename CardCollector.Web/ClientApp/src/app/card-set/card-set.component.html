@@ -1,5 +1,13 @@
 <div class="row">
   <div class="col">
+    <div *ngFor="let i of set.cards">
+      <label>{{ i.cardName }}</label>
+      <img [src]="i.thumbnail">
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
     <div class="example-container">
       <h2>First Row Cards</h2>
     
