@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { ICardDto } from "../models";
-import { ISearchDto } from "../models";
+import { ICardDto, ISet, ISearchDto } from "../models";
 import { IApiResponse } from "../models/common.models";
 import { ApiService } from "./api.service";
 
@@ -26,7 +25,11 @@ export class CardService {
     return this.apiService.get(`api/query/searchCard/${encodeURI(request.cardName)}`);
   } 
 
-/*  public searchCard(request: string): Observable<IApiResponse<string>> {
-    return this.apiService.post('api/query/searchCard', request);
-  }*/
+  public getSet(setId: number): Observable<IApiResponse<ISet>> {
+    return this.apiService.get(`api/query/getSet/${setId}`);
+  }
+
+  public getCardImage(imageGuid: string) {
+    return this.apiService.file(`api/card/getCardImage/${imageGuid}`);
+  }
 }

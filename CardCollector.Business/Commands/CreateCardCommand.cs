@@ -5,6 +5,7 @@ using CardCollector.Library.Dtos.Common;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +14,6 @@ namespace CardCollector.Business.Commands
     public class CreateCardCommand : IRequest<ApiResponseBase<bool>>
     {
         public CardDto Card { get; set; }
-
         public CreateCardCommand(CardDto card)
         {
             Card = card;
@@ -64,7 +64,7 @@ namespace CardCollector.Business.Commands
             if (request.Card.ImageData != null)
             {
                 // Full Image
-                var fullSizeImage = new ImageFile
+                var fullSizeImage = new CardImageFile
                 {
                     FileData = request.Card.ImageData,
                     FileId = Guid.NewGuid().ToString()
@@ -73,16 +73,27 @@ namespace CardCollector.Business.Commands
 
                 request.Card.FullImageGuid = fullSizeImage.FileId;
 
+                await _dbContext.SaveChangesAsync(cancellationToken);
+
                 // Thumbnail Image
                 var thumbnailData = _fileService.ConvertImageToThumbnail(fullSizeImage);
 
-                var thumbnailImage = new ImageFile
+                if (thumbnailData == null)
+                {
+                    return;
+                }
+
+                var thumbnailImage = new CardImageFile
                 {
                     FileData = thumbnailData,
                     FileId = Guid.NewGuid().ToString()
                 };
                 await _fileService.UploadFile(thumbnailImage);
 
+                var fileNameWithoutExt = Path.GetFileNameWithoutExtension(request.Card.FullImageName);
+                var fileExt = Path.GetExtension(request.Card.FullImageName);
+
+                request.Card.ThumbnailImageName = $"{fileNameWithoutExt}.thumbnail{fileExt}";
                 request.Card.ThumbnailImageGuid = thumbnailImage.FileId;
 
                 await _dbContext.SaveChangesAsync(cancellationToken);
