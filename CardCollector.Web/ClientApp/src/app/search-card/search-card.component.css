@@ -1,0 +1,32 @@
+.card {
+    float: left;
+    position: relative;
+
+    margin-bottom: 10px;
+    margin-right: 5px;
+    padding: 10px !important;
+    border: 1px solid silver;
+    border-radius: 6px;
+    overflow-y: hidden;
+    height: 165px;
+    max-width: 235px;
+    transition: background linear 375ms;
+}
+
+.card-name {
+    font-weight: bold;
+    color: #444;
+}
+
+.card-descript {
+    font-size: 0.80em;
+    overflow: hidden;
+    max-height: 83px;
+    line-height: 1.35;
+}
+
+.card-image {
+    width: 55px;
+    float: left;
+    border-radius: 35px;
+}
