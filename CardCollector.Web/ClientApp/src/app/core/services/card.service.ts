@@ -33,6 +33,10 @@ export class CardService {
     return this.apiService.get(`api/query/getSet/${setId}`);
   }
 
+  public getImage(imageGuid: string, getThumbnail: boolean) {
+    return this.apiService.path(`api/card/getCardImage?imageGuid=${imageGuid}&thumbnail=${getThumbnail}`);
+  }
+
   public getCardImage(imageGuid: string) {
     return this.apiService.file(`api/card/getCardImage/${imageGuid}`);
   }

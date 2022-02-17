@@ -5,7 +5,6 @@ using CardCollector.Library.Dtos.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,9 +13,11 @@ namespace CardCollector.Business.Queries
     public class GetCardImageQuery : IRequest<ApiResponseBase<CardImageFile>>
     {
         public string ImageGuid { get; set; }
-        public GetCardImageQuery(string imageGuid)
+        public bool GetThumbnail { get; set; }
+        public GetCardImageQuery(string imageGuid, bool getThumbnail)
         {
             ImageGuid = imageGuid;
+            GetThumbnail = getThumbnail;
         }
     }
 
@@ -35,7 +36,10 @@ namespace CardCollector.Business.Queries
             var result = new ApiResponseBase<CardImageFile>();
             try
             {
-                var card = await _dbContext.Cards.FirstOrDefaultAsync(x => x.ThumbnailImageGuid == request.ImageGuid || x.FullImageGuid == request.ImageGuid, cancellationToken);
+                var card = await _dbContext.Cards.FirstOrDefaultAsync(x =>
+                    (request.GetThumbnail && x.ThumbnailImageGuid == request.ImageGuid) ||
+                    (!request.GetThumbnail && x.FullImageGuid == request.ImageGuid)
+                    , cancellationToken);
 
                 if (card == null)
                 {
@@ -51,7 +55,10 @@ namespace CardCollector.Business.Queries
                     return result;
                 }
 
-                image.FileName = card.ThumbnailImageName;
+                image.FileName = request.GetThumbnail
+                    ? $"{card.ThumbnailImageGuid}{card.ThumbnailImageExtension}"
+                    : $"{card.FullImageGuid}{card.FullImageExtension}";
+                
                 result.Result = image;
 
                 return result;

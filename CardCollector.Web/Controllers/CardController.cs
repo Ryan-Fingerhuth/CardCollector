@@ -5,10 +5,9 @@ using CardCollector.Library.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using System;
 using System.IO;
-using System.Net;
-using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -42,39 +41,48 @@ namespace CardCollector.Web.Controllers
             var request = JsonSerializer.Deserialize<CardDto>(data["cardRequest"]);
 
             request.ImageData = imageData;
-            request.FullImageName = imageName;
+            request.FullImageExtension = Path.GetExtension(imageName);
 
             var result = await Mediator.Send(new CreateCardCommand(request));
             return Ok(result);
         }
 
         [HttpGet]
-        [Route("api/card/getCardImage/{imageGuid}")]
-        public async Task<HttpResponseMessage> GetCardImage(string imageGuid)
+        [Route("api/card/getCardImage")]
+        public async Task<IActionResult> GetCardImage(Guid imageGuid, bool thumbnail)
         {
             try
             {
-                var result = await Mediator.Send(new GetCardImageQuery(imageGuid));
+                var imageGuidString = imageGuid.ToString();
+                var result = await Mediator.Send(new GetCardImageQuery(imageGuidString, thumbnail));
 
                 if (result.HasErrors)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                    return BadRequest();
                 }
 
-                var image = result.Result;
+                var mimeType = GetMimeTypeForFileExtension(result.Result.FileName);
 
-                var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(image.FileData) };
-                response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
-                {
-                    FileName = image.FileName
-                };
-                response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-                return response;
+                return File(result.Result.FileData, mimeType);
             }
             catch (Exception ex)
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                return BadRequest();
             }
+        }
+
+        private string GetMimeTypeForFileExtension(string filePath)
+        {
+            const string DefaultContentType = "application/octet-stream";
+
+            var provider = new FileExtensionContentTypeProvider();
+
+            if (!provider.TryGetContentType(filePath, out string contentType))
+            {
+                contentType = DefaultContentType;
+            }
+
+            return contentType;
         }
     }
 }

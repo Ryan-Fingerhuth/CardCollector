@@ -11,9 +11,9 @@ namespace CardCollector.Library.Dtos
         public string OriginalSet { get; set; }
         public int YearReleased { get; set; }
         public string FullImageGuid { get; set; }
-        public string FullImageName { get; set; }
+        public string FullImageExtension { get; set; }
         public string ThumbnailImageGuid { get; set; }
-        public string ThumbnailImageName { get; set; }
+        public string ThumbnailImageExtension { get; set; }
         public virtual ICollection<CardTag> CardTags { get; set; } = new List<CardTag>();
         public virtual ICollection<SetCard> SetCards { get; set; } = new List<SetCard>();
     }
@@ -22,5 +22,25 @@ namespace CardCollector.Library.Dtos
     {
         public byte[] ImageData { get; set; }
         public List<string> Tags { get; set; } = new List<string>();
+    }
+
+    public static class CardExtensions
+    {
+        public static CardDto ConvertBaseToDto(this Card card)
+        {
+            var cardDto = new CardDto
+            {
+                Id = card.Id,
+                CardName = card.CardName,
+                CardDescription = card.CardDescription,
+                OriginalSet = card.OriginalSet,
+                YearReleased = card.YearReleased,
+                FullImageGuid = card.FullImageGuid,
+                ThumbnailImageGuid = card.ThumbnailImageGuid,
+                ImageData = null
+            };
+
+            return cardDto;
+        }
     }
 }

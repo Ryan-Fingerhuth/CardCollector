@@ -2,7 +2,8 @@
   <div class="col">
     <div *ngFor="let i of set.cards">
       <label>{{ i.cardName }}</label>
-      <img [src]="i.thumbnail">
+      <!-- <img [src]="i.imageFilePath | safe:'url'" class="img-thumbnail"> -->
+      <img [src]="cardService.getImage(i.thumbnailImageGuid, true)" class="img-thumbnail">
     </div>
   </div>
 </div>

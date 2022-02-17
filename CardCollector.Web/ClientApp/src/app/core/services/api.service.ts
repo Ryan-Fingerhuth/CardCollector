@@ -35,7 +35,7 @@ export class ApiService {
       .pipe(catchError((e) => this.formatErrors(e)));
   }
 
-  protected path(url: string): string {
+  public path(url: string): string {
     return `${this.apiUrl}${url}`;
   }
 

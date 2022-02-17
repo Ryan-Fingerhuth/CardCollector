@@ -15,7 +15,7 @@ export class CardSetComponent implements OnInit {
   public secondRowCards: ICardDto[];
 
   constructor(
-    private cardService: CardService,
+    public cardService: CardService,
     private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
@@ -35,15 +35,6 @@ export class CardSetComponent implements OnInit {
         this.set.id = result.result.id,
         this.set.setDescription = result.result.setDescription;
         this.set.cards = result.result.cards;
-
-        this.set.cards.forEach(card => {
-          this.cardService.getCardImage(card.thumbnailImageGuid).subscribe(blob => {
-            this.createImageFromBlob(card, blob);
-            //card.image = blob;
-            //const unsafeImg = URL.createObjectURL(blob);
-            //card.thumbnail = this.sanitizer.bypassSecurityTrustUrl(unsafeImg);
-          });
-        });
       }
     });
 
@@ -51,6 +42,7 @@ export class CardSetComponent implements OnInit {
     this.secondRowCards = this.set.cards.filter(x => x.rowNumber === 1);
   }
 
+  // not used currently. might not need it.
   createImageFromBlob(card: ICardDto, image: Blob) {
     let reader = new FileReader();
     reader.addEventListener("load", () => {

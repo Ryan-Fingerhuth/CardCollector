@@ -21,7 +21,7 @@ namespace CardCollector.Business.Services
             try
             {
                 var rootPath = _applicationSettings.FileStoragePath;
-                var filePath = $"{rootPath}\\{file.FileId}";
+                var filePath = $"{rootPath}/{file.FileGuid}";
 
                 if (!File.Exists(filePath))
                 {
@@ -40,22 +40,6 @@ namespace CardCollector.Business.Services
                         }
                     }
                 }
-
-                //byte[] buffer = null;
-                //using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                //{
-                //    buffer = new byte[fs.Length];
-                //    fs.Read(buffer, 0, (int)fs.Length);
-
-                //    using (var resizedImage = (Image)new Bitmap(buffer, new Size(280, 390)))
-                //    {
-                //        var fileData = (byte[])new ImageConverter().ConvertTo(resizedImage, typeof(byte[]));
-
-                //        return fileData;
-                //    }
-                //}
-
-
             }
             catch (Exception exception)
             {
@@ -63,10 +47,10 @@ namespace CardCollector.Business.Services
             }
         }
 
-        public async Task<byte[]> GetFile(string fileId)
+        public async Task<byte[]> GetFile(string fileGuid)
         {
             var rootPath = _applicationSettings.FileStoragePath;
-            var filePath = $"{rootPath}\\{fileId}";
+            var filePath = $"{rootPath}/{fileGuid}";
 
             if (!File.Exists(filePath))
             {
@@ -76,12 +60,12 @@ namespace CardCollector.Business.Services
             return await File.ReadAllBytesAsync(filePath);
         }
 
-        public CardImageFile GetImageFile(string fileId)
+        public CardImageFile GetImageFile(string fileGuid)
         {
             try
             {
                 var rootPath = _applicationSettings.FileStoragePath;
-                var filePath = $"{rootPath}\\{fileId}";
+                var filePath = $"{rootPath}/{fileGuid}"; // todo fix the extension
 
                 if (!File.Exists(filePath))
                 {
@@ -90,19 +74,8 @@ namespace CardCollector.Business.Services
 
                 var imageFile = new CardImageFile
                 {
-                    FileId = fileId
+                    FileGuid = fileGuid
                 };
-
-                //using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                //{
-                //    using (var bitmap = new Bitmap(fs))
-                //    {
-                //        var fileData = (byte[])new ImageConverter().ConvertTo((Image)bitmap, typeof(byte[]));
-
-                //        imageFile.FileData = fileData;
-                //    }
-                //}
-
 
                 byte[] buffer = null;
                 using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
@@ -111,7 +84,6 @@ namespace CardCollector.Business.Services
                     fs.Read(buffer, 0, (int)fs.Length);
                 }
                 imageFile.FileData = buffer;
-
 
                 return imageFile;
             }
@@ -124,7 +96,7 @@ namespace CardCollector.Business.Services
         public async Task<bool> UploadFile(CardImageFile file)
         {
             var rootPath = _applicationSettings.FileStoragePath;
-            var filePath = $"{rootPath}\\{file.FileId}";
+            var filePath = $"{rootPath}/{file.FileGuid}";
 
             await File.WriteAllBytesAsync(filePath, file.FileData);
 
