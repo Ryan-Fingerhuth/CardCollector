@@ -22,7 +22,6 @@ namespace CardCollector.Business.Queries
     public class GetSetQueryHandler : IRequestHandler<GetSetQuery, ApiResponseBase<SetDto>>
     {
         private readonly ApplicationDbContext _dbContext;
-
         public GetSetQueryHandler(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -33,7 +32,7 @@ namespace CardCollector.Business.Queries
             var result = new ApiResponseBase<SetDto>();
             try
             {
-                var set = _dbContext.Sets.FirstOrDefault(x => x.Id == request.SetId);
+                var set = await _dbContext.Sets.FirstOrDefaultAsync(x => x.Id == request.SetId, cancellationToken);
 
                 if (set == null)
                 {
@@ -46,12 +45,15 @@ namespace CardCollector.Business.Queries
 
                 var cards = setCards.Select(x => x.Card).ToList();
 
+                var cardDtos = new List<CardDto>();
+
                 foreach(var card in cards)
                 {
+                    cardDtos.Add(card.ConvertBaseToDto());
                     card.SetCards = new List<SetCard>();
                 }
 
-                setDto.Cards = cards;
+                setDto.Cards = cardDtos;
 
                 result.Result = setDto;
 

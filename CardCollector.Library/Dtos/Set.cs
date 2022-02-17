@@ -13,7 +13,7 @@ namespace CardCollector.Library.Dtos
 
     public class SetDto : Set
     {
-        public List<Card> Cards { get; set; } = new List<Card>();
+        public List<CardDto> Cards { get; set; } = new List<CardDto>();
     }
 
     public static class SetExtensions
@@ -25,7 +25,7 @@ namespace CardCollector.Library.Dtos
                 Id = set.Id,
                 SetDescription = set.SetDescription,
                 SetCreatedByUserId = set.SetCreatedByUserId,
-                Cards = new List<Card>()
+                Cards = new List<CardDto>()
             };
 
             return setDto;

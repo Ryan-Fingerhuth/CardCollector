@@ -5,7 +5,6 @@ using CardCollector.Library.Dtos.Common;
 using MediatR;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -67,11 +66,11 @@ namespace CardCollector.Business.Commands
                 var fullSizeImage = new CardImageFile
                 {
                     FileData = request.Card.ImageData,
-                    FileId = Guid.NewGuid().ToString()
+                    FileGuid = Guid.NewGuid().ToString()
                 };
                 await _fileService.UploadFile(fullSizeImage);
 
-                request.Card.FullImageGuid = fullSizeImage.FileId;
+                request.Card.FullImageGuid = fullSizeImage.FileGuid;
 
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
@@ -86,15 +85,12 @@ namespace CardCollector.Business.Commands
                 var thumbnailImage = new CardImageFile
                 {
                     FileData = thumbnailData,
-                    FileId = Guid.NewGuid().ToString()
+                    FileGuid = Guid.NewGuid().ToString()
                 };
                 await _fileService.UploadFile(thumbnailImage);
 
-                var fileNameWithoutExt = Path.GetFileNameWithoutExtension(request.Card.FullImageName);
-                var fileExt = Path.GetExtension(request.Card.FullImageName);
-
-                request.Card.ThumbnailImageName = $"{fileNameWithoutExt}.thumbnail{fileExt}";
-                request.Card.ThumbnailImageGuid = thumbnailImage.FileId;
+                request.Card.ThumbnailImageExtension = request.Card.FullImageExtension;
+                request.Card.ThumbnailImageGuid = thumbnailImage.FileGuid;
 
                 await _dbContext.SaveChangesAsync(cancellationToken);
             }

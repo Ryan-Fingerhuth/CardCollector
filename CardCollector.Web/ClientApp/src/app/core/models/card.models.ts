@@ -5,15 +5,14 @@ export interface ICardDto {
   originalSet: string;
   yearReleased: number;
   fullImageGuid: string;
-  fullImageName: string;
   thumbnailImageGuid: string;
-  thumbnailImageName: string;
   cardTags: ICardTag[];
   tags: string[];
   rowNumber: number;
   orderNumber: number;
   image: Blob;
   thumbnail: string | ArrayBuffer;
+  imageFilePath: string;
 }
 
 export interface ICardTag {

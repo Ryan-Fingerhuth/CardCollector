@@ -6,8 +6,8 @@ namespace CardCollector.Business.Abstractions
     public interface IFileService
     {
         Task<bool> UploadFile(CardImageFile file);
-        Task<byte[]> GetFile(string fileId);
-        CardImageFile GetImageFile(string fileId);
+        Task<byte[]> GetFile(string fileGuid);
+        CardImageFile GetImageFile(string fileGuid);
         byte[] ConvertImageToThumbnail(CardImageFile file);
     }
 }
