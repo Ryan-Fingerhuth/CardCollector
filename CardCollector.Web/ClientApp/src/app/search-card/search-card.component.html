@@ -31,30 +31,33 @@
     </div>
 </div>
 
-    <div class="container-fluid" *ngIf = "busy && searchResults.length > 0">
-        <div class="row">
-            <div class="col">
-                <h2> Results: </h2>
-                <hr>
 
-                <a class="card" role="button" style="text-decoration: none; color: inherit"
-                    *ngFor= "let s of searchResults">
-                    <!-- (click)="dothing(card = s)" -->
-                    <div class="col">
-                        
-                            <div>
-                                <!-- <img [src]="" class="card-image" /> -->
-                                <div style="padding-left: 0px;">
-                                    <div class="card-name"> {{  s.cardName  }} </div>
-                                    <!-- <div class="album-artist">by <b>{{album.Artist.ArtistName}}</b> {{(album.Year ? 'in ' + album.Year : '')}}</div> -->
-                                    <div class="card-descript"> {{  s.cardDescription  }} </div>
-                                    <div class="card-descript">  {{  (s.originalSet ? 'Set: ' + s.originalSet : '') }} </div>
-                                </div>
-                            </div>
-                        
-                    </div>
-                </a>
-            </div>
+
+<div class="container-fluid" *ngIf = "busy && searchResults.length > 0">
+    <div class="row">
+        <div class="col">
+            <h2> Results: </h2>
+            <hr>
+            
+            <a class="card" role="button" style="text-decoration: none; color: inherit"
+                *ngFor= "let s of searchResults">
+                <!-- (click)="dothing(card = s)" -->
+                <div class="col">
+                    
+                        <div>
+                            <div class="card-name"> {{  s.cardName  }} </div>
+                            <div class="card-name"> {{  (s.originalSet ? 'Set: ' + s.originalSet : '') }} </div>
+                            <img [src] = "getCardImageUrl(s.thumbnailImageGuid, true)" class = "card-image" />
+                            
+                            <!-- <div class="album-artist">by <b>{{album.Artist.ArtistName}}</b> {{(album.Year ? 'in ' + album.Year : '')}}</div> -->
+                            <div class="card-descript"> {{  s.cardDescription  }} </div>
+                            <!-- <div class="card-descript">  {{  (s.originalSet ? 'Set: ' + s.originalSet : '') }} </div> -->
+                           
+                        </div>
+                    
+                </div>
+            </a>
         </div>
     </div>
+</div>
 

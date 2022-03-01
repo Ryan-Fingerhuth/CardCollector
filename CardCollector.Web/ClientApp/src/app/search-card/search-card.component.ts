@@ -6,7 +6,7 @@ import { ToastService } from '@core/services/toast.service';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, catchError} from 'rxjs/operators';
 
-const testVals: string[] = ["test1", "test2", "test3"];
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-search-card',
@@ -21,6 +21,7 @@ export class SearchCardComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private cardService: CardService,
+    private sanitizer: DomSanitizer,
     private toastService: ToastService) { }
 
   busy: boolean = false;
@@ -32,29 +33,25 @@ export class SearchCardComponent implements OnInit {
     });
   }
   
-    typeAheadSearch = (text$: Observable<any>) => {
-      return text$.pipe(      
-          debounceTime(500), 
-          distinctUntilChanged(),
-          switchMap( (term) => term.length < 3 ? [] : this.cardService.cardLookUp(term) ),
-          catchError(error => { console.log('error')
-                    throw new Error(error)})    
-      );                 
-    }
-
-  public cardLookUpTest(): void {
-    const request: string = { ...this.searchForm.value }
-    this.cardService.cardLookUp(request).subscribe(x => {
-      if (x.isSuccess){
-        console.log(x.result + "");
-      }
-    });
+  typeAheadSearch = (text$: Observable<any>) => {
+    return text$.pipe(      
+        debounceTime(500), 
+        distinctUntilChanged(),
+        switchMap( (term) => term.length < 3 ? [] : this.cardService.cardLookUp(term) ),
+        catchError(error => { console.log('error')
+                   throw new Error(error)})    
+    );                 
   }
 
-  get testValues() { 
-    //return [];
-    this.busy = true; 
-    return testVals; 
+  sanitizeImageUrl(imageUrl: string): SafeUrl {
+    return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+  }
+
+  public getCardImageUrl(imageGuid: string, thumbnail: boolean): string {
+    if (imageGuid == null){
+      return this.cardService.getImage('62928fea-3303-4e3e-a997-93e3ea582e3e', thumbnail);
+    }
+    return this.cardService.getImage(imageGuid, thumbnail);
   }
 
   get searchResults() {
@@ -62,7 +59,7 @@ export class SearchCardComponent implements OnInit {
   }
 
   public search(): void {
-    this.busy = true;
+    //this.busy = true;
     if (this.searchForm.invalid) {
       return;
     }
@@ -70,20 +67,15 @@ export class SearchCardComponent implements OnInit {
       ...this.searchForm.getRawValue()
     } 
     
-    //const request: string = { ...this.searchForm.value }
-    
-    var res = this.cardService.searchCard(request);
-    res.subscribe(x => {
+    this.cardService.searchCard(request).subscribe(x => {
       if (x.isSuccess) {
-        // this.busy = true;
+        this.busy = true;
         this.toastService.showSuccessToast('Card(s) searched.');
         this.results = x.result;
-        console.log(x.result + "");
       } else {
-        //this.toastService.showDangerToast('Failed to find card(s).');
+        this.toastService.showDangerToast('Failed to find card(s).');
       }
     });
-    //res.subscribe
   }
 
   resultFormatListValue(value: any) {            
@@ -93,5 +85,14 @@ export class SearchCardComponent implements OnInit {
   inputFormatListValue(value: any)   {
     return value;
   }
+
+  // public cardLookUpTest(): void {
+  //   const request: string = { ...this.searchForm.value }
+  //   this.cardService.cardLookUp(request).subscribe(x => {
+  //     if (x.isSuccess){
+  //       console.log(x.result + "");
+  //     }
+  //   });
+  // }
 
 }

@@ -40,7 +40,7 @@ namespace CardCollector.Business.Commands
 
                 //var users = _dbContext.Users.ToList();
 
-                var results = await (_dbContext.Cards.Where(n => n.CardName.ToLower().IndexOf(request.SearchTerm.ToLower()) > -1).Select(c => c.CardName)).ToListAsync();
+                var results = await (_dbContext.Cards.Where(n => n.CardName.ToLower().IndexOf(request.SearchTerm.ToLower()) > -1).Select(c => c.CardName)).Distinct().ToListAsync();
 
                 
                 result.Result = results;
