@@ -30,7 +30,7 @@ export class CardSetComponent implements OnInit {
     };
 
     // todo implement routing, grab actual set Id.
-    this.cardService.getSet(1).subscribe(result => {
+    this.cardService.getSet(7).subscribe(result => {
       if (result.isSuccess) {
         this.set.id = result.result.id,
         this.set.setDescription = result.result.setDescription;
