@@ -98,6 +98,12 @@ namespace CardCollector.Business.Services
             var rootPath = _applicationSettings.FileStoragePath;
             var filePath = $"{rootPath}/{file.FileGuid}";
 
+            //create folder if folder doesnt exist
+            if (!File.Exists(rootPath))
+            {
+                System.IO.Directory.CreateDirectory(rootPath);
+            }
+
             await File.WriteAllBytesAsync(filePath, file.FileData);
 
             return File.Exists(filePath);

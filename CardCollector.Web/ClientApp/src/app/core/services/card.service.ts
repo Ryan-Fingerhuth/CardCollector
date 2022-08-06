@@ -21,7 +21,7 @@ export class CardService {
     return this.apiService.post('api/card/createCard', formData);
   }
   
-  public searchCard(request: ISearchDto): Observable<IApiResponse<ISearchDto>> {
+  public searchCard(request: ISearchDto): Observable<IApiResponse<any>> {
     return this.apiService.get(`api/query/searchCard/${encodeURI(request.cardName)}`);
   } 
 

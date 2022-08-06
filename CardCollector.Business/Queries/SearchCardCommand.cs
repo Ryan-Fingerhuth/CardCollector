@@ -35,9 +35,9 @@ namespace CardCollector.Business.Commands
             try
             {
              
-                var temps = _dbContext.Cards.ToList();
+               //var temps = _dbContext.Cards.ToList();
 
-                var users = _dbContext.Users.ToList();
+                //var users = _dbContext.Users.ToList();
 
                 var results =  await (_dbContext.Cards.Where(n => n.CardName.Equals(request.CardName)).ToListAsync());
                 
@@ -48,7 +48,7 @@ namespace CardCollector.Business.Commands
             }
             catch (Exception ex)
             {
-                result.Errors.Add("Error");
+                result.Errors.Add("Error: " + ex.Message);
                 return result;
             }
             
