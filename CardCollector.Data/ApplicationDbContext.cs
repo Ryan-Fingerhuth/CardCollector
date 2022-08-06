@@ -3,10 +3,16 @@ using CardCollector.Library.Dtos;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.SqlServer.Management.Common;
+using Microsoft.SqlServer.Management.Smo;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace CardCollector.Data
 {
@@ -44,7 +50,22 @@ namespace CardCollector.Data
             {
                 using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
                 {
-                    context.Database.ExecuteSqlRaw(Properties.Resources.DataSeeder);
+                    var sqlFolderPath = $@"{AppDomain.CurrentDomain.BaseDirectory}Sql\";
+
+                    var paths = Directory.EnumerateDirectories(sqlFolderPath).OrderBy(x => x);
+
+                    foreach (var directoryPath in paths)
+                    {
+                        var files = Directory.EnumerateFiles(directoryPath, "*.sql").OrderBy(x => x);
+
+                        foreach (var filePath in files)
+                        {
+                            var content = File.ReadAllText(filePath);
+                            var connection = new SqlConnection(context.Database.GetConnectionString());
+                            var server = new Server(new ServerConnection(connection));
+                            server.ConnectionContext.ExecuteNonQuery(content);
+                        }
+                    }
                 }
             }
         }

@@ -8,8 +8,9 @@ namespace CardCollector.Library.Dtos
         public int Id { get; set; }
         public string CardName { get; set; }
         public string CardDescription { get; set; }
-        public string OriginalSet { get; set; }
+        public string OriginalSetName { get; set; }
         public int YearReleased { get; set; }
+        public int NumberInSet { get; set; }
         public string FullImageGuid { get; set; }
         public string FullImageExtension { get; set; }
         public string ThumbnailImageGuid { get; set; }
@@ -33,7 +34,7 @@ namespace CardCollector.Library.Dtos
                 Id = card.Id,
                 CardName = card.CardName,
                 CardDescription = card.CardDescription,
-                OriginalSet = card.OriginalSet,
+                OriginalSetName = card.OriginalSetName,
                 YearReleased = card.YearReleased,
                 FullImageGuid = card.FullImageGuid,
                 ThumbnailImageGuid = card.ThumbnailImageGuid,

@@ -22,6 +22,7 @@ export class CreateCardComponent implements OnInit {
       cardName: ['', [Validators.maxLength(50), Validators.required]],
       cardDescription: [''],
       originalSet: ['', [Validators.required]],
+      numberInSet: [0, [Validators.required]],
       cardYear: [new Date().getFullYear()],
       cardImageName: ['', [Validators.required]],
       image: []
@@ -43,8 +44,9 @@ export class CreateCardComponent implements OnInit {
       Id: this.cardForm.controls["id"].value,
       CardName: this.cardForm.controls["cardName"].value,
       CardDescription: this.cardForm.controls["cardDescription"].value,
-      OriginalSet: this.cardForm.controls["originalSet"].value,
-      YearReleased: this.cardForm.controls["cardYear"].value
+      OriginalSetName: this.cardForm.controls["originalSet"].value,
+      YearReleased: this.cardForm.controls["cardYear"].value,
+      NumberInSet: this.cardForm.controls["numberInSet"].value
     };
     const imageFile = this.cardForm.controls["image"].value;
     if (!imageFile) {

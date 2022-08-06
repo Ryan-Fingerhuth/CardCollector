@@ -10,10 +10,11 @@ namespace CardCollector.Data.Configurations
         {
             builder.ToTable("Cards");
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.CardName).HasMaxLength(50).IsRequired();
+            builder.Property(x => x.CardName).HasMaxLength(255).IsRequired();
             builder.Property(x => x.CardDescription);
-            builder.Property(x => x.OriginalSet);
+            builder.Property(x => x.OriginalSetName);
             builder.Property(x => x.YearReleased);
+            builder.Property(x => x.NumberInSet);
             builder.Property(x => x.FullImageGuid).HasMaxLength(40);
             builder.Property(x => x.FullImageExtension);
             builder.Property(x => x.ThumbnailImageGuid).HasMaxLength(40);

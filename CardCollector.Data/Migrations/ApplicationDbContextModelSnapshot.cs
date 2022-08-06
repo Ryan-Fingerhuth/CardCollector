@@ -96,8 +96,8 @@ namespace CardCollector.Data.Migrations
 
                     b.Property<string>("CardName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -115,7 +115,10 @@ namespace CardCollector.Data.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("OriginalSet")
+                    b.Property<int>("NumberInSet")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OriginalSetName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ThumbnailImageExtension")

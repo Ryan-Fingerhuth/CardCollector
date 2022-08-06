@@ -13,7 +13,7 @@ import { HomeComponent } from "./home/home.component";
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
     { path: 'create-card', component: CreateCardComponent },
-    { path: 'set', component: CardSetComponent },
+    { path: 'set/:id', component: CardSetComponent },
     { path: 'search-card', component: SearchCardComponent },
   { path: 'counter', component: CounterComponent },
   { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },

@@ -6,11 +6,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Sql\DataSeeder.sql" />
+    <None Remove="Sql\BaseSetCards.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Sql\DataSeeder.sql" />
+    <Content Include="Sql\01_Seed_Scripts\01_Cards.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\01_Seed_Scripts\02_Sets.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\01_Seed_Scripts\03_CardSets.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +30,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="161.47021.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
 

@@ -2,8 +2,9 @@ export interface ICardDto {
   id: number;
   cardName: string;
   cardDescription: string;
-  originalSet: string;
+  originalSetName: string;
   yearReleased: number;
+  numberInSEt: number;
   fullImageGuid: string;
   thumbnailImageGuid: string;
   cardTags: ICardTag[];

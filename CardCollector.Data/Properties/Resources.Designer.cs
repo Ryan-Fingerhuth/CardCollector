@@ -59,20 +59,5 @@ namespace CardCollector.Data.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to IF NOT EXISTS (Select 1 From dbo.Cards)
-        ///BEGIN
-        ///	SET IDENTITY_INSERT dbo.Cards ON
-        ///	Insert into dbo.Cards (Id, DateCreated, DateModified, IsActive, CardName, CardDescription)
-        ///	Values (1, GETDATE(), GETDATE(), 1, &apos;Temp - CardName&apos;, &apos;Card Description&apos;)
-        ///	SET IDENTITY_INSERT dbo.Cards OFF
-        ///END.
-        /// </summary>
-        internal static string DataSeeder {
-            get {
-                return ResourceManager.GetString("DataSeeder", resourceCulture);
-            }
-        }
     }
 }
