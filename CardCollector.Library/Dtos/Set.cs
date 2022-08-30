@@ -8,6 +8,7 @@ namespace CardCollector.Library.Dtos
         public int Id { get; set; }
         public string SetDescription { get; set; }
         public int SetCreatedByUserId { get; set; }
+        public bool DefaultSet { get; set; }
         public virtual ICollection<SetCard> SetCards { get; set; } = new List<SetCard>();
     }
 

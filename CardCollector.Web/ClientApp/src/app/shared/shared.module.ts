@@ -4,8 +4,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { BooleanDialogComponent } from './components/boolean-dialog/boolean-dialog.component';
-import { ToastrModule, ToastrService } from "ngx-toastr";
-import { MatInputModule } from '@angular/material/input';
+import { ToastrModule } from "ngx-toastr";
 
 @NgModule({
   imports: [
@@ -13,7 +12,6 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,
     NgbModule,
     DragDropModule,
-    MatInputModule,
     ToastrModule.forRoot(),
   ],
   providers: [],
@@ -26,7 +24,6 @@ import { MatInputModule } from '@angular/material/input';
     NgbModule,
     DragDropModule,
     ToastrModule,
-    MatInputModule
   ],
   entryComponents: [
     BooleanDialogComponent

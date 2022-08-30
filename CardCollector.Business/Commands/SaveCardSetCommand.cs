@@ -56,19 +56,19 @@ namespace CardCollector.Business.Commands
         {
             var dbSet = _dbContext.Sets.FirstOrDefault(x => x.Id == set.Id);
 
-            if (dbSet == null)
-            {
-                dbSet = new Set();
-                dbSet.DateCreated = DateTime.Now;
-                dbSet.IsActive = true;
-                dbSet.SetCreatedByUserId = 1;
+                if (dbSet == null)
+                {
+                    dbSet = new Set();
+                    dbSet.DateCreated = DateTime.Now;
+                    dbSet.IsActive = true;
+                    dbSet.SetCreatedByUserId = 1;
 
                 _dbContext.Sets.Add(dbSet);
-            }
+                }
 
             dbSet.SetDescription = set.SetDescription;
-            dbSet.DateModified = DateTime.Now;
-
+                dbSet.DateModified = DateTime.Now;
+                
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return dbSet;
@@ -121,7 +121,7 @@ namespace CardCollector.Business.Commands
                 var dbSetCard = dbSetCards.FirstOrDefault(x => x.CardId == removedCardId);
 
                 if (dbSetCard != null)
-                {
+            {
                     dbSetCard.IsActive = false;
                     dbSetCard.DateModified = currentDateModified;
                 }

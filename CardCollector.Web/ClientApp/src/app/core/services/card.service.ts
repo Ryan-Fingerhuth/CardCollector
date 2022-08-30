@@ -40,4 +40,8 @@ export class CardService {
   public getCardImage(imageGuid: string) {
     return this.apiService.file(`api/card/getCardImage/${imageGuid}`);
   }
+
+  public saveCardSet(cardSet: ISet): Observable<IApiResponse<ISet>> {
+    return this.apiService.post('api/set/save', cardSet);
+  }
 }

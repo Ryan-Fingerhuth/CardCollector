@@ -10,6 +10,7 @@ import {
   ApiService,
   BusyOverLayService,
   CardService,
+  ResizeService,
   ToastService
 } from "./services";
 
@@ -27,7 +28,8 @@ import {
     BusyOverLayService,
     ApiService,
     CardService,
-    ToastService
+    ToastService,
+    ResizeService
   ]
 })
 export class CoreModule { }

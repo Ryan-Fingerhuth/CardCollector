@@ -30,8 +30,6 @@ export interface ITag {
 export interface ISet {
   id: number;
   setDescription: string;
-  numberOfRows: number;
-  numberOfColumns: number;
   cards: ICardDto[];
 }
 
