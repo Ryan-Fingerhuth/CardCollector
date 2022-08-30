@@ -1,27 +1,36 @@
-<form class="example-form">
+<form [formGroup]="setFormGroup">
+  <div class="row mb-3">
+    <div class="col-10">
+      <div *ngIf="!changeSetName" class="row">
+        <div class="col-auto">
+          <h4>{{ getSetDescription() }}</h4>
+        </div>
+        <div class="col-auto" *ngIf="editMode">
+          <i class="pi pi-pencil pi-md mb-2 vertical-center-icons" placement="top" ngbTooltip="Edit"
+            (click)="onChangeSetName()"></i>
+        </div>
+      </div>
 
-  <div class="row">
-    <div class="col">
-
-      <h1 *ngIf="!editMode">{{ set.setDescription }}</h1>
-      <input type="text" matInput [(ngModel)]="set.setDescription">
-
-
-      <mat-form-field *ngIf="editMode" appearance="fill">
-        <mat-label>Set Name</mat-label>
-        <input type="text" matInput [formControl]="setDescription" [errorStateMatcher]="matcher" placeholder="set name">
-        <mat-error *ngIf="emailFormControl.hasError('required')">
-          Set Name is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
-
+      <div *ngIf="changeSetName" class="row">
+        <div class="col-4">
+          <input type="text" class="form-control" formControlName="setDescription"
+            placeholder="enter set name...">
+        </div>
+        <div class="col-auto">
+          <i class="pi pi-check pi-md vertical-center-icons" placement="top" ngbTooltip="Confirm"
+            (click)="onChangeSetName()"></i>
+        </div>
+      </div>
+    </div>
+    <div class="col-2" *ngIf="editMode">
+      <button class="btn btn-primary" (click)="onAddCards()">Add Cards</button>
+      <button class="btn btn-success float-end" [disabled]="setFormGroup.invalid" (click)="saveSetInformation()">Save</button>
     </div>
   </div>
 
   <div class="row">
     <div class="col">
       <div class="example-container">
-        <h3>Second</h3>
         <div cdkDropListGroup>
           <ng-container *ngFor="let cardRow of cardRows; let i = index">
             <div cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="cardRow" class="example-list"
@@ -43,37 +52,4 @@
       </div>
     </div>
   </div>
-  <!-- 
-<div class="row">
-  <div class="col">
-    <select [(ngModel)]="option">
-      <option value="35rem">35</option>
-      <option value="50rem">50</option>
-      <option value="65rem">65</option>
-      <option value="80rem">80</option>
-    </select>
-    <div class="example-container">
-      <h3>Third</h3>
-
-      <div class="categories" [style.width]="option" cdkDropListGroup>
-        <ng-container *ngFor="let card of cardList; let i = index">
-          <div class="categories-item2" cdkDropList cdkDropListOrientation="horizontal"
-            [cdkDropListData]="{item:card,index:i}" (cdkDropListDropped)="newDrop($event)">
-            <div cdkDrag class="example-box" [cdkDragData]="card">
-              <div class="vstack gap-1">
-                <img [src]="cardService.getImage(card.thumbnailImageGuid, true)" class="image-thumbnail">
-                <div class="card-info">
-                  {{card.cardName}}
-                </div>
-                <div class="card-info">
-                  {{card.originalSetName}} - ({{card.yearReleased}})
-                </div>
-              </div>
-            </div>
-          </div>
-        </ng-container>
-      </div>
-    </div>
-  </div>
-</div> -->
 </form>

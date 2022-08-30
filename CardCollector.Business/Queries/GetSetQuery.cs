@@ -43,15 +43,28 @@ namespace CardCollector.Business.Queries
 
                 var setCards = _dbContext.SetCards.Include(x => x.Card).Where(x => x.SetId == request.SetId).ToList();
 
-                var cards = setCards.Select(x => x.Card).ToList();
-
-                var cardDtos = new List<CardDto>();
-
-                foreach(var card in cards)
+                var cardDtos = setCards.Select(x => new CardDto
                 {
-                    cardDtos.Add(card.ConvertBaseToDto());
-                    card.SetCards = new List<SetCard>();
-                }
+                    Id = x.Card.Id,
+                    CardName = x.Card.CardName,
+                    CardDescription = x.Card.CardDescription,
+                    OriginalSetName = x.Card.OriginalSetName,
+                    YearReleased = x.Card.YearReleased,
+                    FullImageGuid = x.Card.FullImageGuid,
+                    ThumbnailImageGuid = x.Card.ThumbnailImageGuid,
+                    ImageData = null,
+                    SetOrder = x.Order
+                }).OrderBy(y => y.SetOrder).ToList();
+
+                //var cards = setCards.Select(x => x.Card).ToList();
+
+                //var cardDtos = new List<CardDto>();
+
+                //foreach(var card in cards)
+                //{
+                //    cardDtos.Add(card.ConvertBaseToDto());
+                //    card.SetCards = new List<SetCard>();
+                //}
 
                 setDto.Cards = cardDtos;
 

@@ -26,3 +26,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .toast-close-button {
   font-weight: normal !important;
 }
+
+.modal-xxl .modal-lg {
+  min-width: 1200px;
+}

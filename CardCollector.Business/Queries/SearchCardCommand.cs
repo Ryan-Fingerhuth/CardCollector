@@ -1,19 +1,19 @@
 ﻿using CardCollector.Data;
 using CardCollector.Library.Dtos;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 
 namespace CardCollector.Business.Commands
 {
     public class SearchCardCommand : IRequest<ApiResponseBase<List<Card>>>
     {
-        
         public string CardName { get; set; }
+
         public SearchCardCommand(string cardName)
         {
             CardName = cardName;
@@ -34,13 +34,7 @@ namespace CardCollector.Business.Commands
             var result = new ApiResponseBase<List<Card>>();
             try
             {
-             
-               //var temps = _dbContext.Cards.ToList();
-
-                //var users = _dbContext.Users.ToList();
-
-                var results =  await (_dbContext.Cards.Where(n => n.CardName.Equals(request.CardName)).ToListAsync());
-                
+                var results = await (_dbContext.Cards.Where(n => n.CardName.Equals(request.CardName)).ToListAsync());
 
                 result.Result = results;
 
@@ -51,7 +45,6 @@ namespace CardCollector.Business.Commands
                 result.Errors.Add("Error: " + ex.Message);
                 return result;
             }
-            
         }
     }
 }
