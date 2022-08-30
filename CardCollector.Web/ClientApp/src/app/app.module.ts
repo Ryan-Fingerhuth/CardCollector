@@ -20,6 +20,7 @@ import { SharedModule } from '@shared/shared.module';
 import { CoreModule } from '@core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms'
+import { SizeDetectorComponent } from './size-detector/size-detector.component';
 
 //import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -32,7 +33,8 @@ import { FormsModule } from '@angular/forms'
     FetchDataComponent,
     CreateCardComponent,
     CardSetComponent,
-    SearchCardComponent
+    SearchCardComponent,
+    SizeDetectorComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

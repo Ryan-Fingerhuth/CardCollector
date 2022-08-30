@@ -1,17 +1,10 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ICardDto, ISet } from '@core/models';
-import { CardService } from '@core/services';
-
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
-}
+import { ICardDto, ISet, SCREEN_SIZE } from '@core/models';
+import { CardService, ToastService } from '@core/services';
+import { ResizeService } from '@core/services/resize.service';
 
 @Component({
   selector: 'app-card-set',
@@ -20,19 +13,49 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class CardSetComponent implements OnInit {
   public setId: number;
-  public set: ISet;
-  public firstRowCards: ICardDto[];
-  public secondRowCards: ICardDto[];
-  
-  public editMode: boolean = false;
+  public set: ISet = {
+    id: 0,
+    setDescription: '',
+    cards: []
+  };
+
+  public setFormGroup = new FormGroup({
+    setDescription: new FormControl('')
+  });
+
+  public changeSetName: boolean = false;
+  public editMode: boolean = true;
 
   public entireCardList: ICardDto[];
-
   public cardRows: ICardDto[][];
 
-  public option = "35rem";
+  size: SCREEN_SIZE;
+  cardsPerRow: number = 7;
 
-  constructor(public cardService: CardService, private readonly route: ActivatedRoute) { }
+  constructor(
+    public cardService: CardService,
+    private readonly formBuilder: FormBuilder,
+    private readonly route: ActivatedRoute,
+    private resizeService: ResizeService,
+    private readonly toasterService: ToastService) {
+      this.resizeService.onResize$.subscribe(x => {
+        this.size = x;
+        if (this.size == SCREEN_SIZE.XS) {
+          this.cardsPerRow = 2;
+        } else if (this.size == SCREEN_SIZE.SM) {
+          this.cardsPerRow = 3;
+        } else if (this.size == SCREEN_SIZE.MD) {
+          this.cardsPerRow = 4;
+        } else if (this.size == SCREEN_SIZE.LG) {
+          this.cardsPerRow = 5;
+        } else if (this.size == SCREEN_SIZE.XL) {
+          this.cardsPerRow = 6;
+        } else if (this.size == SCREEN_SIZE.XXL) {
+          this.cardsPerRow = 7;
+        }
+        this.assembleCardRows();
+      });
+  }
 
   ngOnInit(): void {
     if (!this.setId) {
@@ -41,26 +64,47 @@ export class CardSetComponent implements OnInit {
       });
     }
 
-    let cards: ICardDto[] = [];
-
-    this.set = {
-      id: 0,
-      setDescription: '',
-      numberOfRows: 3,
-      numberOfColumns: 3,
-      cards: cards
-    };
-
-    // todo implement routing, grab actual set Id.
     this.cardService.getSet(this.setId).subscribe(result => {
       if (result.isSuccess) {
         this.set = result.result;
-        //this.cardList = this.set.cards;
         this.entireCardList = this.set.cards;
+
+        this.setFormGroup = this.formBuilder.group({
+          setDescription: [this.set.setDescription, [Validators.required]]
+        });
 
         this.assembleCardRows();
       }
     });
+  }
+
+  public saveSetInformation(): void {
+    if (this.setFormGroup.invalid) {
+      this.toasterService.showDangerToast('Invalid Form');
+    }
+
+    this.dissembleCardRows();
+
+    const setRequest: ISet = {
+      ...this.set,
+      setDescription: this.setFormGroup.controls['setDescription'].value,
+      cards: this.entireCardList
+    };
+
+    this.cardService.saveCardSet(setRequest).subscribe(result => {
+      if (result.isSuccess) {
+        this.set.id = result.result.id;
+        this.toasterService.showSuccessToast('Set has been saved!');
+      }
+    });
+  }
+
+  public getSetDescription(): string {
+    return this.setFormGroup?.controls['setDescription']?.value ?? '';
+  }
+
+  public onChangeSetName(): void {
+    this.changeSetName = !this.changeSetName;
   }
 
   private assembleCardRows(): void {
@@ -68,7 +112,7 @@ export class CardSetComponent implements OnInit {
     let counter = 0;
     let cardRow = [];
     this.entireCardList.forEach(x => {
-      if (counter == 5) {
+      if (counter == this.cardsPerRow) {
         this.cardRows.push(cardRow);
         cardRow = [];
         counter = 0;
@@ -77,9 +121,7 @@ export class CardSetComponent implements OnInit {
       counter++;
     });
 
-    if (this.set.cards.length % 5 != 0) {
-      this.cardRows.push(cardRow);
-    }
+    this.cardRows.push(cardRow);
   }
 
   private dissembleCardRows(): void {
@@ -91,20 +133,6 @@ export class CardSetComponent implements OnInit {
     });
     this.entireCardList = allCards;
   }
-
-  // not used currently. might not need it.
-  // createImageFromBlob(card: ICardDto, image: Blob) {
-  //   let reader = new FileReader();
-  //   reader.addEventListener("load", () => {
-  //     card.thumbnail = reader.result;
-  //   }, false);
-
-  //   if (image) {
-  //     reader.readAsDataURL(image);
-  //   }
-  // }
-
-
 
   public drop(event: CdkDragDrop<ICardDto[]>) {
     if (event.previousContainer === event.container) {
@@ -118,13 +146,6 @@ export class CardSetComponent implements OnInit {
       );
       this.dissembleCardRows();
       this.assembleCardRows();
-      //console.log(this.cardRows);
-      // transferArrayItem(
-      //   event.container.data,
-      //   event.previousContainer.data,
-      //   event.currentIndex + 1,
-      //   event.previousIndex
-      // );
     }
   }
 

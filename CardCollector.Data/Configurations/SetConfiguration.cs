@@ -12,6 +12,7 @@ namespace CardCollector.Data.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.SetDescription).IsRequired();
             builder.Property(x => x.SetCreatedByUserId).IsRequired();
+            builder.Property(x => x.DefaultSet).HasDefaultValue(false).IsRequired();
             builder.HasQueryFilter(x => x.IsActive);
         }
     }

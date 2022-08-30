@@ -31,3 +31,12 @@ export const enum ToastPositions {
   TopRight = 'toast-top-right',
   TopFullWidth = 'toast-top-full-width'
 }
+
+export enum SCREEN_SIZE {
+  XS,
+  SM,
+  MD,
+  LG,
+  XL,
+  XXL
+}
