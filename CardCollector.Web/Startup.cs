@@ -1,18 +1,12 @@
-using CardCollector.Data.Configurations;
+using CardCollector.Business;
 using CardCollector.Data;
-using Microsoft.AspNetCore.Authentication;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MediatR;
-using CardCollector.Business;
-using CardCollector.Business.Abstractions;
-using CardCollector.Business.Services;
-using System.Reflection;
 
 namespace CardCollector.Web
 {
