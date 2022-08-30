@@ -7,7 +7,6 @@ import { CardService, ToastService } from '@core/services';
 import { ResizeService } from '@core/services/resize.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchCardModalComponent } from '../search-card/search-card-modal/search-card-modal.component';
-import { SearchCardComponent } from '../search-card/search-card.component';
 
 @Component({
   selector: 'app-card-set',
@@ -103,7 +102,9 @@ export class CardSetComponent implements OnInit {
 
     this.cardService.saveCardSet(setRequest).subscribe(result => {
       if (result.isSuccess) {
+        this.setId = result.result.id;
         this.set.id = result.result.id;
+        this.ngOnInit();
         this.toasterService.showSuccessToast('Set has been saved!');
       }
     });
