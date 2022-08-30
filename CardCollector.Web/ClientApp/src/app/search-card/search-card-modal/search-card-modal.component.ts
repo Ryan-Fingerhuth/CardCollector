@@ -7,13 +7,10 @@ import { SearchCardComponent } from '../search-card.component';
   templateUrl: './search-card-modal.component.html',
   styleUrls: ['./search-card-modal.component.css']
 })
-export class SearchCardModalComponent implements OnInit {
+export class SearchCardModalComponent {
   @ViewChild('searchCard') searchCardComponent: SearchCardComponent;
 
   constructor(public activeModal: NgbActiveModal) { }
-
-  ngOnInit(): void {
-  }
 
   public onAddCards(): void {
     const selectedCards = this.searchCardComponent.getSelectedCards();

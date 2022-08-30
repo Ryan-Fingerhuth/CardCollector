@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { LoaderState } from '../models/common.models';
@@ -9,17 +9,13 @@ import { BusyOverLayService } from '../services/busy-overlay.service';
   templateUrl: './busy-overlay.component.html',
   styleUrls: ['./busy-overlay.component.css']
 })
-export class BusyOverlayComponent implements OnInit, OnDestroy {
+export class BusyOverlayComponent implements OnDestroy {
   public showObservable$: Observable<boolean>;
   private loaderState: LoaderState;
   private subscription: Subscription;
-  
 
   constructor(private busyOverlayService: BusyOverLayService) {
     this.showObservable$ = this.busyOverlayService.loaderStateObservable.pipe(delay(200), map(x => x.displayLoader));
-   }
-
-  ngOnInit() {
   }
 
   ngOnDestroy() {

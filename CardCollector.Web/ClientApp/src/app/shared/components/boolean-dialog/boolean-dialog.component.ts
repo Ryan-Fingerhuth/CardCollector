@@ -7,7 +7,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './boolean-dialog.component.html',
   styleUrls: ['./boolean-dialog.component.css']
 })
-export class BooleanDialogComponent implements OnInit {
+export class BooleanDialogComponent {
   public properties: IBooleanDialogProperties;
 
   constructor(public activeModal: NgbActiveModal) {
@@ -19,10 +19,7 @@ export class BooleanDialogComponent implements OnInit {
       cancelText: 'Cancel',
       headerCss: '',
       okCss: ''
-    }
-  }
-
-  ngOnInit() {
+    };
   }
 
   public configureFor(dialogType: 'Danger' | 'Info' | 'Warn' | 'Success' | 'Primary' | 'Secondary') {
@@ -31,14 +28,17 @@ export class BooleanDialogComponent implements OnInit {
         this.properties.header = 'Danger';
         this.properties.headerCss = 'bg-modal-danger';
         this.properties.okCss = 'btn-danger';
+        break;
       case 'Warn':
         this.properties.header = 'Warning';
         this.properties.headerCss = '';
         this.properties.okCss = 'btn-warning';
+        break;
       case 'Success':
         this.properties.header = 'Success';
         this.properties.headerCss = '';
         this.properties.okCss = 'btn-success';
+        break;
       case 'Info':
         this.properties.header = 'Info';
         this.properties.headerCss = '';
