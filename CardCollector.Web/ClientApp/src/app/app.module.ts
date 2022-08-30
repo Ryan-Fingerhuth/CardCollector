@@ -21,6 +21,7 @@ import { CoreModule } from '@core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms'
 import { SizeDetectorComponent } from './size-detector/size-detector.component';
+import { SearchCardModalComponent } from './search-card/search-card-modal/search-card-modal.component';
 
 //import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -34,7 +35,8 @@ import { SizeDetectorComponent } from './size-detector/size-detector.component';
     CreateCardComponent,
     CardSetComponent,
     SearchCardComponent,
-    SizeDetectorComponent
+    SizeDetectorComponent,
+    SearchCardModalComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

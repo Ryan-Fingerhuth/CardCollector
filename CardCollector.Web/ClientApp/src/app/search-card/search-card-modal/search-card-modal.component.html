@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <span class="h5 modal-title">Add Cards</span>
+  <button type="button" class="btn-close" (click)="activeModal.close(false)" aria-label="close"></button>
+</div>
+<div class="modal-body">
+  <app-search-card #searchCard [isSelectable]="true"></app-search-card>
+</div>
+<div class="modal-footer">
+  <button type="button" (click)="activeModal.close(false)" class="btn btn-secondary">Cancel</button>
+  <button type="button" (click)="onAddCards()" [disabled]="false" ngbAutofocus class="btn btn-success">Add Cards</button>
+</div>

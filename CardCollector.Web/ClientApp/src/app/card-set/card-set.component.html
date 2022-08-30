@@ -23,7 +23,9 @@
       </div>
     </div>
     <div class="col-2" *ngIf="editMode">
+      <button class="btn btn-primary" (click)="onAddCards()">Add Cards</button>
       <button class="btn btn-success float-end" [disabled]="setFormGroup.invalid" (click)="saveSetInformation()">Save</button>
+
     </div>
   </div>
 

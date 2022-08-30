@@ -23,6 +23,7 @@ namespace CardCollector.Library.Dtos
     {
         public byte[] ImageData { get; set; }
         public List<string> Tags { get; set; } = new List<string>();
+        public int SetOrder { get; set; }
     }
 
     public static class CardExtensions

@@ -14,6 +14,8 @@ export interface ICardDto {
   image: Blob;
   thumbnail: string | ArrayBuffer;
   imageFilePath: string;
+
+  selected: boolean; //front-end only
 }
 
 export interface ICardTag {

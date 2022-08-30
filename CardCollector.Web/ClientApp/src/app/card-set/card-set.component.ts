@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ICardDto, ISet, SCREEN_SIZE } from '@core/models';
 import { CardService, ToastService } from '@core/services';
 import { ResizeService } from '@core/services/resize.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SearchCardModalComponent } from '../search-card/search-card-modal/search-card-modal.component';
 
 @Component({
   selector: 'app-card-set',
@@ -26,7 +28,7 @@ export class CardSetComponent implements OnInit {
   public changeSetName: boolean = false;
   public editMode: boolean = true;
 
-  public entireCardList: ICardDto[];
+  public entireCardList: ICardDto[] = [];
   public cardRows: ICardDto[][];
 
   size: SCREEN_SIZE;
@@ -34,9 +36,10 @@ export class CardSetComponent implements OnInit {
 
   constructor(
     public cardService: CardService,
+    private readonly modalService: NgbModal,
     private readonly formBuilder: FormBuilder,
     private readonly route: ActivatedRoute,
-    private resizeService: ResizeService,
+    private readonly resizeService: ResizeService,
     private readonly toasterService: ToastService) {
       this.resizeService.onResize$.subscribe(x => {
         this.size = x;
@@ -64,18 +67,24 @@ export class CardSetComponent implements OnInit {
       });
     }
 
-    this.cardService.getSet(this.setId).subscribe(result => {
-      if (result.isSuccess) {
-        this.set = result.result;
-        this.entireCardList = this.set.cards;
-
-        this.setFormGroup = this.formBuilder.group({
-          setDescription: [this.set.setDescription, [Validators.required]]
-        });
-
-        this.assembleCardRows();
-      }
+    this.setFormGroup = this.formBuilder.group({
+      setDescription: ['', [Validators.required]]
     });
+
+    if (this.setId > 0) {
+      this.cardService.getSet(this.setId).subscribe(result => {
+        if (result.isSuccess) {
+          this.set = result.result;
+          this.entireCardList = this.set.cards;
+  
+          this.setFormGroup.patchValue({ setDescription: this.set.setDescription });
+  
+          this.assembleCardRows();
+        }
+      });
+    } else {
+      this.changeSetName = true;
+    }
   }
 
   public saveSetInformation(): void {
@@ -93,7 +102,9 @@ export class CardSetComponent implements OnInit {
 
     this.cardService.saveCardSet(setRequest).subscribe(result => {
       if (result.isSuccess) {
+        this.setId = result.result.id;
         this.set.id = result.result.id;
+        this.ngOnInit();
         this.toasterService.showSuccessToast('Set has been saved!');
       }
     });
@@ -147,6 +158,18 @@ export class CardSetComponent implements OnInit {
       this.dissembleCardRows();
       this.assembleCardRows();
     }
+  }
+
+  public onAddCards(): void {
+    const modal = this.modalService.open(SearchCardModalComponent, { size: 'lg', windowClass: 'modal-xxl' });
+    modal.componentInstance.isSelectable = true;
+    modal.result.then(result => {
+      if (result && result.length > 0) {
+        this.entireCardList.unshift(...result);
+        this.assembleCardRows();
+        this.toasterService.showSuccessToast('Cards Added!');
+      }
+    });
   }
 
 }

@@ -1,63 +1,40 @@
 <div class="container my-3">
-    <div class="row">
-        <div class="col">
-            <h2>Search for Card</h2>
-            <hr>
+  <div class="row mb-3">
+    <h3>Search for Cards</h3>
+    <div class="container-fluid">
+      <form *ngIf="searchForm" [formGroup]="searchForm">
+        <div class="input-group input-group-lg">
+          <input id="cardName" formControlName="cardName" placeholder="Card Name" type="text"
+            class="form-control form-control-sm" [(ngModel)]="model" [ngbTypeahead]="typeAheadSearch"
+            [resultFormatter]="resultFormatCardListValue" [inputFormatter]="inputFormatCardListValue">
+          <button class="btn btn-sm btn-success" [disabled]="searchForm.invalid" (click)="search()">Search
+            Card</button>
         </div>
+      </form>
     </div>
-    
-    <div class="row">
-        <div class="col">
-            <div class="container-fluid">
-                <form *ngIf="searchForm" [formGroup]="searchForm">
-                    <div class="form-group">
-                        <label for="cardName"> Card Name</label>
-                        <input id = "cardName" 
-                            formControlName = "cardName" 
-                            type = "text" 
-                            class = "form-control form-control-sm" 
-                            [(ngModel)] = "model"
-                            [ngbTypeahead] = "typeAheadSearch" 
-                            [resultFormatter] = "resultFormatCardListValue" 
-                            [inputFormatter] = "inputFormatCardListValue">
-                    </div>
+  </div>
 
-                    <button class="btn btn-sm btn-success" [disabled]="searchForm.invalid" (click)="search()">Search Card</button>
-          
-                </form>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<div class="container-fluid" *ngIf = "busy && searchResults.length > 0">
-    <div class="row">
-        <div class="col">
-            <h2> Results: </h2>
-            <hr>
+  <div class="row" *ngIf="searchResults.length > 0">
+    <h4>Search Results:</h4>
+    <div class="col-12">
+      <div class="row card-list">
+        <div class="col-2 card-box" (click)="onSelectCard(s)" *ngFor="let s of searchResults">
+          <div class="vstack gap-1">
             
-            <a class="card" role="button" style="text-decoration: none; color: inherit"
-                *ngFor= "let s of searchResults">
-                <!-- (click)="dothing(card = s)" -->
-                <div class="col">
-                    
-                        <div>
-                            <div class="card-name"> {{  s.cardName  }} </div>
-                            <div class="card-name"> {{  (s.originalSet ? 'Set: ' + s.originalSet : '') }} </div>
-                            <img [src] = "getCardImageUrl(s.thumbnailImageGuid, true)" class = "card-image" />
-                            
-                            <!-- <div class="album-artist">by <b>{{album.Artist.ArtistName}}</b> {{(album.Year ? 'in ' + album.Year : '')}}</div> -->
-                            <div class="card-descript"> {{  s.cardDescription  }} </div>
-                            <!-- <div class="card-descript">  {{  (s.originalSet ? 'Set: ' + s.originalSet : '') }} </div> -->
-                           
-                        </div>
-                    
-                </div>
-            </a>
+            <div *ngIf="s.selected" class="card-selected">
+              <i class="pi pi-check-square"></i>
+              <label>&nbsp;Selected</label>
+            </div>
+            <img [src]="getCardImageUrl(s.thumbnailImageGuid, true)" class="image-thumbnail">
+            <div class="card-info">
+              {{s.cardName}}
+            </div>
+            <div class="card-info">
+              {{s.originalSetName}} - ({{s.yearReleased}})
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
-
