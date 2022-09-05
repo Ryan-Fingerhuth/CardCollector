@@ -3,7 +3,6 @@ using CardCollector.Library.Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -56,25 +55,13 @@ namespace CardCollector.Business.Queries
                     SetOrder = x.Order
                 }).OrderBy(y => y.SetOrder).ToList();
 
-                //var cards = setCards.Select(x => x.Card).ToList();
-
-                //var cardDtos = new List<CardDto>();
-
-                //foreach(var card in cards)
-                //{
-                //    cardDtos.Add(card.ConvertBaseToDto());
-                //    card.SetCards = new List<SetCard>();
-                //}
-
                 setDto.Cards = cardDtos;
-
                 result.Result = setDto;
-
                 return result;
             }
             catch (Exception ex)
             {
-                result.Errors.Add("Error");
+                result.Errors.Add(ex.Message);
                 return result;
             }
         }

@@ -1,7 +1,7 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ICardDto, ISet, SCREEN_SIZE } from '@core/models';
 import { CardService, ToastService } from '@core/services';
 import { ResizeService } from '@core/services/resize.service';
@@ -31,29 +31,30 @@ export class CardSetComponent implements OnInit {
   public entireCardList: ICardDto[] = [];
   public cardRows: ICardDto[][];
 
-  size: SCREEN_SIZE;
-  cardsPerRow: number = 7;
+  private size: SCREEN_SIZE;
+  private cardsPerRow: number = 7;
 
   constructor(
     public cardService: CardService,
     private readonly modalService: NgbModal,
     private readonly formBuilder: FormBuilder,
-    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly activeRoute: ActivatedRoute,
     private readonly resizeService: ResizeService,
     private readonly toasterService: ToastService) {
       this.resizeService.onResize$.subscribe(x => {
         this.size = x;
-        if (this.size == SCREEN_SIZE.XS) {
+        if (this.size === SCREEN_SIZE.XS) {
           this.cardsPerRow = 2;
-        } else if (this.size == SCREEN_SIZE.SM) {
+        } else if (this.size === SCREEN_SIZE.SM) {
           this.cardsPerRow = 3;
-        } else if (this.size == SCREEN_SIZE.MD) {
+        } else if (this.size === SCREEN_SIZE.MD) {
           this.cardsPerRow = 4;
-        } else if (this.size == SCREEN_SIZE.LG) {
+        } else if (this.size === SCREEN_SIZE.LG) {
           this.cardsPerRow = 5;
-        } else if (this.size == SCREEN_SIZE.XL) {
+        } else if (this.size === SCREEN_SIZE.XL) {
           this.cardsPerRow = 6;
-        } else if (this.size == SCREEN_SIZE.XXL) {
+        } else if (this.size === SCREEN_SIZE.XXL) {
           this.cardsPerRow = 7;
         }
         this.assembleCardRows();
@@ -62,7 +63,7 @@ export class CardSetComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.setId) {
-      this.route.paramMap.subscribe(params => {
+      this.activeRoute.paramMap.subscribe(params => {
         this.setId = +params.get('id');
       });
     }
@@ -76,9 +77,7 @@ export class CardSetComponent implements OnInit {
         if (result.isSuccess) {
           this.set = result.result;
           this.entireCardList = this.set.cards;
-  
           this.setFormGroup.patchValue({ setDescription: this.set.setDescription });
-  
           this.assembleCardRows();
         }
       });
@@ -102,6 +101,9 @@ export class CardSetComponent implements OnInit {
 
     this.cardService.saveCardSet(setRequest).subscribe(result => {
       if (result.isSuccess) {
+        if (this.setId === 0) {
+          this.router.navigate([`set/${result.result.id}`]);
+        }
         this.setId = result.result.id;
         this.set.id = result.result.id;
         this.ngOnInit();
@@ -123,7 +125,7 @@ export class CardSetComponent implements OnInit {
     let counter = 0;
     let cardRow = [];
     this.entireCardList.forEach(x => {
-      if (counter == this.cardsPerRow) {
+      if (counter === this.cardsPerRow) {
         this.cardRows.push(cardRow);
         cardRow = [];
         counter = 0;
@@ -136,7 +138,11 @@ export class CardSetComponent implements OnInit {
   }
 
   private dissembleCardRows(): void {
-    let allCards = [];
+    const allCards = [];
+    if (!this.cardRows) {
+      return;
+    }
+
     this.cardRows.forEach(row => {
       row.forEach(card => {
         allCards.push(card);

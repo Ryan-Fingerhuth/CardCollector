@@ -1,4 +1,3 @@
-import { ThisReceiver } from '@angular/compiler';
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ISearchDto, ICardDto } from '@core/models';
@@ -37,8 +36,7 @@ export class SearchCardComponent implements OnInit {
       distinctUntilChanged(),
       switchMap((term) => term.length < 1 ? [] : this.cardService.cardLookUp(term)),
       catchError(error => {
-        console.log('error')
-        throw new Error(error)
+        throw new Error(error);
       })
     );
   }
@@ -57,7 +55,7 @@ export class SearchCardComponent implements OnInit {
     }
     const request: ISearchDto = {
       ...this.searchForm.getRawValue()
-    }
+    };
 
     this.cardService.searchCard(request).subscribe(x => {
       if (x.isSuccess) {

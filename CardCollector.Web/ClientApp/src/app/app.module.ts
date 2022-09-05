@@ -19,6 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { SizeDetectorComponent } from './size-detector/size-detector.component';
 import { SearchCardModalComponent } from './search-card/search-card-modal/search-card-modal.component';
+import { SetListComponent } from './set-list/set-list.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { SearchCardModalComponent } from './search-card/search-card-modal/search
     CardSetComponent,
     SearchCardComponent,
     SizeDetectorComponent,
-    SearchCardModalComponent
+    SearchCardModalComponent,
+    SetListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

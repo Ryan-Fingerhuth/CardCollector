@@ -38,5 +38,13 @@ namespace CardCollector.Web.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("api/query/getSets")]
+        public async Task<IActionResult> GetSets()
+        {
+            var result = await Mediator.Send(new GetSetsQuery());
+            return Ok(result);
+        }
+
     }
 }

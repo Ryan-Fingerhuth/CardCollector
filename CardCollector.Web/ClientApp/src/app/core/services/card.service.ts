@@ -20,10 +20,10 @@ export class CardService {
 
     return this.apiService.post('api/card/createCard', formData);
   }
-  
+
   public searchCard(request: ISearchDto): Observable<IApiResponse<any>> {
     return this.apiService.get(`api/query/searchCard/${encodeURI(request.cardName)}`);
-  } 
+  }
 
   public cardLookUp(request: string): Observable<any> {
     return this.apiService.get(`api/query/cardLookUp/${encodeURI(request)}`);
@@ -31,6 +31,14 @@ export class CardService {
 
   public getSet(setId: number): Observable<IApiResponse<ISet>> {
     return this.apiService.get(`api/query/getSet/${setId}`);
+  }
+
+  public getSets(): Observable<IApiResponse<ISet[]>> {
+    return this.apiService.get(`api/query/getSets`);
+  }
+
+  public deleteSet(setId: number): Observable<IApiResponse<boolean>> {
+    return this.apiService.delete(`api/set/delete/${setId}`);
   }
 
   public getImage(imageGuid: string, getThumbnail: boolean) {

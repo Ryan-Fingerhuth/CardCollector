@@ -14,7 +14,7 @@ export class BooleanDialogComponent {
     this.properties = {
       dialogType: 'Info',
       header: 'Confirm',
-      message: 'Are you sure?',
+      message: 'Are you sure you?',
       okText: 'Confirm',
       cancelText: 'Cancel',
       headerCss: '',

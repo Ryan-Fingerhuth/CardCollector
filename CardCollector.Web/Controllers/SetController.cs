@@ -20,5 +20,13 @@ namespace CardCollector.Web.Controllers
             var result = await Mediator.Send(new SaveCardSetCommand(cardSet));
             return Ok(result);
         }
+
+        [HttpDelete]
+        [Route("api/set/delete/{setId}")]
+        public async Task<IActionResult> DeleteCardSet(int setId)
+        {
+            var result = await Mediator.Send(new DeleteSetCommand(setId));
+            return Ok(result);
+        }
     }
 }

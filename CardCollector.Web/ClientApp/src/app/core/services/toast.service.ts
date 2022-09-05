@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
-import { ToastrService } from "ngx-toastr";
-import { ToastPositions } from "../models";
+import { Injectable } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { ToastPositions } from '../models';
 
 @Injectable()
 export class ToastService {
