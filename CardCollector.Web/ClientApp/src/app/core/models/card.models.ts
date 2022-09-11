@@ -15,7 +15,7 @@ export interface ICardDto {
   thumbnail: string | ArrayBuffer;
   imageFilePath: string;
 
-  selected: boolean; //front-end only
+  selected: boolean; // front-end only
 }
 
 export interface ICardTag {
@@ -31,6 +31,7 @@ export interface ISet {
   id: number;
   setDescription: string;
   cards: ICardDto[];
+  defaultSet: boolean;
 }
 
 export interface ISearchDto {

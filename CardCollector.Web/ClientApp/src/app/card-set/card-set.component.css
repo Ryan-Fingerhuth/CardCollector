@@ -1,3 +1,17 @@
+.set-title {
+  display: inline-block;
+}
+
+.default-set-label {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  line-height: 1.5;
+  font-weight: 400;
+  border-width: 1px;
+  display: inline-block;
+}
+
 .example-container {
   max-width: 100%;
   margin: 0 25px 25px 0;
@@ -24,10 +38,18 @@
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  cursor: move;
+  /* cursor: move; */
   background: white;
   font-size: 14px;
   flex-basis: 0;
+}
+
+.cursor-move {
+  cursor: move;
+}
+
+.cursor-default {
+  cursor: default;
 }
 
 .cdk-drag-preview {

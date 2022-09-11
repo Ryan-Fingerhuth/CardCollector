@@ -28,5 +28,14 @@ namespace CardCollector.Web.Controllers
             var result = await Mediator.Send(new DeleteSetCommand(setId));
             return Ok(result);
         }
+
+
+        [HttpGet]
+        [Route("api/set/clone/{setId}")]
+        public async Task<IActionResult> ClonseCardSet(int setId)
+        {
+            var result = await Mediator.Send(new CloneSetCommand(setId));
+            return Ok(result);
+        }
     }
 }

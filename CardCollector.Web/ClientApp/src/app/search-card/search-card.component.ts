@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ISearchDto, ICardDto } from '@core/models';
 import { CardService } from '@core/services';
@@ -59,7 +59,6 @@ export class SearchCardComponent implements OnInit {
 
     this.cardService.searchCard(request).subscribe(x => {
       if (x.isSuccess) {
-        this.toastService.showInfoToast('Card(s) found.');
         this.results = x.result;
       } else {
         this.toastService.showDangerToast('Failed to find card(s).');

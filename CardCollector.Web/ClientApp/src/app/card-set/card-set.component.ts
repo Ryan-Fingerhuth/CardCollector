@@ -18,7 +18,8 @@ export class CardSetComponent implements OnInit {
   public set: ISet = {
     id: 0,
     setDescription: '',
-    cards: []
+    cards: [],
+    defaultSet: false
   };
 
   public setFormGroup = new FormGroup({
@@ -76,6 +77,7 @@ export class CardSetComponent implements OnInit {
       this.cardService.getSet(this.setId).subscribe(result => {
         if (result.isSuccess) {
           this.set = result.result;
+          this.editMode = !this.set.defaultSet;
           this.entireCardList = this.set.cards;
           this.setFormGroup.patchValue({ setDescription: this.set.setDescription });
           this.assembleCardRows();

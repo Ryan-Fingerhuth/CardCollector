@@ -19,6 +19,22 @@ namespace CardCollector.Library.Dtos
 
     public static class SetExtensions
     {
+        public static Set ConvertBaseToNewBase(this Set set)
+        {
+            var newSet = new Set
+            {
+                Id = set.Id,
+                SetDescription = set.SetDescription,
+                SetCreatedByUserId = set.SetCreatedByUserId,
+                DefaultSet = set.DefaultSet,
+                IsActive = set.IsActive,
+                DateCreated = set.DateCreated,
+                DateModified = set.DateModified
+            };
+
+            return newSet;
+        }
+
         public static SetDto ConvertBaseToDto(this Set set)
         {
             var setDto = new SetDto
@@ -26,6 +42,7 @@ namespace CardCollector.Library.Dtos
                 Id = set.Id,
                 SetDescription = set.SetDescription,
                 SetCreatedByUserId = set.SetCreatedByUserId,
+                DefaultSet = set.DefaultSet,
                 Cards = new List<CardDto>()
             };
 

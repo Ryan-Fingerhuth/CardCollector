@@ -14,11 +14,13 @@
         <div class="card-body">
           <div class="row">
             <div class="col">
-              <h5 class="card-title">{{ set.setDescription }}</h5>
+              <h5 class="card-title set-title">{{ set.setDescription }}</h5>
+              <div *ngIf="set.defaultSet" class="text-bg-info default-set-label ms-4">Default Set</div>
             </div>
             <div class="col-auto">
-              <button class="btn btn-sm btn-primary me-1" (click)="onViewSet(set.id)">View</button>
-              <button class="btn btn-sm btn-danger ms-1" (click)="onDeleteSet(set.id)">Delete</button>
+              <button *ngIf="!set.defaultSet" class="btn btn-sm btn-danger me-1" (click)="onDeleteSet(set.id)">Delete Set</button>
+              <button class="btn btn-sm btn-warning ms-1 me-1" (click)="onCloneSet(set.id)">Clone Set</button>
+              <button class="btn btn-sm btn-primary ms-1" (click)="onViewSet(set.id)">View Set</button>
             </div>
           </div>
         </div>

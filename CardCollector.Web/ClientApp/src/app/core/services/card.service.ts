@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { ICardDto, ISet, ISearchDto } from "../models";
-import { IApiResponse } from "../models/common.models";
-import { ApiService } from "./api.service";
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ICardDto, ISet, ISearchDto } from '../models';
+import { IApiResponse } from '../models/common.models';
+import { ApiService } from './api.service';
 
 @Injectable()
 export class CardService {
@@ -39,6 +39,10 @@ export class CardService {
 
   public deleteSet(setId: number): Observable<IApiResponse<boolean>> {
     return this.apiService.delete(`api/set/delete/${setId}`);
+  }
+
+  public cloneSet(setId: number): Observable<IApiResponse<boolean>> {
+    return this.apiService.get(`api/set/clone/${setId}`);
   }
 
   public getImage(imageGuid: string, getThumbnail: boolean) {

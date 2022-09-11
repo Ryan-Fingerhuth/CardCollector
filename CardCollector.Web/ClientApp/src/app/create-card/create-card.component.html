@@ -9,38 +9,37 @@
     <div class="col">
       <div class="container-fluid">
         <form *ngIf="cardForm" [formGroup]="cardForm">
-          <div class="form-group">
-
+          <div class="form-group mb-3">
             <label for="cardName">Card Name <span class="h3 text-danger"><strong>*</strong></span></label>
             <input id="cardName" formControlName="cardName" type="text" class="form-control">
           </div>
 
-          <div class="form-group">
+          <div class="form-group mb-3">
             <label for="cardDescription">Card Description</label>
             <input id="cardDescription" formControlName="cardDescription" type="text" class="form-control">
           </div>
 
-          <div class="form-group">
+          <div class="form-group mb-3">
             <label for="originalSet">Original Set <span class="h3 text-danger"><strong>*</strong></span></label>
             <input id="originalSet" formControlName="originalSet" type="text" class="form-control">
           </div>
 
-          <div class="form-group">
+          <div class="form-group mb-3">
             <label for="cardYear">Year Released <span class="h3 text-danger"><strong>*</strong></span></label>
             <input id="cardYear" formControlName="cardYear" type="number" class="form-control">
           </div>
 
-          <div class="form-group">
+          <div class="form-group mb-3">
             <label for="numberInSet">Number In Set <span class="h3 text-danger"><strong>*</strong></span></label>
             <input id="numberInSet" formControlName="numberInSet" type="number" class="form-control">
           </div>
 
-          <div class="form-group col-6">
+          <div class="form-group col-6 mb-3">
             <label for="cardImageName">Card Image <span class="h3 text-danger"><strong>*</strong></span> (Dimensions 570x800 or larger preferred)</label>
             <input id="cardImageName" formControlName="cardImageName" type="file" accept="image/*" class="form-control-file" (change)="onFileChange($event)">
           </div>
 
-          <button class="btn btn-success float-right" [disabled]="cardForm.invalid" (click)="onSave()">Create Card</button>
+          <button class="btn btn-success" [disabled]="cardForm.invalid" (click)="onSave()">Create Card</button>
         </form>
       </div>
     </div>

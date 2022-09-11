@@ -1,9 +1,10 @@
 <form [formGroup]="setFormGroup">
   <div class="row mb-3">
-    <div class="col-10">
+    <div class="col">
       <div *ngIf="!changeSetName" class="row">
         <div class="col-auto">
-          <h4>{{ getSetDescription() }}</h4>
+          <h4 class="set-title">{{ getSetDescription() }}</h4>
+          <div *ngIf="set.defaultSet" class="text-bg-info default-set-label ms-4">Default Set</div>
         </div>
         <div class="col-auto" *ngIf="editMode">
           <i class="pi pi-pencil pi-md mb-2 vertical-center-icons" placement="top" ngbTooltip="Edit"
@@ -22,9 +23,9 @@
         </div>
       </div>
     </div>
-    <div class="col-2" *ngIf="editMode">
-      <button class="btn btn-primary" (click)="onAddCards()">Add Cards</button>
-      <button class="btn btn-success float-end" [disabled]="setFormGroup.invalid" (click)="saveSetInformation()">Save</button>
+    <div class="col-auto" *ngIf="editMode">
+      <button class="btn btn-primary me-1" (click)="onAddCards()">Add Cards</button>
+      <button class="btn btn-success ms-1" [disabled]="setFormGroup.invalid" (click)="saveSetInformation()">Save</button>
     </div>
   </div>
 
@@ -33,9 +34,9 @@
       <div class="example-container">
         <div cdkDropListGroup>
           <ng-container *ngFor="let cardRow of cardRows; let i = index">
-            <div cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="cardRow" class="example-list"
-              cdkDragStarted (cdkDropListDropped)="drop($event)">
-              <div cdkDrag class="example-box" *ngFor="let card of cardRow" [cdkDragData]="card">
+            <div cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="cardRow" [cdkDropListDisabled]="!editMode" 
+                  class="example-list" cdkDragStarted (cdkDropListDropped)="drop($event)">
+              <div cdkDrag class="example-box" [ngClass]="editMode ? 'cursor-move' : 'cursor-default'" *ngFor="let card of cardRow" [cdkDragData]="card">
                 <div class="vstack gap-1">
                   <img [src]="cardService.getImage(card.thumbnailImageGuid, true)" class="image-thumbnail">
                   <div class="card-info">

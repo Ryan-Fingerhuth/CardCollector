@@ -31,12 +31,35 @@ export class SetListComponent implements OnInit {
     this.router.navigate([`set/0`]);
   }
 
+  public onCloneSet(setId: number): void {
+    if (!setId) {
+      return;
+    }
+
+    const modal = this.modalService.open(BooleanDialogComponent);
+    modal.componentInstance.configureFor('Warn');
+    modal.componentInstance.properties.message = 'Are you sure you want to clone this set?';
+    modal.componentInstance.properties.okText = 'Clone';
+    modal.result.then(outcome => {
+      if (outcome) {
+        this.cardService.cloneSet(setId).subscribe(result => {
+          if (result.isSuccess) {
+            this.ngOnInit();
+            this.toastService.showSuccessToast('Set Cloned!');
+          } else {
+            this.toastService.showDangerToast(result.errors[0]);
+          }
+        });
+      }
+    });
+  }
+
   public onViewSet(setId: number): void {
     this.router.navigate([`set/${setId}`]);
   }
 
   public onDeleteSet(setId: number): void {
-    if(!setId) {
+    if (!setId) {
       return;
     }
     const modal = this.modalService.open(BooleanDialogComponent);

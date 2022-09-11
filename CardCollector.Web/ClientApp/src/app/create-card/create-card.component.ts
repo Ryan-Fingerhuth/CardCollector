@@ -41,14 +41,14 @@ export class CreateCardComponent implements OnInit {
     }
     // Current have to set these properties to use capital letters for some reason.
     const request: any = {
-      Id: this.cardForm.controls["id"].value,
-      CardName: this.cardForm.controls["cardName"].value,
-      CardDescription: this.cardForm.controls["cardDescription"].value,
-      OriginalSetName: this.cardForm.controls["originalSet"].value,
-      YearReleased: this.cardForm.controls["cardYear"].value,
-      NumberInSet: this.cardForm.controls["numberInSet"].value
+      Id: this.cardForm.controls['id'].value,
+      CardName: this.cardForm.controls['cardName'].value,
+      CardDescription: this.cardForm.controls['cardDescription'].value,
+      OriginalSetName: this.cardForm.controls['originalSet'].value,
+      YearReleased: this.cardForm.controls['cardYear'].value,
+      NumberInSet: this.cardForm.controls['numberInSet'].value
     };
-    const imageFile = this.cardForm.controls["image"].value;
+    const imageFile = this.cardForm.controls['image'].value;
     if (!imageFile) {
       this.toastService.showDangerToast('Image not selected.');
       return;
