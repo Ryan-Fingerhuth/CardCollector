@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import "./assets/loader-style.css";
+@import '~primeicons/primeicons.css';
 
 /* Provide sufficient contrast against white background */
 a {
@@ -13,4 +15,36 @@ code {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Primeng Icon Sizes */
+.pi {
+  cursor: pointer;
+}
+
+.pi-md {
+  font-size: 1.25rem;
+}
+
+.pi-lg {
+  font-size: 1.5rem;
+}
+
+.pi-xlg {
+  font-size: 2rem;
+}
+
+/* ngx-toastr override css */
+.toast-title {
+  font-weight: normal !important;
+}
+.toast-close-button {
+  font-weight: normal !important;
+}
+
+.modal-xxl .modal-lg {
+  min-width: 1200px;
 }

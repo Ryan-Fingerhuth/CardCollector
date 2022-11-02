@@ -1,0 +1,90 @@
+.set-title {
+  display: inline-block;
+}
+
+.default-set-label {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  line-height: 1.5;
+  font-weight: 400;
+  border-width: 1px;
+  display: inline-block;
+}
+
+.example-container {
+  max-width: 100%;
+  margin: 0 25px 25px 0;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.example-list {
+  max-width: 100%;
+  border: solid 1px #ccc;
+  min-height: 60px;
+  display: flex;
+  flex-direction: row;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.example-box {
+  padding: 10px 10px;
+  border: solid 1.5px #000000;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  /* cursor: move; */
+  background: white;
+  font-size: 14px;
+  flex-basis: 0;
+}
+
+.cursor-move {
+  cursor: move;
+}
+
+.cursor-default {
+  cursor: default;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.image-thumbnail {
+  max-width: 150px;
+  max-height: 350px;
+}
+
+.card-info {
+  background-color: #000000;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 500;
+}
+
+.vertical-center-icons {
+  margin-top: 0.4rem;
+}
+

@@ -1,0 +1,13 @@
+.default-set-label {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  line-height: 1.5;
+  font-weight: 400;
+  border-width: 1px;
+  display: inline-block;
+}
+
+.set-title {
+  display: inline-block;
+}

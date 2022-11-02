@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31829.152
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardCollector.Web", "CardCollector.Web\CardCollector.Web.csproj", "{00CF76EA-E164-4C47-A4A1-E55A3A831413}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardCollector.Web", "CardCollector.Web\CardCollector.Web.csproj", "{00CF76EA-E164-4C47-A4A1-E55A3A831413}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardCollector.Data", "CardCollector.Data\CardCollector.Data.csproj", "{A7034604-B6AF-4512-AAB9-A1DBE3EBD41B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardCollector.Library", "CardCollector.Library\CardCollector.Library.csproj", "{056B260C-FF8C-493A-8F30-BA0EAAD330F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardCollector.Business", "CardCollector.Business\CardCollector.Business.csproj", "{0CEECF51-63DA-45D4-9643-CB748E374F0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{00CF76EA-E164-4C47-A4A1-E55A3A831413}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00CF76EA-E164-4C47-A4A1-E55A3A831413}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00CF76EA-E164-4C47-A4A1-E55A3A831413}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7034604-B6AF-4512-AAB9-A1DBE3EBD41B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7034604-B6AF-4512-AAB9-A1DBE3EBD41B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7034604-B6AF-4512-AAB9-A1DBE3EBD41B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7034604-B6AF-4512-AAB9-A1DBE3EBD41B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{056B260C-FF8C-493A-8F30-BA0EAAD330F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{056B260C-FF8C-493A-8F30-BA0EAAD330F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{056B260C-FF8C-493A-8F30-BA0EAAD330F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{056B260C-FF8C-493A-8F30-BA0EAAD330F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CEECF51-63DA-45D4-9643-CB748E374F0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CEECF51-63DA-45D4-9643-CB748E374F0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CEECF51-63DA-45D4-9643-CB748E374F0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CEECF51-63DA-45D4-9643-CB748E374F0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

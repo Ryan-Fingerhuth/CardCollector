@@ -1,0 +1,15 @@
+<div class="modal-header" [class]="properties.headerCss">
+  <h4 class="modal-title">{{properties.header}}</h4>
+  <button type="button" class="btn-close" (click)="activeModal.close(false)" aria-label="close"></button>
+</div>
+<div class="modal-body">
+  <div class="row mb-3">
+    <div class="col">
+      {{properties.message}}
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button (click)="activeModal.close(false)" class="btn btn-sm btn-secondary">{{properties.cancelText}}</button>
+  <button (click)="onOk()" [class]="properties.okCss" ngbAutofocus class="btn btn-sm">{{properties.okText}}</button>
+</div>

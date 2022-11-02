@@ -1,0 +1,40 @@
+.card-box {
+  padding: 10px 10px;
+  border: solid 1.5px #000000;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  background: white;
+  font-size: 14px;
+  flex-basis: 0;
+}
+
+.card-list {
+  max-width: 100%;
+  min-height: 60px;
+  background: white;
+  border-radius: 4px;
+}
+
+.card-image {
+  width: 140px;
+}
+
+.image-thumbnail {
+  max-width: 150px;
+  max-height: 350px;
+}
+
+.card-info {
+  background-color: #000000;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 500;
+}
+
+.card-selected {
+  background-color: #198754;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 500;
+}

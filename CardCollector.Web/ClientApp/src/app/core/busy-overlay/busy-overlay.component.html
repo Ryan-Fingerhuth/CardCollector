@@ -1,0 +1,13 @@
+<div [class.hidden]="!(showObservable$ | async)">
+  <div class="loader-overlay">
+    <div class="overlay-box">
+      <div *ngIf="showObservable$ | async" class="loader-container">
+        <div class="jumping-dots-loader">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
