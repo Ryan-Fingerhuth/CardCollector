@@ -6,6 +6,7 @@ import { ICardDto, ISet, SCREEN_SIZE } from '@core/models';
 import { CardService, ToastService } from '@core/services';
 import { ResizeService } from '@core/services/resize.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BooleanDialogComponent } from '@shared/components/boolean-dialog/boolean-dialog.component';
 import { SearchCardModalComponent } from '../search-card/search-card-modal/search-card-modal.component';
 
 @Component({
@@ -120,6 +121,21 @@ export class CardSetComponent implements OnInit {
 
   public onChangeSetName(): void {
     this.changeSetName = !this.changeSetName;
+  }
+
+  public onDeleteCard(cardRow: ICardDto[], card: ICardDto): void {
+    const modal = this.modalService.open(BooleanDialogComponent);
+    modal.componentInstance.configureFor('Danger');
+    modal.componentInstance.properties.message = 'Are you sure you want to delete this card?';
+    modal.componentInstance.properties.okText = 'Delete';
+    modal.result.then(outcome => {
+      if (outcome) {
+        const indx = cardRow.findIndex(x => x.id === card.id);
+        cardRow.splice(indx, 1);
+        this.dissembleCardRows();
+        this.assembleCardRows();
+      }
+    });
   }
 
   private assembleCardRows(): void {

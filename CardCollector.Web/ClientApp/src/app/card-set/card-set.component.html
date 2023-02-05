@@ -38,6 +38,16 @@
                   class="example-list" cdkDragStarted (cdkDropListDropped)="drop($event)">
               <div cdkDrag class="example-box" [ngClass]="editMode ? 'cursor-move' : 'cursor-default'" *ngFor="let card of cardRow" [cdkDragData]="card">
                 <div class="vstack gap-1">
+                  <div *ngIf="editMode" class="card-header">
+                    <!-- Display Checked option, delete option -->
+                    <div class="col">
+                      <i class="pi pi-trash pi-md mb-2 vertical-center-icons" placement="top" ngbTooltip="Delete"
+                      (click)="onDeleteCard(cardRow, card)"></i>
+                    </div>
+                    <div class="col">
+
+                    </div>
+                  </div>
                   <img [src]="cardService.getImage(card.thumbnailImageGuid, true)" class="image-thumbnail">
                   <div class="card-info">
                     {{card.cardName}}
