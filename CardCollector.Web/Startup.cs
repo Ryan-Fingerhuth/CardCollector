@@ -1,6 +1,5 @@
 using CardCollector.Business;
 using CardCollector.Data;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -26,7 +25,7 @@ namespace CardCollector.Web
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddMediatR(typeof(CardCollectorMediator));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CardCollectorMediator>());
 
             services.AddControllersWithViews();
 

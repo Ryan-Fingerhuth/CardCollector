@@ -1,6 +1,5 @@
 ﻿using CardCollector.Data.Configurations;
 using CardCollector.Library.Dtos;
-using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Data.SqlClient;
@@ -13,6 +12,7 @@ using Microsoft.SqlServer.Management.Smo;
 using System;
 using System.IO;
 using System.Linq;
+using Duende.IdentityServer.EntityFramework.Options;
 
 namespace CardCollector.Data
 {

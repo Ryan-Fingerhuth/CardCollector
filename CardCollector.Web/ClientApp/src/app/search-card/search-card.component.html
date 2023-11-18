@@ -4,11 +4,19 @@
     <div class="container-fluid">
       <form *ngIf="searchForm" [formGroup]="searchForm">
         <div class="input-group input-group-lg">
-          <input id="cardName" formControlName="cardName" placeholder="Card Name" type="text"
-            class="form-control form-control-sm" [(ngModel)]="model" [ngbTypeahead]="typeAheadSearch"
-            [resultFormatter]="resultFormatCardListValue" [inputFormatter]="inputFormatCardListValue">
-          <button class="btn btn-sm btn-success" [disabled]="searchForm.invalid" (click)="search()">Search
-            Card</button>
+          <input
+            id="pokeMonCardName"
+            formControlName="cardName"
+            placeholder="Card Name"
+            type="search"
+            class="form-control form-control-sm"
+            [(ngModel)]="model"
+            [ngbTypeahead]="typeAheadSearch"
+            (selectItem)="selectedItem($event)"
+          />
+          <!-- (keyup.enter)="search()" -->
+          <!-- [resultFormatter]="resultFormatCardListValue"
+            [inputFormatter]="inputFormatCardListValue" -->
         </div>
       </form>
     </div>
@@ -18,19 +26,25 @@
     <h4>Search Results:</h4>
     <div class="col-12">
       <div class="row card-list">
-        <div class="col-2 card-box" (click)="onSelectCard(s)" *ngFor="let s of searchResults">
+        <div
+          class="col-2 card-box"
+          (click)="onSelectCard(s)"
+          *ngFor="let s of searchResults"
+        >
           <div class="vstack gap-1">
-            
             <div *ngIf="s.selected" class="card-selected">
               <i class="pi pi-check-square"></i>
               <label>&nbsp;Selected</label>
             </div>
-            <img [src]="getCardImageUrl(s.thumbnailImageGuid, true)" class="image-thumbnail">
+            <img
+              [src]="getCardImageUrl(s.thumbnailImageGuid, true)"
+              class="image-thumbnail"
+            />
             <div class="card-info">
-              {{s.cardName}}
+              {{ s.cardName }}
             </div>
             <div class="card-info">
-              {{s.originalSetName}} - ({{s.yearReleased}})
+              {{ s.originalSetName }} - ({{ s.yearReleased }})
             </div>
           </div>
         </div>
