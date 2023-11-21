@@ -52,7 +52,8 @@ namespace CardCollector.Business.Queries
                     FullImageGuid = x.Card.FullImageGuid,
                     ThumbnailImageGuid = x.Card.ThumbnailImageGuid,
                     ImageData = null,
-                    SetOrder = x.Order
+                    SetOrder = x.Order,
+                    CardObtained = x.Obtained
                 }).OrderBy(y => y.SetOrder).ToList();
 
                 setDto.Cards = cardDtos;

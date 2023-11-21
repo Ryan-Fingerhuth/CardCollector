@@ -30,11 +30,6 @@ namespace CardCollector.Business.Queries
             {
                 var sets = await _dbContext.Sets.Select(x => x.ConvertBaseToDto()).ToListAsync(cancellationToken);
 
-                if (sets == null)
-                {
-                    return result;
-                }
-
                 result.Result = sets;
                 return result;
             }

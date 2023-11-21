@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "./assets/loader-style.css";
-@import '~primeicons/primeicons.css';
+@import "~primeicons/primeicons.css";
 
 /* Provide sufficient contrast against white background */
 a {
@@ -17,8 +17,14 @@ code {
   border-color: #1861ac;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 /* Primeng Icon Sizes */
 .pi {
@@ -48,3 +54,28 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .modal-xxl .modal-lg {
   min-width: 1200px;
 }
+
+.carousel-control-prev,
+.carousel-control-next {
+  display: none;
+}
+
+/* .carousel-control-next-icon,
+.carousel-control-prev-icon,
+.carousel-indicators {
+  filter: invert(1);
+}
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+  transform: scale(1.75);
+  margin-left: -15px;
+} */
+/* 
+.carousel-control-prev {
+  margin-left: -100px;
+}
+
+.carousel-control-next {
+  margin-right: -120px;
+} */

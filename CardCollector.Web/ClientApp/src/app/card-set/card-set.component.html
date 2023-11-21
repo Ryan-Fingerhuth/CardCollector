@@ -1,59 +1,208 @@
 <form [formGroup]="setFormGroup">
+  <!-- Header -->
   <div class="row mb-3">
     <div class="col">
       <div *ngIf="!changeSetName" class="row">
         <div class="col-auto">
           <h4 class="set-title">{{ getSetDescription() }}</h4>
-          <div *ngIf="set.defaultSet" class="text-bg-info default-set-label ms-4">Default Set</div>
+          <div
+            *ngIf="set.defaultSet"
+            class="text-bg-info default-set-label ms-4"
+          >
+            Default Set
+          </div>
         </div>
         <div class="col-auto" *ngIf="editMode">
-          <i class="pi pi-pencil pi-md mb-2 vertical-center-icons" placement="top" ngbTooltip="Edit"
-            (click)="onChangeSetName()"></i>
+          <i
+            class="pi pi-pencil pi-md mb-2 vertical-center-icons"
+            placement="top"
+            ngbTooltip="Edit"
+            (click)="onChangeSetName()"
+          ></i>
         </div>
       </div>
 
       <div *ngIf="changeSetName" class="row">
         <div class="col-4">
-          <input type="text" class="form-control" formControlName="setDescription"
-            placeholder="enter set name...">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="setDescription"
+            placeholder="enter set name..."
+          />
         </div>
         <div class="col-auto">
-          <i class="pi pi-check pi-md vertical-center-icons" placement="top" ngbTooltip="Confirm"
-            (click)="onChangeSetName()"></i>
+          <i
+            class="pi pi-check pi-md vertical-center-icons"
+            placement="top"
+            ngbTooltip="Confirm"
+            (click)="onChangeSetName()"
+          ></i>
         </div>
       </div>
     </div>
     <div class="col-auto" *ngIf="editMode">
-      <button class="btn btn-primary me-1" (click)="onAddCards()">Add Cards</button>
-      <button class="btn btn-success ms-1" [disabled]="setFormGroup.invalid" (click)="saveSetInformation()">Save</button>
+      <button class="btn btn-primary me-1" (click)="onAddCards()">
+        Add Cards
+      </button>
+      <button
+        class="btn btn-success ms-1"
+        [disabled]="setFormGroup.invalid"
+        (click)="saveSetInformation()"
+      >
+        Save
+      </button>
     </div>
   </div>
 
+  <!-- Binder View -->
+  <div class="row mb-3">
+    <div class="col">
+      <!-- Select Binder Size Option -->
+      <div class="row">
+        <div class="col"></div>
+      </div>
+
+      <!-- Binder Layout -->
+      <div class="example-container"></div>
+
+      <!-- Card List to pull from -->
+      <div class="row">
+        <div class="col">
+          <div class="slider-container">
+            <div cdkDropListGroup>
+              <ngb-carousel
+                #carousel
+                showNavigationArrows="false"
+                showNavigationIndicators="true"
+                animation="true"
+                interval="0"
+              >
+                <ng-template ngbSlide *ngFor="let cardRow of cardRows">
+                  <div
+                    cdkDropList
+                    cdkDropListOrientation="horizontal"
+                    [cdkDropListData]="cardRow"
+                    [cdkDropListDisabled]="!editMode"
+                    class="slider-wrapper"
+                  >
+                    <svg
+                      width="50px"
+                      height="50px"
+                      viewBox="0 0 1024 1024"
+                      (click)="onPrevSlide()"
+                      class="cursor-pointer align-self-center"
+                    >
+                      <path
+                        d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z"
+                        fill="#000000"
+                      />
+                    </svg>
+                    <div
+                      cdkDrag
+                      [cdkDragData]="card"
+                      class="slider-item"
+                      *ngFor="let card of cardRow"
+                    >
+                      <img
+                        [src]="
+                          cardService.getImage(card.thumbnailImageGuid, true)
+                        "
+                        class="image-thumbnail"
+                      />
+                    </div>
+                    <svg
+                      width="50px"
+                      height="50px"
+                      viewBox="0 0 1024 1024"
+                      (click)="onNextSlide()"
+                      class="cursor-pointer align-self-center"
+                    >
+                      <path
+                        d="M256 120.768L306.432 64 768 512l-461.568 448L256 903.232 659.072 512z"
+                        fill="#000000"
+                      />
+                    </svg>
+                  </div>
+                </ng-template>
+              </ngb-carousel>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card List -->
   <div class="row">
     <div class="col">
       <div class="example-container">
         <div cdkDropListGroup>
           <ng-container *ngFor="let cardRow of cardRows; let i = index">
-            <div cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="cardRow" [cdkDropListDisabled]="!editMode" 
-                  class="example-list" cdkDragStarted (cdkDropListDropped)="drop($event)">
-              <div cdkDrag class="example-box" [ngClass]="editMode ? 'cursor-move' : 'cursor-default'" *ngFor="let card of cardRow" [cdkDragData]="card">
+            <div
+              cdkDropList
+              cdkDropListOrientation="horizontal"
+              [cdkDropListData]="cardRow"
+              [cdkDropListDisabled]="!editMode"
+              class="example-list"
+              cdkDragStarted
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div
+                cdkDrag
+                class="example-box"
+                *ngFor="let card of cardRow; let ii = index"
+                [cdkDragData]="card"
+              >
                 <div class="vstack gap-1">
-                  <div *ngIf="editMode" class="card-header">
-                    <!-- Display Checked option, delete option -->
-                    <div class="col">
-                      <i class="pi pi-trash pi-md mb-2 vertical-center-icons" placement="top" ngbTooltip="Delete"
-                      (click)="onDeleteCard(cardRow, card)"></i>
+                  <!-- Item Header - Display obtained, move, and delete controls -->
+                  <div
+                    *ngIf="editMode"
+                    class="d-flex justify-content-evenly mb-1"
+                  >
+                    <div>
+                      <input
+                        class="form-check-input lower-checkbox cursor-point"
+                        type="checkbox"
+                        [checked]="card.cardObtained"
+                        (change)="onObtainedChanged(card, $event)"
+                        id="{{ 'flexCheckDefault' + i + ' ' + ii }}"
+                        placement="top"
+                        ngbTooltip="Obtained"
+                      />
                     </div>
-                    <div class="col">
 
+                    <div
+                      class="cursor-move vertical-center-icons"
+                      placement="top"
+                      ngbTooltip="Move"
+                      cdkDragHandle
+                    >
+                      <svg width="20px" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                          d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"
+                        ></path>
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                      </svg>
                     </div>
+
+                    <i
+                      class="pi pi-trash pi-md vertical-center-icons"
+                      placement="top"
+                      ngbTooltip="Remove"
+                      (click)="onDeleteCard(cardRow, card)"
+                    ></i>
                   </div>
-                  <img [src]="cardService.getImage(card.thumbnailImageGuid, true)" class="image-thumbnail">
+                  <img
+                    [src]="cardService.getImage(card.thumbnailImageGuid, true)"
+                    class="image-thumbnail"
+                    [ngClass]="!card.cardObtained ? 'card-opacity' : ''"
+                  />
                   <div class="card-info">
-                    {{card.cardName}}
+                    {{ card.cardName }}
                   </div>
                   <div class="card-info">
-                    {{card.originalSetName}} - ({{card.yearReleased}})
+                    {{ card.originalSetName }} - ({{ card.yearReleased }})
                   </div>
                 </div>
               </div>

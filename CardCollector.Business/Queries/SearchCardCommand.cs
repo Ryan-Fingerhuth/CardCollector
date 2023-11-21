@@ -1,14 +1,14 @@
-﻿using CardCollector.Data;
-using CardCollector.Library.Dtos;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CardCollector.Data;
+using CardCollector.Library.Dtos;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
-namespace CardCollector.Business.Commands
+namespace CardCollector.Business.Queries
 {
     public class SearchCardCommand : IRequest<ApiResponseBase<List<Card>>>
     {

@@ -1,7 +1,6 @@
 ﻿using CardCollector.Data;
 using CardCollector.Library.Dtos;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,7 +79,7 @@ namespace CardCollector.Business.Commands
 
             var currentDateModified = DateTime.Now;
 
-            //update order of exisitng cards
+            // update order of existing cards
             foreach (var updatedCard in setCards)
             {
                 var dbSetCard = dbSetCards.FirstOrDefault(x => x.CardId == updatedCard.Id);
@@ -90,14 +89,16 @@ namespace CardCollector.Business.Commands
                 if (dbSetCard == null)
                 {
                     // create record
-                    var setCard = new SetCard();
-
-                    setCard.SetId = dbSet.Id;
-                    setCard.CardId = updatedCard.Id;
-                    setCard.IsActive = true;
-                    setCard.DateCreated = currentDateModified;
-                    setCard.DateModified = currentDateModified;
-                    setCard.Order = setIndex;
+                    var setCard = new SetCard
+                    {
+                        SetId = dbSet.Id,
+                        CardId = updatedCard.Id,
+                        IsActive = true,
+                        DateCreated = currentDateModified,
+                        DateModified = currentDateModified,
+                        Order = setIndex,
+                        Obtained = updatedCard.CardObtained
+                    };
 
                     _dbContext.SetCards.Add(setCard);
 
@@ -107,6 +108,7 @@ namespace CardCollector.Business.Commands
                 // update record to correct index value.
                 dbSetCard.DateModified = currentDateModified;
                 dbSetCard.Order = setIndex;
+                dbSetCard.Obtained = updatedCard.CardObtained;
             }
 
             await _dbContext.SaveChangesAsync(cancellationToken);
@@ -120,11 +122,13 @@ namespace CardCollector.Business.Commands
             {
                 var dbSetCard = dbSetCards.FirstOrDefault(x => x.CardId == removedCardId);
 
-                if (dbSetCard != null)
-            {
-                    dbSetCard.IsActive = false;
-                    dbSetCard.DateModified = currentDateModified;
+                if (dbSetCard == null)
+                {
+                    continue;
                 }
+
+                dbSetCard.IsActive = false;
+                dbSetCard.DateModified = currentDateModified;
             }
 
             await _dbContext.SaveChangesAsync(cancellationToken);

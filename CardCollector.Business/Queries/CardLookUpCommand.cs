@@ -1,19 +1,17 @@
-﻿using CardCollector.Data;
-using CardCollector.Library.Dtos;
-using MediatR;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Collections.Generic;
+using CardCollector.Data;
+using CardCollector.Library.Dtos;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-
-namespace CardCollector.Business.Commands
+namespace CardCollector.Business.Queries
 {
     public class CardLookUpCommand : IRequest<ApiResponseBase<List<string>>>
     {
-
         public string SearchTerm { get; set; }
         public CardLookUpCommand(string searchTerm)
         {
@@ -35,14 +33,13 @@ namespace CardCollector.Business.Commands
             var result = new ApiResponseBase<List<string>>();
             try
             {
+                var results = await _dbContext.Cards
+                    .Where(n => 
+                        n.CardName.IndexOf(request.SearchTerm, StringComparison.CurrentCultureIgnoreCase) > -1)
+                    .Select(c => c.CardName)
+                    .Distinct()
+                    .ToListAsync(cancellationToken);
 
-                //var temps = _dbContext.Cards.ToList();
-
-                //var users = _dbContext.Users.ToList();
-
-                var results = await (_dbContext.Cards.Where(n => n.CardName.ToLower().IndexOf(request.SearchTerm.ToLower()) > -1).Select(c => c.CardName)).Distinct().ToListAsync();
-
-                
                 result.Result = results;
 
                 return result;
@@ -52,7 +49,6 @@ namespace CardCollector.Business.Commands
                 result.Errors.Add("Error");
                 return result;
             }
-
         }
     }
 }

@@ -4,7 +4,7 @@ export interface ICardDto {
   cardDescription: string;
   originalSetName: string;
   yearReleased: number;
-  numberInSEt: number;
+  numberInSet: number;
   fullImageGuid: string;
   thumbnailImageGuid: string;
   cardTags: ICardTag[];
@@ -14,6 +14,7 @@ export interface ICardDto {
   image: Blob;
   thumbnail: string | ArrayBuffer;
   imageFilePath: string;
+  cardObtained: boolean;
 
   selected: boolean; // front-end only
 }
@@ -37,4 +38,3 @@ export interface ISet {
 export interface ISearchDto {
   cardName: string;
 }
-

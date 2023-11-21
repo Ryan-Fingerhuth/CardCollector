@@ -61,7 +61,8 @@ namespace CardCollector.Business.Commands
                     IsActive = x.IsActive,
                     DateCreated = DateTime.Now,
                     DateModified = DateTime.Now,
-                    Order = x.Order
+                    Order = x.Order,
+                    Obtained = x.Obtained
                 }).ToList();
 
                 _dbContext.SetCards.AddRange(clonedSetCards);
