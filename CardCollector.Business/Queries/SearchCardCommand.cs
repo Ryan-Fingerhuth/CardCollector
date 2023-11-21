@@ -34,7 +34,7 @@ namespace CardCollector.Business.Queries
             var result = new ApiResponseBase<List<Card>>();
             try
             {
-                var results = await (_dbContext.Cards.Where(n => n.CardName.Equals(request.CardName)).ToListAsync());
+                var results = await _dbContext.Cards.Where(n => n.CardName.Equals(request.CardName)).ToListAsync(cancellationToken);
 
                 result.Result = results;
 

@@ -56,26 +56,7 @@ body {
 }
 
 .carousel-control-prev,
-.carousel-control-next {
+.carousel-control-next,
+.carousel-indicators {
   display: none;
 }
-
-/* .carousel-control-next-icon,
-.carousel-control-prev-icon,
-.carousel-indicators {
-  filter: invert(1);
-}
-
-.carousel-control-next-icon,
-.carousel-control-prev-icon {
-  transform: scale(1.75);
-  margin-left: -15px;
-} */
-/* 
-.carousel-control-prev {
-  margin-left: -100px;
-}
-
-.carousel-control-next {
-  margin-right: -120px;
-} */

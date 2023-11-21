@@ -19,7 +19,7 @@ import {
 export class SearchCardComponent implements OnInit {
   @Input() isSelectable: boolean;
   public searchForm: FormGroup;
-  public model: Observable<any>;
+  // public model: Observable<any>;
   public results: ICardDto[] = [];
   public selectedCards: ICardDto[] = [];
 
@@ -49,6 +49,7 @@ export class SearchCardComponent implements OnInit {
         term.length < 1 ? [] : this.cardService.cardLookUp(term)
       ),
       catchError((error) => {
+        this.toastService.showDangerToast(error);
         throw new Error(error);
       })
     );

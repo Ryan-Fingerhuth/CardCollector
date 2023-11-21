@@ -33,6 +33,7 @@ export interface ISet {
   setDescription: string;
   cards: ICardDto[];
   defaultSet: boolean;
+  binderLayout: string;
 }
 
 export interface ISearchDto {

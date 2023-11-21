@@ -60,24 +60,127 @@
     <div class="col">
       <!-- Select Binder Size Option -->
       <div class="row">
-        <div class="col"></div>
+        <div class="hstack gap-1">
+          <div>Binder Layout:</div>
+          <input
+            type="radio"
+            class="btn-check"
+            name="binderLayout"
+            id="layout2x2"
+            autocomplete="off"
+            value="2x2"
+            formControlName="binderLayout"
+          />
+          <label class="btn btn-outline-primary" for="layout2x2">2 x 2</label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="binderLayout"
+            id="layout3x3"
+            autocomplete="off"
+            value="3x3"
+            formControlName="binderLayout"
+          />
+          <label class="btn btn-outline-primary" for="layout3x3">3 x 3</label>
+
+          <input
+            type="radio"
+            class="btn-check"
+            name="binderLayout"
+            id="layout4x3"
+            autocomplete="off"
+            value="4x3"
+            formControlName="binderLayout"
+          />
+          <label class="btn btn-outline-primary" for="layout4x3">4 x 3</label>
+        </div>
       </div>
 
       <!-- Binder Layout -->
-      <div class="example-container"></div>
+      <div class="container">
+        Layout: {{ this.setFormGroup.controls["binderLayout"].value }} |
+        numberOfRows: {{ numberOfRows }} | numberOfColumns:
+        {{ numberOfColumns }} | Total Pages: {{ totalPageNumber }} |
+        currentPage: {{ currentPageNumber }}
+
+        <div class="mb-3">
+          <div cdkDropListGroup>
+            <div
+              class="row"
+              *ngFor="let row of [].constructor(numberOfRows); let i = index"
+            >
+              <div
+                class="col"
+                *ngFor="
+                  let column of [].constructor(numberOfColumns);
+                  let i = index
+                "
+              >
+                <div
+                  cdkDropList
+                  cdkDropListOrientation="horizontal"
+                  class="example-list"
+                  cdkDragStarted
+                  (cdkDropListDropped)="drop($event)"
+                >
+                  <!-- Single Card -->
+                  <div cdkDrag class="example-box">
+                    <div class="vstack gap-1">
+                      <!-- Item Header - Display obtained, move, and delete controls -->
+                      <div
+                        *ngIf="editMode"
+                        class="d-flex justify-content-evenly mb-1"
+                      >
+                        <div>
+                          <input
+                            class="form-check-input lower-checkbox cursor-point"
+                            type="checkbox"
+                            id="{{ 'flexCheckDefault' + i + ' ' + ii }}"
+                            placement="top"
+                            ngbTooltip="Obtained"
+                          />
+                        </div>
+
+                        <div
+                          class="cursor-move vertical-center-icons"
+                          placement="top"
+                          ngbTooltip="Move"
+                          cdkDragHandle
+                        >
+                          <svg
+                            width="20px"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"
+                            ></path>
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                          </svg>
+                        </div>
+
+                        <i
+                          class="pi pi-trash pi-md vertical-center-icons"
+                          placement="top"
+                          ngbTooltip="Remove"
+                        ></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Card List to pull from -->
       <div class="row">
         <div class="col">
           <div class="slider-container">
             <div cdkDropListGroup>
-              <ngb-carousel
-                #carousel
-                showNavigationArrows="false"
-                showNavigationIndicators="true"
-                animation="true"
-                interval="0"
-              >
+              <ngb-carousel #carousel animation="true" interval="0">
                 <ng-template ngbSlide *ngFor="let cardRow of cardRows">
                   <div
                     cdkDropList

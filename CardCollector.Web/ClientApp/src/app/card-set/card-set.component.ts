@@ -30,10 +30,12 @@ export class CardSetComponent implements OnInit {
     setDescription: "",
     cards: [],
     defaultSet: false,
+    binderLayout: "",
   };
 
   public setFormGroup = new FormGroup({
     setDescription: new FormControl(""),
+    binderLayout: new FormControl(""),
   });
 
   public changeSetName: boolean = false;
@@ -44,6 +46,15 @@ export class CardSetComponent implements OnInit {
 
   private size: SCREEN_SIZE;
   private cardsPerRow: number = 7;
+
+  public currentPageNumber: number = 1;
+  public totalPageNumber: number = 1;
+  public numberOfRows: number = 3;
+  public numberOfColumns: number = 3;
+
+  public onAddPage(): void {}
+
+  public onRemovePage(): void {}
 
   @ViewChild("carousel", { static: true }) carousel: NgbCarousel;
 
@@ -92,16 +103,28 @@ export class CardSetComponent implements OnInit {
 
     this.setFormGroup = this.formBuilder.group({
       setDescription: ["", [Validators.required]],
+      binderLayout: ["3x3"],
     });
+
+    this.setFormGroup.controls["binderLayout"].valueChanges.subscribe(
+      (value) => {
+        // If Binder Layout changes, update dragDrop areas for Binder View
+
+        this.numberOfRows = +value.split("x")[0];
+        this.numberOfColumns = +value.split("x")[1];
+      }
+    );
 
     if (this.setId > 0) {
       this.cardService.getSet(this.setId).subscribe((result) => {
         if (result.isSuccess) {
           this.set = result.result;
           this.editMode = !this.set.defaultSet;
+
           this.entireCardList = this.set.cards;
           this.setFormGroup.patchValue({
             setDescription: this.set.setDescription,
+            binderLayout: this.set.binderLayout ?? "3x3",
           });
           this.assembleCardRows();
         }

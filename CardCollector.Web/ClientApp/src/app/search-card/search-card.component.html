@@ -10,7 +10,6 @@
             placeholder="Card Name"
             type="search"
             class="form-control form-control-sm"
-            [(ngModel)]="model"
             [ngbTypeahead]="typeAheadSearch"
             (selectItem)="selectedItem($event)"
           />

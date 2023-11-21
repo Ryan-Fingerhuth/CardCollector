@@ -21,7 +21,7 @@
 
 .example-list {
   max-width: 100%;
-  border: solid 1px #ccc;
+  /* border: solid 1px #ccc; */
   min-height: 60px;
   display: flex;
   flex-direction: row;
@@ -101,64 +101,15 @@
   width: 1.25rem;
 }
 
-/* Carousel */
-
-/* @media (max-width: 767px) {
-  .carousel-inner .carousel-item > div {
-    display: none;
-  }
-  .carousel-inner .carousel-item > div:first-child {
-    display: block;
-  }
-} */
-
-/* .carousel-inner .carousel-item.active,
-.carousel-inner .carousel-item-next,
-.carousel-inner .carousel-item-prev {
-  display: flex;
-} */
-
-/* medium and up screens */
-/* @media (min-width: 768px) {
-  .carousel-inner .carousel-item-end.active,
-  .carousel-inner .carousel-item-next {
-    transform: translateX(25%);
-  }
-
-  .carousel-inner .carousel-item-start.active,
-  .carousel-inner .carousel-item-prev {
-    transform: translateX(-25%);
-  }
-}
-
-.carousel-inner .carousel-item-end,
-.carousel-inner .carousel-item-start {
-  transform: translateX(0);
-} */
-
 .slider-container {
   max-width: 100%;
-
-  /* margin: 0 25px 25px -50px; */
   display: inline-block;
   vertical-align: top;
 }
 
-/* @media (min-width: 767px) and (max-width: 1024px) {
-  .slider-container {
-    margin-left: -30px;
-  }
-}
-
-@media (min-width: 1025px) {
-  .slider-container {
-    margin-left: -49px;
-  }
-} */
-
 .slider-wrapper {
+  min-width: 100%;
   max-width: 100%;
-  border: solid 1px #ccc;
   min-height: 60px;
   display: flex;
   flex-direction: row;
@@ -182,4 +133,10 @@
 
 .align-self-center {
   align-self: center;
+}
+
+.binder-container {
+  max-width: 100%;
+  display: grid;
+  vertical-align: top;
 }

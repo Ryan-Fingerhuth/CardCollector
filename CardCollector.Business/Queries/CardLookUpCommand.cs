@@ -7,6 +7,7 @@ using CardCollector.Data;
 using CardCollector.Library.Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+// ReSharper disable StringIndexOfIsCultureSpecific.1
 
 namespace CardCollector.Business.Queries
 {
@@ -35,7 +36,7 @@ namespace CardCollector.Business.Queries
             {
                 var results = await _dbContext.Cards
                     .Where(n => 
-                        n.CardName.IndexOf(request.SearchTerm, StringComparison.CurrentCultureIgnoreCase) > -1)
+                        n.CardName.ToLower().IndexOf(request.SearchTerm.ToLower()) > -1)
                     .Select(c => c.CardName)
                     .Distinct()
                     .ToListAsync(cancellationToken);
