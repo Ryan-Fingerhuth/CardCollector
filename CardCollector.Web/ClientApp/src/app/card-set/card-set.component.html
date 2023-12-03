@@ -1,5 +1,4 @@
 <form [formGroup]="setFormGroup">
-  <!-- Header -->
   <div class="row mb-3">
     <div class="col">
       <div *ngIf="!changeSetName" class="row">
@@ -12,9 +11,14 @@
             Default Set
           </div>
         </div>
-        <div class="col-auto" *ngIf="editMode">
+        <div
+          class="col-auto"
+          style="display: flex; justify-content: center"
+          *ngIf="editMode"
+        >
           <i
-            class="pi pi-pencil pi-md mb-2 vertical-center-icons"
+            class="pi pi-pencil pi-md vertical-center-icons"
+            style="margin-bottom: 0.75rem"
             placement="top"
             ngbTooltip="Edit"
             (click)="onChangeSetName()"
@@ -31,7 +35,7 @@
             placeholder="enter set name..."
           />
         </div>
-        <div class="col-auto">
+        <div class="col-auto" style="display: flex; justify-content: center">
           <i
             class="pi pi-check pi-md vertical-center-icons"
             placement="top"
@@ -111,7 +115,7 @@
         </div>
       </div>
     </div>
-    <div>
+    <div class="mt-3">
       <nav aria-label="Binder Navigation">
         <ul class="pagination justify-content-center">
           <li class="page-item">
@@ -137,24 +141,20 @@
 
     <!-- Binder Layout -->
     <div class="container">
-      Layout: {{ this.binderFormGroup.controls["binderLayoutSize"].value }} |
+      <!-- Layout: {{ this.binderFormGroup.controls["binderLayoutSize"].value }} |
       Total Pages: {{ totalPageNumber }} | currentPage:
-      {{ currentPageNumber }} | numberOfCardsPerPage: {{ numberOfCardsPerPage }}
-      <!-- | carouselListIds: {{ carouselListIds | json }} |
-      binderLayoutIds: {{ binderLayoutIds | json }} -->
+      {{ currentPageNumber }} | numberOfCardsPerPage: {{ numberOfCardsPerPage }} -->
 
       <div class="mb-3">
-        <div
-          class="categories"
-          [style.width]="binderLayoutWidth"
-          cdkDropListGroup
-        >
+        <!-- cdkDropListGroup -->
+        <div class="categories mb-3" [style.width]="binderLayoutWidth">
           <ng-container
             *ngFor="let card of currentBinderPageCards; let i = index"
           >
             <div
               class="categories-item"
               cdkDropList
+              id="{{ 'cdk-drop-list-' + card.uniqueId }}"
               cdkDropListOrientation="horizontal"
               [cdkDropListData]="{ item: card, index: i }"
               [cdkDropListConnectedTo]="carouselListIds"
@@ -169,9 +169,11 @@
                   >
                     <div>
                       <input
-                        class="form-check-input lower-checkbox cursor-point"
+                        class="form-check-input card-obtained-checkbox cursor-point"
                         type="checkbox"
-                        id="{{ 'flexCheckDefault' + i + ' ' + ii }}"
+                        [checked]="card.cardObtained"
+                        (change)="onBinderObtainedChanged(card, $event)"
+                        id="{{ 'flexCheckDefault-' + card.uniqueId }}"
                         placement="top"
                         ngbTooltip="Obtained"
                       />
@@ -193,10 +195,11 @@
                       class="pi pi-trash pi-md vertical-center-icons"
                       placement="top"
                       ngbTooltip="Remove"
+                      (click)="onBinderRemove(card)"
                     ></i>
                   </div>
-                  <div>{{ card.uniqueId }}</div>
-                  <div *ngIf="card.id === 0" class="empty-card">Empty Card</div>
+                  <!-- <div>{{ card.uniqueId }}</div> -->
+                  <div *ngIf="card.id === 0" class="empty-card">Empty Slot</div>
                   <img
                     *ngIf="card.id > 0"
                     [src]="cardService.getImage(card.thumbnailImageGuid, true)"
@@ -233,11 +236,11 @@
               [showIndicators]="false"
             >
               <ng-template let-card pTemplate="item">
-                <div cdkDrag [cdkDragData]="card" class="slider-item">
+                <div cdkDrag [cdkDragData]="card" class="card-carousel-item">
                   <div *cdkDragPlaceholder></div>
                   <img
                     [src]="cardService.getImage(card.thumbnailImageGuid, true)"
-                    class="image-thumbnail image-display-block"
+                    class="image-thumbnail display-block-margin"
                   />
                 </div>
               </ng-template>
@@ -278,7 +281,7 @@
                 >
                   <div>
                     <input
-                      class="form-check-input lower-checkbox cursor-point"
+                      class="form-check-input card-obtained-checkbox cursor-point"
                       type="checkbox"
                       [checked]="card.cardObtained"
                       (change)="onObtainedChanged(card, $event)"

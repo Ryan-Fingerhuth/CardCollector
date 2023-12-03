@@ -175,11 +175,6 @@ export class CardSetComponent implements OnInit {
             setDescription: this.set.setDescription,
           });
           this.assembleCardRows();
-
-          // for (let i = 0; i < this.cardRows?.length ?? 0; i++) {
-          //   this.carouselListIds.push(`carousel-list-${i}`);
-          // }
-          this.carouselListIds.push("carousel-list-0");
         }
       });
     } else {
@@ -228,7 +223,6 @@ export class CardSetComponent implements OnInit {
   }
 
   private updateCurrentBinderPageCards(): void {
-    // Example = pageNumber 1 * 9 cards per page = 9
     const startingIndex =
       (this.currentPageNumber - 1) * this.numberOfCardsPerPage;
 
@@ -241,13 +235,14 @@ export class CardSetComponent implements OnInit {
 
     this.currentBinderPageCards = cardsOnPage;
 
-    // this.binderLayoutIds = [];
-    // for (let i = 0; i < numberOfCardsPerPage; i++) {
-    //   // const emptyCard = createCardDto({});
-    //   const emptyCard = createCardDto({ uniqueId: this.getUniqueId(4) });
-    //   this.currentBinderPageCards.push(emptyCard);
-    //   this.binderLayoutIds.push(`cdk-drop-list-${i + 1}`);
-    // }
+    this.carouselListIds = [];
+    this.binderLayoutIds = [];
+
+    for (let card of cardsOnPage) {
+      this.binderLayoutIds.push(`cdk-drop-list-${card.uniqueId}`);
+    }
+
+    this.carouselListIds.push("carousel-list-0", ...this.binderLayoutIds);
   }
 
   private setNumberOfCardsPerPage(): void {
@@ -286,17 +281,6 @@ export class CardSetComponent implements OnInit {
       stringArr.push(S4);
     }
     return stringArr.join("-");
-  }
-
-  public grabCard(rowNumber: number, columnNumber: number): ICardDto {
-    const card = this.entireCardList.find(
-      (x) =>
-        x.pageNumber == this.currentPageNumber &&
-        x.rowNumber == rowNumber &&
-        x.columnNumber == columnNumber
-    );
-    const emptyCard = createCardDto({});
-    return card ?? emptyCard;
   }
 
   public saveSetInformation(): void {
@@ -340,6 +324,48 @@ export class CardSetComponent implements OnInit {
     }
   }
 
+  public onBinderObtainedChanged(card: ICardDto, event: any) {
+    const entireCardIndex = this.entireBinderCards.findIndex(
+      (x) => x.uniqueId === card.uniqueId
+    );
+    if (entireCardIndex > -1) {
+      this.entireBinderCards[entireCardIndex].cardObtained =
+        event.target.checked;
+    }
+
+    const cardIndex = this.currentBinderPageCards.findIndex(
+      (x) => x.uniqueId === card.uniqueId
+    );
+    if (cardIndex > -1) {
+      this.currentBinderPageCards[cardIndex].cardObtained =
+        event.target.checked;
+    }
+  }
+
+  public onBinderRemove(card: ICardDto) {
+    if (card.id === 0) {
+      // ignore empty cards
+      return;
+    }
+
+    const emptyCard = createCardDto({ uniqueId: card.uniqueId });
+
+    // swap an existing card with a new empty card. keeping the uniqueId.
+    const entireCardIndex = this.entireBinderCards.findIndex(
+      (x) => x.uniqueId === card.uniqueId
+    );
+    if (entireCardIndex > -1) {
+      this.entireBinderCards[entireCardIndex] = emptyCard;
+    }
+
+    const cardIndex = this.currentBinderPageCards.findIndex(
+      (x) => x.uniqueId === card.uniqueId
+    );
+    if (cardIndex > -1) {
+      this.currentBinderPageCards[cardIndex] = emptyCard;
+    }
+  }
+
   private assembleCardRows(): void {
     this.cardRows = [];
     let counter = 0;
@@ -374,14 +400,46 @@ export class CardSetComponent implements OnInit {
 
   binderDrop(event: CdkDragDrop<any>) {
     if (event.previousContainer.id.startsWith("carousel")) {
+      // moving cards from the carousel list into the binder list
       const carouselCard = this.carouselCardList[event.item.data.index];
 
-      this.currentBinderPageCards[event.container.data.index] = carouselCard;
+      const binderCard =
+        this.currentBinderPageCards[event.container.data.index];
+
+      const copyOfCarouselCard = structuredClone(carouselCard);
+
+      copyOfCarouselCard.uniqueId = binderCard.uniqueId;
+
+      this.currentBinderPageCards[event.container.data.index] =
+        copyOfCarouselCard;
+
+      const binderIndex = this.entireBinderCards.findIndex(
+        (x) => x.uniqueId === binderCard.uniqueId
+      );
+
+      if (binderIndex >= -1) {
+        this.entireBinderCards[binderIndex] = copyOfCarouselCard;
+      }
     } else {
       // This swaps the cards positionsin the list of 'currentBinderPageCards'
       this.currentBinderPageCards[event.previousContainer.data.index] =
         event.container.data.item;
+
       this.currentBinderPageCards[event.container.data.index] =
+        event.previousContainer.data.item;
+
+      const previousContainerCardIndex = this.entireBinderCards.findIndex(
+        (x) => x.uniqueId === event.previousContainer.data.item.uniqueId
+      );
+
+      const containerCardIndex = this.entireBinderCards.findIndex(
+        (x) => x.uniqueId === event.container.data.item.uniqueId
+      );
+
+      this.entireBinderCards[previousContainerCardIndex] =
+        event.container.data.item;
+
+      this.entireBinderCards[containerCardIndex] =
         event.previousContainer.data.item;
     }
   }

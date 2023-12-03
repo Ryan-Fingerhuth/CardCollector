@@ -31,8 +31,8 @@ body {
   cursor: pointer;
 }
 
-.pi-md {
-  font-size: 1.25rem;
+.pi.pi-md {
+  font-size: 1.25rem !important;
 }
 
 .pi-lg {
