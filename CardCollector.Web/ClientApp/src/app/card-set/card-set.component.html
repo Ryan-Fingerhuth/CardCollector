@@ -4,7 +4,7 @@
     <div class="col">
       <div *ngIf="!changeSetName" class="row">
         <div class="col-auto">
-          <h4 class="set-title">{{ getSetDescription() }}</h4>
+          <h4 class="set-title">{{ setDescription }}</h4>
           <div
             *ngIf="set.defaultSet"
             class="text-bg-info default-set-label ms-4"
@@ -54,211 +54,115 @@
       </button>
     </div>
   </div>
+</form>
 
-  <!-- Binder View -->
-  <div class="row mb-3">
-    <div class="col">
-      <!-- Select Binder Size Option -->
-      <div class="row">
-        <div class="hstack gap-1">
-          <div>Binder Layout:</div>
-          <input
-            type="radio"
-            class="btn-check"
-            name="binderLayout"
-            id="layout2x2"
-            autocomplete="off"
-            value="2x2"
-            formControlName="binderLayout"
-          />
-          <label class="btn btn-outline-primary" for="layout2x2">2 x 2</label>
+<!-- Binder View -->
+<div class="row mb-3">
+  <div class="col">
+    <!-- Select Binder Size Option -->
+    <div class="row">
+      <div class="col">
+        <form [formGroup]="binderFormGroup">
+          <div class="hstack gap-2">
+            <div>Binder Layout:</div>
+            <input
+              type="radio"
+              class="btn-check"
+              name="binderLayoutSize"
+              id="layout2x2"
+              autocomplete="off"
+              value="30rem"
+              formControlName="binderLayoutSize"
+            />
+            <label class="btn btn-outline-primary" for="layout2x2">2 x 2</label>
 
-          <input
-            type="radio"
-            class="btn-check"
-            name="binderLayout"
-            id="layout3x3"
-            autocomplete="off"
-            value="3x3"
-            formControlName="binderLayout"
-          />
-          <label class="btn btn-outline-primary" for="layout3x3">3 x 3</label>
+            <input
+              type="radio"
+              class="btn-check"
+              name="binderLayoutSize"
+              id="layout3x3"
+              autocomplete="off"
+              value="40rem"
+              formControlName="binderLayoutSize"
+            />
+            <label class="btn btn-outline-primary" for="layout3x3">3 x 3</label>
 
-          <input
-            type="radio"
-            class="btn-check"
-            name="binderLayout"
-            id="layout4x3"
-            autocomplete="off"
-            value="4x3"
-            formControlName="binderLayout"
-          />
-          <label class="btn btn-outline-primary" for="layout4x3">4 x 3</label>
-        </div>
-      </div>
-
-      <!-- Binder Layout -->
-      <div class="container">
-        Layout: {{ this.setFormGroup.controls["binderLayout"].value }} |
-        numberOfRows: {{ numberOfRows }} | numberOfColumns:
-        {{ numberOfColumns }} | Total Pages: {{ totalPageNumber }} |
-        currentPage: {{ currentPageNumber }}
-
-        <div class="mb-3">
-          <div cdkDropListGroup>
-            <div
-              class="row"
-              *ngFor="let row of [].constructor(numberOfRows); let i = index"
-            >
-              <div
-                class="col"
-                *ngFor="
-                  let column of [].constructor(numberOfColumns);
-                  let i = index
-                "
-              >
-                <div
-                  cdkDropList
-                  cdkDropListOrientation="horizontal"
-                  class="example-list"
-                  cdkDragStarted
-                  (cdkDropListDropped)="drop($event)"
-                >
-                  <!-- Single Card -->
-                  <div cdkDrag class="example-box">
-                    <div class="vstack gap-1">
-                      <!-- Item Header - Display obtained, move, and delete controls -->
-                      <div
-                        *ngIf="editMode"
-                        class="d-flex justify-content-evenly mb-1"
-                      >
-                        <div>
-                          <input
-                            class="form-check-input lower-checkbox cursor-point"
-                            type="checkbox"
-                            id="{{ 'flexCheckDefault' + i + ' ' + ii }}"
-                            placement="top"
-                            ngbTooltip="Obtained"
-                          />
-                        </div>
-
-                        <div
-                          class="cursor-move vertical-center-icons"
-                          placement="top"
-                          ngbTooltip="Move"
-                          cdkDragHandle
-                        >
-                          <svg
-                            width="20px"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"
-                            ></path>
-                            <path d="M0 0h24v24H0z" fill="none"></path>
-                          </svg>
-                        </div>
-
-                        <i
-                          class="pi pi-trash pi-md vertical-center-icons"
-                          placement="top"
-                          ngbTooltip="Remove"
-                        ></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <input
+              type="radio"
+              class="btn-check"
+              name="binderLayoutSize"
+              id="layout3x4"
+              autocomplete="off"
+              value="50rem"
+              formControlName="binderLayoutSize"
+            />
+            <label class="btn btn-outline-primary" for="layout3x4">3 x 4</label>
           </div>
-        </div>
+        </form>
       </div>
-
-      <!-- Card List to pull from -->
-      <div class="row">
-        <div class="col">
-          <div class="slider-container">
-            <div cdkDropListGroup>
-              <ngb-carousel #carousel animation="true" interval="0">
-                <ng-template ngbSlide *ngFor="let cardRow of cardRows">
-                  <div
-                    cdkDropList
-                    cdkDropListOrientation="horizontal"
-                    [cdkDropListData]="cardRow"
-                    [cdkDropListDisabled]="!editMode"
-                    class="slider-wrapper"
-                  >
-                    <svg
-                      width="50px"
-                      height="50px"
-                      viewBox="0 0 1024 1024"
-                      (click)="onPrevSlide()"
-                      class="cursor-pointer align-self-center"
-                    >
-                      <path
-                        d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z"
-                        fill="#000000"
-                      />
-                    </svg>
-                    <div
-                      cdkDrag
-                      [cdkDragData]="card"
-                      class="slider-item"
-                      *ngFor="let card of cardRow"
-                    >
-                      <img
-                        [src]="
-                          cardService.getImage(card.thumbnailImageGuid, true)
-                        "
-                        class="image-thumbnail"
-                      />
-                    </div>
-                    <svg
-                      width="50px"
-                      height="50px"
-                      viewBox="0 0 1024 1024"
-                      (click)="onNextSlide()"
-                      class="cursor-pointer align-self-center"
-                    >
-                      <path
-                        d="M256 120.768L306.432 64 768 512l-461.568 448L256 903.232 659.072 512z"
-                        fill="#000000"
-                      />
-                    </svg>
-                  </div>
-                </ng-template>
-              </ngb-carousel>
-            </div>
-          </div>
+      <div class="col-auto">
+        <div class="hstack gap-2">
+          <button class="btn btn-primary ms-1" (click)="removePage()">
+            Remove Page
+          </button>
+          <button class="btn btn-primary ms-1" (click)="addPage()">
+            Add Page
+          </button>
         </div>
       </div>
     </div>
-  </div>
+    <div>
+      <nav aria-label="Binder Navigation">
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+            <button class="page-link" (click)="goToPreviousPage()">
+              Previous
+            </button>
+          </li>
+          <li
+            *ngFor="let page of [].constructor(totalPageNumber); let i = index"
+            [ngClass]="currentPageNumber === i + 1 ? 'active' : 'inactive'"
+            class="page-item"
+          >
+            <button class="page-link" (click)="goToThisPage(i + 1)">
+              {{ i + 1 }}
+            </button>
+          </li>
+          <li class="page-item">
+            <button class="page-link" (click)="goToNextPage()">Next</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
 
-  <!-- Card List -->
-  <div class="row">
-    <div class="col">
-      <div class="example-container">
-        <div cdkDropListGroup>
-          <ng-container *ngFor="let cardRow of cardRows; let i = index">
+    <!-- Binder Layout -->
+    <div class="container">
+      Layout: {{ this.binderFormGroup.controls["binderLayoutSize"].value }} |
+      Total Pages: {{ totalPageNumber }} | currentPage:
+      {{ currentPageNumber }} | numberOfCardsPerPage: {{ numberOfCardsPerPage }}
+      <!-- | carouselListIds: {{ carouselListIds | json }} |
+      binderLayoutIds: {{ binderLayoutIds | json }} -->
+
+      <div class="mb-3">
+        <div
+          class="categories"
+          [style.width]="binderLayoutWidth"
+          cdkDropListGroup
+        >
+          <ng-container
+            *ngFor="let card of currentBinderPageCards; let i = index"
+          >
             <div
+              class="categories-item"
               cdkDropList
               cdkDropListOrientation="horizontal"
-              [cdkDropListData]="cardRow"
-              [cdkDropListDisabled]="!editMode"
-              class="example-list"
-              cdkDragStarted
-              (cdkDropListDropped)="drop($event)"
+              [cdkDropListData]="{ item: card, index: i }"
+              [cdkDropListConnectedTo]="carouselListIds"
+              (cdkDropListDropped)="binderDrop($event)"
             >
-              <div
-                cdkDrag
-                class="example-box"
-                *ngFor="let card of cardRow; let ii = index"
-                [cdkDragData]="card"
-              >
+              <div cdkDrag class="inner">
+                <div *cdkDragPlaceholder></div>
                 <div class="vstack gap-1">
-                  <!-- Item Header - Display obtained, move, and delete controls -->
                   <div
                     *ngIf="editMode"
                     class="d-flex justify-content-evenly mb-1"
@@ -267,8 +171,6 @@
                       <input
                         class="form-check-input lower-checkbox cursor-point"
                         type="checkbox"
-                        [checked]="card.cardObtained"
-                        (change)="onObtainedChanged(card, $event)"
                         id="{{ 'flexCheckDefault' + i + ' ' + ii }}"
                         placement="top"
                         ngbTooltip="Obtained"
@@ -277,8 +179,6 @@
 
                     <div
                       class="cursor-move vertical-center-icons"
-                      placement="top"
-                      ngbTooltip="Move"
                       cdkDragHandle
                     >
                       <svg width="20px" fill="currentColor" viewBox="0 0 24 24">
@@ -293,18 +193,20 @@
                       class="pi pi-trash pi-md vertical-center-icons"
                       placement="top"
                       ngbTooltip="Remove"
-                      (click)="onDeleteCard(cardRow, card)"
                     ></i>
                   </div>
+                  <div>{{ card.uniqueId }}</div>
+                  <div *ngIf="card.id === 0" class="empty-card">Empty Card</div>
                   <img
+                    *ngIf="card.id > 0"
                     [src]="cardService.getImage(card.thumbnailImageGuid, true)"
                     class="image-thumbnail"
                     [ngClass]="!card.cardObtained ? 'card-opacity' : ''"
                   />
-                  <div class="card-info">
+                  <div *ngIf="card.id !== 0" class="card-info">
                     {{ card.cardName }}
                   </div>
-                  <div class="card-info">
+                  <div *ngIf="card.id !== 0" class="card-info">
                     {{ card.originalSetName }} - ({{ card.yearReleased }})
                   </div>
                 </div>
@@ -312,7 +214,117 @@
             </div>
           </ng-container>
         </div>
+
+        <!-- PrimeNG Carousel -->
+        <div>
+          <div
+            id="{{ 'carousel-list-0' }}"
+            cdkDropList
+            cdkDropListOrientation="horizontal"
+            [cdkDropListConnectedTo]="binderLayoutIds"
+            [cdkDropListDisabled]="!editMode"
+          >
+            <p-carousel
+              [value]="carouselCardList"
+              [numVisible]="6"
+              [numScroll]="1"
+              [responsiveOptions]="responsiveOptions"
+              [circular]="false"
+              [showIndicators]="false"
+            >
+              <ng-template let-card pTemplate="item">
+                <div cdkDrag [cdkDragData]="card" class="slider-item">
+                  <div *cdkDragPlaceholder></div>
+                  <img
+                    [src]="cardService.getImage(card.thumbnailImageGuid, true)"
+                    class="image-thumbnail image-display-block"
+                  />
+                </div>
+              </ng-template>
+            </p-carousel>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</form>
+</div>
+
+<!-- Card List -->
+<div class="row">
+  <div class="col">
+    <div class="example-container">
+      <div cdkDropListGroup>
+        <ng-container *ngFor="let cardRow of cardRows; let i = index">
+          <div
+            cdkDropList
+            cdkDropListOrientation="horizontal"
+            [cdkDropListData]="cardRow"
+            [cdkDropListDisabled]="!editMode"
+            class="example-list"
+            cdkDragStarted
+            (cdkDropListDropped)="drop($event)"
+          >
+            <div
+              cdkDrag
+              class="example-box"
+              *ngFor="let card of cardRow; let ii = index"
+              [cdkDragData]="card"
+            >
+              <div class="vstack gap-1">
+                <!-- Item Header - Display obtained, move, and delete controls -->
+                <div
+                  *ngIf="editMode"
+                  class="d-flex justify-content-evenly mb-1"
+                >
+                  <div>
+                    <input
+                      class="form-check-input lower-checkbox cursor-point"
+                      type="checkbox"
+                      [checked]="card.cardObtained"
+                      (change)="onObtainedChanged(card, $event)"
+                      id="{{ 'flexCheckDefault' + i + ' ' + ii }}"
+                      placement="top"
+                      ngbTooltip="Obtained"
+                    />
+                  </div>
+
+                  <div
+                    class="cursor-move vertical-center-icons"
+                    placement="top"
+                    ngbTooltip="Move"
+                    cdkDragHandle
+                  >
+                    <svg width="20px" fill="currentColor" viewBox="0 0 24 24">
+                      <path
+                        d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"
+                      ></path>
+                      <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg>
+                  </div>
+
+                  <i
+                    class="pi pi-trash pi-md vertical-center-icons"
+                    placement="top"
+                    ngbTooltip="Remove"
+                    (click)="onDeleteCard(cardRow, card)"
+                  ></i>
+                </div>
+                <img
+                  [src]="cardService.getImage(card.thumbnailImageGuid, true)"
+                  class="image-thumbnail"
+                  [ngClass]="!card.cardObtained ? 'card-opacity' : ''"
+                />
+                <div class="card-info">
+                  {{ card.cardName }}
+                </div>
+                <div class="card-info">
+                  {{ card.originalSetName }} - ({{ card.yearReleased }})
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

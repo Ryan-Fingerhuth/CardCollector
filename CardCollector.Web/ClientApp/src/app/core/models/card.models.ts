@@ -9,14 +9,19 @@ export interface ICardDto {
   thumbnailImageGuid: string;
   cardTags: ICardTag[];
   tags: string[];
-  rowNumber: number;
-  orderNumber: number;
   image: Blob;
   thumbnail: string | ArrayBuffer;
   imageFilePath: string;
   cardObtained: boolean;
 
+  uniqueId: string; // front-end only
   selected: boolean; // front-end only
+  index: number; // front-end only
+
+  // binder
+  pageNumber: number;
+  rowNumber: number;
+  columnNumber: number;
 }
 
 export interface ICardTag {
