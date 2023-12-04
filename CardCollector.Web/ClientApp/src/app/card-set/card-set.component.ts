@@ -34,6 +34,12 @@ export class CardSetComponent implements OnInit {
     binderLayout: "",
   };
 
+  public currentDisplay: string = "BINDER";
+
+  public goToThisDisplay(display: string): void {
+    this.currentDisplay = display;
+  }
+
   public setFormGroup = new FormGroup({
     setDescription: new FormControl(""),
   });
@@ -161,7 +167,7 @@ export class CardSetComponent implements OnInit {
 
           this.entireBinderCards = [];
           // placing 108 Cards into entireBinderCards
-          for (let i = 0; i < 108; i++) {
+          for (let i = 0; i < 9; i++) {
             // const emptyCard = createCardDto({});
             const emptyCard = createCardDto({ uniqueId: this.getUniqueId(4) });
             this.entireBinderCards.push(emptyCard);
@@ -182,12 +188,53 @@ export class CardSetComponent implements OnInit {
     }
   }
 
+  public saveSetInformation(): void {
+    if (this.setFormGroup.invalid) {
+      this.toasterService.showDangerToast("Invalid Form");
+    }
+
+    this.dissembleCardRows();
+
+    const setRequest: ISet = {
+      ...this.set,
+      setDescription: this.setFormGroup.controls["setDescription"].value,
+      cards: this.entireCardList,
+    };
+
+    this.cardService.saveCardSet(setRequest).subscribe((result) => {
+      if (result.isSuccess) {
+        if (this.setId === 0) {
+          this.router.navigate([`set/${result.result.id}`]);
+        }
+        this.setId = result.result.id;
+        this.set.id = result.result.id;
+        this.ngOnInit();
+        this.toasterService.showSuccessToast("Set has been saved!");
+      }
+    });
+  }
+
+  public getSetDescription(): string {
+    return this.setFormGroup?.controls["setDescription"]?.value ?? "";
+  }
+
+  public onChangeSetName(): void {
+    this.changeSetName = !this.changeSetName;
+  }
+
+  // --------- Binder View Methods ---------
+
   public addPage(): void {
     if (this.totalPageNumber === 20) {
       return;
     }
     this.totalPageNumber++;
+
     // add (NumberOfCardsPerPage) number of elements to entireBinderCards array
+    for (let i = 0; i < this.numberOfCardsPerPage; i++) {
+      const emptyCard = createCardDto({ uniqueId: this.getUniqueId(4) });
+      this.entireBinderCards.push(emptyCard);
+    }
   }
 
   public removePage(): void {
@@ -195,10 +242,18 @@ export class CardSetComponent implements OnInit {
       return;
     }
     this.totalPageNumber--;
+
+    // remove (NumberOfCardsPerPage) number of elements from entireBinderCards array
+    const trimmedCards = this.entireBinderCards.slice(
+      0,
+      -this.numberOfCardsPerPage
+    );
+    this.entireBinderCards = trimmedCards;
+
     if (this.currentPageNumber > this.totalPageNumber) {
       this.currentPageNumber = this.totalPageNumber;
+      this.updateCurrentBinderPageCards();
     }
-    // remove (NumberOfCardsPerPage) number of elements from entireBinderCards array
   }
 
   public goToNextPage(): void {
@@ -266,8 +321,34 @@ export class CardSetComponent implements OnInit {
   }
 
   private setTotalPageNumber(): void {
-    const totalPages =
-      this.entireBinderCards.length / this.numberOfCardsPerPage;
+    let totalPages = Math.floor(
+      this.entireBinderCards.length / this.numberOfCardsPerPage
+    );
+    const leftoverCards =
+      this.entireBinderCards.length % this.numberOfCardsPerPage;
+
+    if (totalPages > 0 && leftoverCards > 0) {
+      const trimmedCards = this.entireBinderCards.slice(0, -leftoverCards);
+      this.entireBinderCards = trimmedCards;
+    } else if (totalPages === 0 && leftoverCards > 0) {
+      const numberOfCardsNeeded =
+        this.numberOfCardsPerPage - this.entireBinderCards.length;
+
+      for (let i = 0; i < numberOfCardsNeeded; i++) {
+        const emptyCard = createCardDto({ uniqueId: this.getUniqueId(4) });
+        this.entireBinderCards.push(emptyCard);
+      }
+
+      totalPages = Math.floor(
+        this.entireBinderCards.length / this.numberOfCardsPerPage
+      );
+    }
+
+    // avoid current page being greater than total pages available
+    if (this.currentPageNumber > totalPages) {
+      this.currentPageNumber = totalPages;
+    }
+
     this.totalPageNumber = totalPages;
   }
 
@@ -281,47 +362,6 @@ export class CardSetComponent implements OnInit {
       stringArr.push(S4);
     }
     return stringArr.join("-");
-  }
-
-  public saveSetInformation(): void {
-    if (this.setFormGroup.invalid) {
-      this.toasterService.showDangerToast("Invalid Form");
-    }
-
-    this.dissembleCardRows();
-
-    const setRequest: ISet = {
-      ...this.set,
-      setDescription: this.setFormGroup.controls["setDescription"].value,
-      cards: this.entireCardList,
-    };
-
-    this.cardService.saveCardSet(setRequest).subscribe((result) => {
-      if (result.isSuccess) {
-        if (this.setId === 0) {
-          this.router.navigate([`set/${result.result.id}`]);
-        }
-        this.setId = result.result.id;
-        this.set.id = result.result.id;
-        this.ngOnInit();
-        this.toasterService.showSuccessToast("Set has been saved!");
-      }
-    });
-  }
-
-  public getSetDescription(): string {
-    return this.setFormGroup?.controls["setDescription"]?.value ?? "";
-  }
-
-  public onChangeSetName(): void {
-    this.changeSetName = !this.changeSetName;
-  }
-
-  public onObtainedChanged(card: ICardDto, event: any) {
-    const cardIndex = this.entireCardList.findIndex((x) => x.id === card.id);
-    if (cardIndex > -1) {
-      this.entireCardList[cardIndex].cardObtained = event.target.checked;
-    }
   }
 
   public onBinderObtainedChanged(card: ICardDto, event: any) {
@@ -364,38 +404,6 @@ export class CardSetComponent implements OnInit {
     if (cardIndex > -1) {
       this.currentBinderPageCards[cardIndex] = emptyCard;
     }
-  }
-
-  private assembleCardRows(): void {
-    this.cardRows = [];
-    let counter = 0;
-    let cardRow = [];
-    this.entireCardList.forEach((x) => {
-      // once we have a certain number of cards per row, start a new row array.
-      if (counter === this.cardsPerRow) {
-        this.cardRows.push(cardRow);
-        cardRow = [];
-        counter = 0;
-      }
-      cardRow.push(x);
-      counter++;
-    });
-
-    this.cardRows.push(cardRow);
-  }
-
-  private dissembleCardRows(): void {
-    const allCards = [];
-    if (!this.cardRows) {
-      return;
-    }
-
-    this.cardRows.forEach((row) => {
-      row.forEach((card) => {
-        allCards.push(card);
-      });
-    });
-    this.entireCardList = allCards;
   }
 
   binderDrop(event: CdkDragDrop<any>) {
@@ -444,6 +452,40 @@ export class CardSetComponent implements OnInit {
     }
   }
 
+  // --------- List View Methods ---------
+
+  private assembleCardRows(): void {
+    this.cardRows = [];
+    let counter = 0;
+    let cardRow = [];
+    this.entireCardList.forEach((x) => {
+      // once we have a certain number of cards per row, start a new row array.
+      if (counter === this.cardsPerRow) {
+        this.cardRows.push(cardRow);
+        cardRow = [];
+        counter = 0;
+      }
+      cardRow.push(x);
+      counter++;
+    });
+
+    this.cardRows.push(cardRow);
+  }
+
+  private dissembleCardRows(): void {
+    const allCards = [];
+    if (!this.cardRows) {
+      return;
+    }
+
+    this.cardRows.forEach((row) => {
+      row.forEach((card) => {
+        allCards.push(card);
+      });
+    });
+    this.entireCardList = allCards;
+  }
+
   public drop(event: CdkDragDrop<ICardDto[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
@@ -460,6 +502,13 @@ export class CardSetComponent implements OnInit {
       );
       this.dissembleCardRows();
       this.assembleCardRows();
+    }
+  }
+
+  public onObtainedChanged(card: ICardDto, event: any) {
+    const cardIndex = this.entireCardList.findIndex((x) => x.id === card.id);
+    if (cardIndex > -1) {
+      this.entireCardList[cardIndex].cardObtained = event.target.checked;
     }
   }
 

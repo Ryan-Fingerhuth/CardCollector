@@ -46,9 +46,6 @@
       </div>
     </div>
     <div class="col-auto" *ngIf="editMode">
-      <button class="btn btn-primary me-1" (click)="onAddCards()">
-        Add Cards
-      </button>
       <button
         class="btn btn-success ms-1"
         [disabled]="setFormGroup.invalid"
@@ -60,15 +57,41 @@
   </div>
 </form>
 
+<!-- Binder View Or Card List View -->
+<div class="row">
+  <div class="col">
+    <nav aria-label="Binder or Card List">
+      <ul class="pagination justify-content-center">
+        <li
+          [ngClass]="currentDisplay === 'BINDER' ? 'active' : 'inactive'"
+          class="page-item"
+        >
+          <button class="page-link" (click)="goToThisDisplay('BINDER')">
+            Binder View
+          </button>
+        </li>
+        <li
+          [ngClass]="currentDisplay === 'LIST' ? 'active' : 'inactive'"
+          class="page-item"
+        >
+          <button class="page-link" (click)="goToThisDisplay('LIST')">
+            List View
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
 <!-- Binder View -->
-<div class="row mb-3">
+<div *ngIf="currentDisplay === 'BINDER'" class="row">
   <div class="col">
     <!-- Select Binder Size Option -->
     <div class="row">
       <div class="col">
         <form [formGroup]="binderFormGroup">
           <div class="hstack gap-2">
-            <div>Binder Layout:</div>
+            <!-- <div>Binder Layout:</div> -->
             <input
               type="radio"
               class="btn-check"
@@ -104,7 +127,35 @@
           </div>
         </form>
       </div>
-      <div class="col-auto">
+      <div class="col">
+        <div class="">
+          <nav aria-label="Binder Navigation">
+            <ul class="pagination justify-content-center">
+              <li class="page-item">
+                <button class="page-link" (click)="goToPreviousPage()">
+                  Previous
+                </button>
+              </li>
+              <li
+                *ngFor="
+                  let page of [].constructor(totalPageNumber);
+                  let i = index
+                "
+                [ngClass]="currentPageNumber === i + 1 ? 'active' : 'inactive'"
+                class="page-item"
+              >
+                <button class="page-link" (click)="goToThisPage(i + 1)">
+                  {{ i + 1 }}
+                </button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" (click)="goToNextPage()">Next</button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="col">
         <div class="hstack gap-2">
           <button class="btn btn-primary ms-1" (click)="removePage()">
             Remove Page
@@ -115,7 +166,7 @@
         </div>
       </div>
     </div>
-    <div class="mt-3">
+    <!-- <div class="mt-3">
       <nav aria-label="Binder Navigation">
         <ul class="pagination justify-content-center">
           <li class="page-item">
@@ -137,7 +188,7 @@
           </li>
         </ul>
       </nav>
-    </div>
+    </div> -->
 
     <!-- Binder Layout -->
     <div class="container">
@@ -160,7 +211,7 @@
               [cdkDropListConnectedTo]="carouselListIds"
               (cdkDropListDropped)="binderDrop($event)"
             >
-              <div cdkDrag class="inner">
+              <div cdkDrag class="categories-item-inner">
                 <div *cdkDragPlaceholder></div>
                 <div class="vstack gap-1">
                   <div
@@ -200,17 +251,45 @@
                   </div>
                   <!-- <div>{{ card.uniqueId }}</div> -->
                   <div *ngIf="card.id === 0" class="empty-card">Empty Slot</div>
-                  <img
-                    *ngIf="card.id > 0"
-                    [src]="cardService.getImage(card.thumbnailImageGuid, true)"
-                    class="image-thumbnail"
-                    [ngClass]="!card.cardObtained ? 'card-opacity' : ''"
-                  />
-                  <div *ngIf="card.id !== 0" class="card-info">
-                    {{ card.cardName }}
-                  </div>
-                  <div *ngIf="card.id !== 0" class="card-info">
-                    {{ card.originalSetName }} - ({{ card.yearReleased }})
+                  <div style="position: relative; z-index: 1">
+                    <img
+                      *ngIf="card.id > 0"
+                      [src]="
+                        cardService.getImage(card.thumbnailImageGuid, true)
+                      "
+                      class="image-thumbnail"
+                      [ngClass]="!card.cardObtained ? 'card-opacity' : ''"
+                    />
+                    <div
+                      *ngIf="card.id !== 0"
+                      class="card-info"
+                      style="
+                        position: absolute;
+                        top: 175px;
+                        left: 0px;
+                        right: 0px;
+                        bottom: 19px;
+                        z-index: 3;
+                        opacity: 0.8;
+                      "
+                    >
+                      {{ card.cardName }}
+                    </div>
+                    <div
+                      *ngIf="card.id !== 0"
+                      class="card-info"
+                      style="
+                        position: absolute;
+                        top: 190px;
+                        left: 0px;
+                        right: 0px;
+                        bottom: 0px;
+                        z-index: 3;
+                        opacity: 0.8;
+                      "
+                    >
+                      {{ card.originalSetName }} - ({{ card.yearReleased }})
+                    </div>
                   </div>
                 </div>
               </div>
@@ -253,8 +332,17 @@
 </div>
 
 <!-- Card List -->
-<div class="row">
+<div *ngIf="currentDisplay === 'LIST'" class="row">
   <div class="col">
+    <div class="row mb-3">
+      <div class="col"></div>
+      <div class="col-auto">
+        <button class="btn btn-primary" (click)="onAddCards()">
+          Add Cards
+        </button>
+      </div>
+    </div>
+
     <div class="example-container">
       <div cdkDropListGroup>
         <ng-container *ngFor="let cardRow of cardRows; let i = index">
@@ -294,7 +382,6 @@
                   <div
                     class="cursor-move vertical-center-icons"
                     placement="top"
-                    ngbTooltip="Move"
                     cdkDragHandle
                   >
                     <svg width="20px" fill="currentColor" viewBox="0 0 24 24">
