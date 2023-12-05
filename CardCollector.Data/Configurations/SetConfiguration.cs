@@ -13,6 +13,7 @@ namespace CardCollector.Data.Configurations
             builder.Property(x => x.SetDescription).IsRequired();
             builder.Property(x => x.SetCreatedByUserId).IsRequired();
             builder.Property(x => x.DefaultSet).HasDefaultValue(false).IsRequired();
+            builder.Property(x => x.BinderCardsPerPage).HasDefaultValue(0).IsRequired();
             builder.HasQueryFilter(x => x.IsActive);
         }
     }

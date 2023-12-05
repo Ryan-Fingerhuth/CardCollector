@@ -17,6 +17,7 @@ namespace CardCollector.Library.Dtos
         public string ThumbnailImageExtension { get; set; }
         public virtual ICollection<CardTag> CardTags { get; set; } = new List<CardTag>();
         public virtual ICollection<SetCard> SetCards { get; set; } = new List<SetCard>();
+        public virtual ICollection<BinderCard> BinderCards { get; set; } = new List<BinderCard>();
     }
 
     public class CardDto : Card

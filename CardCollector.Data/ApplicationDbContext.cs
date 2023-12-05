@@ -29,6 +29,7 @@ namespace CardCollector.Data
         public DbSet<CardTag> CardTags { get; set; }
         public DbSet<Set> Sets { get; set; }
         public DbSet<SetCard> SetCards { get; set; }
+        public DbSet<BinderCard> BinderCards { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -38,6 +39,7 @@ namespace CardCollector.Data
             builder.ApplyConfiguration(new CardTagConfiguration());
             builder.ApplyConfiguration(new SetConfiguration());
             builder.ApplyConfiguration(new SetCardConfiguration());
+            builder.ApplyConfiguration(new BinderCardConfiguration());
         }
     }
 

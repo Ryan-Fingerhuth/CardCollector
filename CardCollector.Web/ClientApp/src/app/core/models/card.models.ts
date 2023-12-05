@@ -38,7 +38,8 @@ export interface ISet {
   setDescription: string;
   cards: ICardDto[];
   defaultSet: boolean;
-  binderLayout: string;
+  binderCards: ICardDto[];
+  binderCardsPerPage: number;
 }
 
 export interface ISearchDto {

@@ -88,7 +88,7 @@
   <div class="col">
     <!-- Select Binder Size Option -->
     <div class="row">
-      <div class="col">
+      <div class="col-auto">
         <form [formGroup]="binderFormGroup">
           <div class="hstack gap-2">
             <!-- <div>Binder Layout:</div> -->
@@ -155,13 +155,13 @@
           </nav>
         </div>
       </div>
-      <div class="col">
+      <div class="col-auto">
         <div class="hstack gap-2">
           <button class="btn btn-primary ms-1" (click)="removePage()">
-            Remove Page
+            - Page
           </button>
           <button class="btn btn-primary ms-1" (click)="addPage()">
-            Add Page
+            + Page
           </button>
         </div>
       </div>

@@ -31,10 +31,11 @@ export class CardSetComponent implements OnInit {
     setDescription: "",
     cards: [],
     defaultSet: false,
-    binderLayout: "",
+    binderCards: [],
+    binderCardsPerPage: 9,
   };
 
-  public currentDisplay: string = "BINDER";
+  public currentDisplay: string = "LIST";
 
   public goToThisDisplay(display: string): void {
     this.currentDisplay = display;
@@ -61,6 +62,7 @@ export class CardSetComponent implements OnInit {
 
   private size: SCREEN_SIZE;
   private cardsPerRow: number = 7;
+  private maxNumberOfPages: number = 18; // limit currently based on UI
 
   public currentPageNumber: number = 1;
   public totalPageNumber: number = 1;
@@ -173,6 +175,9 @@ export class CardSetComponent implements OnInit {
             this.entireBinderCards.push(emptyCard);
           }
 
+          this.currentDisplay =
+            this.entireBinderCards.length > 0 ? "BINDER" : "LIST";
+
           this.setNumberOfCardsPerPage();
           this.setTotalPageNumber();
           this.updateCurrentBinderPageCards();
@@ -199,6 +204,8 @@ export class CardSetComponent implements OnInit {
       ...this.set,
       setDescription: this.setFormGroup.controls["setDescription"].value,
       cards: this.entireCardList,
+      binderCards: this.entireBinderCards,
+      binderCardsPerPage: this.numberOfCardsPerPage,
     };
 
     this.cardService.saveCardSet(setRequest).subscribe((result) => {
@@ -225,7 +232,7 @@ export class CardSetComponent implements OnInit {
   // --------- Binder View Methods ---------
 
   public addPage(): void {
-    if (this.totalPageNumber === 20) {
+    if (this.totalPageNumber === this.maxNumberOfPages) {
       return;
     }
     this.totalPageNumber++;
@@ -324,6 +331,22 @@ export class CardSetComponent implements OnInit {
     let totalPages = Math.floor(
       this.entireBinderCards.length / this.numberOfCardsPerPage
     );
+
+    // set totalPages back to the maxNumberOfPages
+    if (totalPages > this.maxNumberOfPages) {
+      let maxNumberOfCards = this.maxNumberOfPages * this.numberOfCardsPerPage;
+
+      let remainingNumberOfCards =
+        this.entireBinderCards.length - maxNumberOfCards;
+
+      const trimmedCards = this.entireBinderCards.slice(
+        0,
+        -remainingNumberOfCards
+      );
+      this.entireBinderCards = trimmedCards;
+      totalPages = this.maxNumberOfPages;
+    }
+
     const leftoverCards =
       this.entireBinderCards.length % this.numberOfCardsPerPage;
 
