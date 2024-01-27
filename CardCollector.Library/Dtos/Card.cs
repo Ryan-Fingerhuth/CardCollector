@@ -26,6 +26,7 @@ namespace CardCollector.Library.Dtos
         public List<string> Tags { get; set; } = new List<string>();
         public int SetOrder { get; set; }
         public bool CardObtained { get; set; }
+        public int? BinderCardId { get; set; }
     }
 
     public static class CardExtensions

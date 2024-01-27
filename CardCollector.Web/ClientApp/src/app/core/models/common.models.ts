@@ -9,7 +9,7 @@ export interface IBooleanDialogProperties {
   header: string;
   okText: string;
   cancelText: string;
-  dialogType: 'Danger' | 'Info' | 'Warn' | 'Success' | 'Primary' | 'Secondary';
+  dialogType: "Danger" | "Info" | "Warn" | "Success" | "Primary" | "Secondary";
   headerCss: string;
   okCss: string;
 }
@@ -22,14 +22,14 @@ export interface IApiResponse<T> {
 }
 
 export const enum ToastPositions {
-  BottomLeft = 'toast-bottom-left',
-  BottomCenter = 'toast-bottom-center',
-  BottomRight = 'toast-bottom-right',
-  BottomFullWidth = 'toast-bottom-full-width',
-  TopLeft = 'toast-top-left',
-  TopCenter = 'toast-top-center',
-  TopRight = 'toast-top-right',
-  TopFullWidth = 'toast-top-full-width'
+  BottomLeft = "toast-bottom-left",
+  BottomCenter = "toast-bottom-center",
+  BottomRight = "toast-bottom-right",
+  BottomFullWidth = "toast-bottom-full-width",
+  TopLeft = "toast-top-left",
+  TopCenter = "toast-top-center",
+  TopRight = "toast-top-right",
+  TopFullWidth = "toast-top-full-width",
 }
 
 export enum SCREEN_SIZE {
@@ -38,5 +38,7 @@ export enum SCREEN_SIZE {
   MD,
   LG,
   XL,
-  XXL
+  XXL,
 }
+
+export const EmptyCardId = 137;

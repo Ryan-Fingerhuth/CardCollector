@@ -11,7 +11,7 @@ import {
   Validators,
 } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ICardDto, ISet, SCREEN_SIZE } from "@core/models";
+import { ICardDto, ISet, SCREEN_SIZE, EmptyCardId } from "@core/models";
 import { CardService, ToastService } from "@core/services";
 import { ResizeService } from "@core/services/resize.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -26,12 +26,13 @@ import { createCardDto } from "@core/functions/card.functions";
 })
 export class CardSetComponent implements OnInit {
   public setId: number;
+  public emptyCardId = EmptyCardId;
   public set: ISet = {
     id: 0,
     setDescription: "",
     cards: [],
     defaultSet: false,
-    binderCards: [],
+    cardsInBinder: [],
     binderCardsPerPage: 9,
   };
 
@@ -156,29 +157,45 @@ export class CardSetComponent implements OnInit {
     );
 
     if (this.setId > 0) {
-      this.cardService.getSet(this.setId).subscribe((result) => {
-        if (result.isSuccess) {
-          this.set = result.result;
+      this.cardService.getSet(this.setId).subscribe((response) => {
+        if (response.isSuccess) {
+          this.set = response.result;
           this.editMode = !this.set.defaultSet;
 
           this.set.cards.forEach((item, index) => (item.index = index));
 
           this.entireCardList = this.set.cards;
           this.carouselCardList = this.set.cards;
-          //this.entireBinderCards = this.set.cards; // TODO grab "binder" cards
-
-          this.entireBinderCards = [];
-          // placing 108 Cards into entireBinderCards
-          for (let i = 0; i < 9; i++) {
-            // const emptyCard = createCardDto({});
-            const emptyCard = createCardDto({ uniqueId: this.getUniqueId(4) });
-            this.entireBinderCards.push(emptyCard);
-          }
+          this.entireBinderCards = this.set.cardsInBinder; // TODO grab "binder" cards
 
           this.currentDisplay =
             this.entireBinderCards.length > 0 ? "BINDER" : "LIST";
 
-          this.setNumberOfCardsPerPage();
+          if (this.entireBinderCards.length <= 0) {
+            // Setup default 9 cards if there aren't any binder cards.
+            for (let i = 0; i < 9; i++) {
+              const emptyCard = createCardDto({
+                id: this.emptyCardId,
+                uniqueId: this.getUniqueId(4),
+              });
+              this.entireBinderCards.push(emptyCard);
+            }
+          } else {
+            for (let i = 0; i < this.entireBinderCards.length; i++) {
+              this.entireBinderCards[i].uniqueId = this.getUniqueId(4);
+            }
+          }
+
+          if (this.set.binderCardsPerPage > 0) {
+            this.numberOfCardsPerPage = this.set.binderCardsPerPage;
+            this.setBinderLayoutWidth();
+            this.binderFormGroup.patchValue({
+              binderLayoutSize: this.binderLayoutWidth,
+            });
+          } else {
+            this.setNumberOfCardsPerPage();
+          }
+
           this.setTotalPageNumber();
           this.updateCurrentBinderPageCards();
 
@@ -204,7 +221,7 @@ export class CardSetComponent implements OnInit {
       ...this.set,
       setDescription: this.setFormGroup.controls["setDescription"].value,
       cards: this.entireCardList,
-      binderCards: this.entireBinderCards,
+      cardsInBinder: this.entireBinderCards,
       binderCardsPerPage: this.numberOfCardsPerPage,
     };
 
@@ -217,6 +234,8 @@ export class CardSetComponent implements OnInit {
         this.set.id = result.result.id;
         this.ngOnInit();
         this.toasterService.showSuccessToast("Set has been saved!");
+      } else {
+        this.toasterService.showDangerToast(result.errors[0]);
       }
     });
   }
@@ -239,7 +258,10 @@ export class CardSetComponent implements OnInit {
 
     // add (NumberOfCardsPerPage) number of elements to entireBinderCards array
     for (let i = 0; i < this.numberOfCardsPerPage; i++) {
-      const emptyCard = createCardDto({ uniqueId: this.getUniqueId(4) });
+      const emptyCard = createCardDto({
+        id: this.emptyCardId,
+        uniqueId: this.getUniqueId(4),
+      });
       this.entireBinderCards.push(emptyCard);
     }
   }
@@ -248,6 +270,36 @@ export class CardSetComponent implements OnInit {
     if (this.totalPageNumber <= 1) {
       return;
     }
+
+    const cardsToBeRemoved = this.entireBinderCards.slice(
+      this.entireBinderCards.length - this.numberOfCardsPerPage,
+      this.entireBinderCards.length
+    );
+
+    const anyNonEmptyCards = cardsToBeRemoved.some(
+      (x) => x.id !== this.emptyCardId
+    );
+
+    if (anyNonEmptyCards) {
+      const modal = this.modalService.open(BooleanDialogComponent);
+      modal.componentInstance.configureFor("Danger");
+      modal.componentInstance.properties.header = "Remove Binder Page";
+      modal.componentInstance.properties.message =
+        "Are you sure you want to remove the last page, there are Cards on this page.";
+      modal.componentInstance.properties.okText = "Remove Page";
+      modal.result.then((outcome) => {
+        if (outcome) {
+          this.removePageLogic();
+        } else {
+          return;
+        }
+      });
+    } else {
+      this.removePageLogic();
+    }
+  }
+
+  private removePageLogic(): void {
     this.totalPageNumber--;
 
     // remove (NumberOfCardsPerPage) number of elements from entireBinderCards array
@@ -327,6 +379,26 @@ export class CardSetComponent implements OnInit {
     }
   }
 
+  private setBinderLayoutWidth(): void {
+    // 30rem = 2x2
+    // 40rem = 3x3
+    // 50rem = 3x4
+    switch (this.numberOfCardsPerPage) {
+      case 4: // 2x2
+        this.binderLayoutWidth = "30rem";
+        break;
+      case 9: // 3x3
+        this.binderLayoutWidth = "40rem";
+        break;
+      case 12: // 3x4
+        this.binderLayoutWidth = "50rem";
+        break;
+      default:
+        this.binderLayoutWidth = "40rem";
+        break;
+    }
+  }
+
   private setTotalPageNumber(): void {
     let totalPages = Math.floor(
       this.entireBinderCards.length / this.numberOfCardsPerPage
@@ -358,7 +430,10 @@ export class CardSetComponent implements OnInit {
         this.numberOfCardsPerPage - this.entireBinderCards.length;
 
       for (let i = 0; i < numberOfCardsNeeded; i++) {
-        const emptyCard = createCardDto({ uniqueId: this.getUniqueId(4) });
+        const emptyCard = createCardDto({
+          id: this.emptyCardId,
+          uniqueId: this.getUniqueId(4),
+        });
         this.entireBinderCards.push(emptyCard);
       }
 
@@ -411,7 +486,11 @@ export class CardSetComponent implements OnInit {
       return;
     }
 
-    const emptyCard = createCardDto({ uniqueId: card.uniqueId });
+    const emptyCard = createCardDto({
+      id: this.emptyCardId,
+      binderCardId: card.binderCardId,
+      uniqueId: card.uniqueId,
+    });
 
     // swap an existing card with a new empty card. keeping the uniqueId.
     const entireCardIndex = this.entireBinderCards.findIndex(
@@ -440,6 +519,7 @@ export class CardSetComponent implements OnInit {
       const copyOfCarouselCard = structuredClone(carouselCard);
 
       copyOfCarouselCard.uniqueId = binderCard.uniqueId;
+      copyOfCarouselCard.binderCardId = binderCard.binderCardId;
 
       this.currentBinderPageCards[event.container.data.index] =
         copyOfCarouselCard;
@@ -452,7 +532,7 @@ export class CardSetComponent implements OnInit {
         this.entireBinderCards[binderIndex] = copyOfCarouselCard;
       }
     } else {
-      // This swaps the cards positionsin the list of 'currentBinderPageCards'
+      // This swaps the cards positions in the list of 'currentBinderPageCards'
       this.currentBinderPageCards[event.previousContainer.data.index] =
         event.container.data.item;
 

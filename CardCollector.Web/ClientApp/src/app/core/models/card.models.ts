@@ -1,4 +1,5 @@
 export interface ICardDto {
+  binderCardId: number;
   id: number;
   cardName: string;
   cardDescription: string;
@@ -38,7 +39,7 @@ export interface ISet {
   setDescription: string;
   cards: ICardDto[];
   defaultSet: boolean;
-  binderCards: ICardDto[];
+  cardsInBinder: ICardDto[];
   binderCardsPerPage: number;
 }
 

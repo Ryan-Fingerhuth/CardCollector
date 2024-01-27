@@ -37,7 +37,10 @@ namespace CardCollector.Business.Commands
 
                 await CreateOrUpdateSetCards(dbSet, request.Set.Cards, cancellationToken);
 
+                await CreateOrUpdateBinderCards(dbSet, request.Set.CardsInBinder, cancellationToken);
+
                 var updatedSetDto = dbSet.ConvertBaseToDto();
+
                 updatedSetDto.Cards = request.Set.Cards;
 
                 result.Result = updatedSetDto;
@@ -57,16 +60,19 @@ namespace CardCollector.Business.Commands
 
                 if (dbSet == null)
                 {
-                    dbSet = new Set();
-                    dbSet.DateCreated = DateTime.Now;
-                    dbSet.IsActive = true;
-                    dbSet.SetCreatedByUserId = 1;
+                    dbSet = new Set
+                    {
+                        DateCreated = DateTime.Now,
+                        IsActive = true,
+                        SetCreatedByUserId = 1,
+                    };
 
-                _dbContext.Sets.Add(dbSet);
+                    _dbContext.Sets.Add(dbSet);
                 }
 
             dbSet.SetDescription = set.SetDescription;
-                dbSet.DateModified = DateTime.Now;
+            dbSet.BinderCardsPerPage = set.BinderCardsPerPage;
+            dbSet.DateModified = DateTime.Now;
                 
             await _dbContext.SaveChangesAsync(cancellationToken);
 
@@ -129,6 +135,75 @@ namespace CardCollector.Business.Commands
 
                 dbSetCard.IsActive = false;
                 dbSetCard.DateModified = currentDateModified;
+            }
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        private async Task CreateOrUpdateBinderCards(Set dbSet, List<CardDto> binderCards, CancellationToken cancellationToken)
+        {
+            var dbBinderCards = _dbContext.BinderCards.Where(x => x.SetId == dbSet.Id);
+
+            var currentDateModified = DateTime.Now;
+
+            // update order of existing cards
+            for (var i = 0; i < binderCards.Count; i++)
+            {
+                var updatedCard = binderCards[i];
+
+                if (!updatedCard.BinderCardId.HasValue)
+                {
+                    // create new binder card
+                    var binderCard = new BinderCard
+                    {
+                        SetId = dbSet.Id,
+                        CardId = updatedCard.Id,
+                        IsActive = true,
+                        DateCreated = currentDateModified,
+                        DateModified = currentDateModified,
+                        Order = i,
+                        Obtained = updatedCard.CardObtained
+                    };
+
+                    _dbContext.BinderCards.Add(binderCard);
+                    await _dbContext.SaveChangesAsync(cancellationToken);
+                    
+                    updatedCard.BinderCardId = binderCard.BinderCardId;
+
+                    continue;
+                }
+
+
+                var dbBinderCard = dbBinderCards.FirstOrDefault(x => x.BinderCardId == updatedCard.BinderCardId);
+
+                if (dbBinderCard == null)
+                {
+                    continue;
+                }
+
+                // update record to correct index value.
+                dbBinderCard.DateModified = currentDateModified;
+                dbBinderCard.Order = i;
+                dbBinderCard.CardId = updatedCard.Id;
+                dbBinderCard.Obtained = updatedCard.CardObtained;
+            }
+
+            var newBinderCardIds = binderCards.Select(x => x.BinderCardId);
+            var originalDbBinderCardIds = dbBinderCards.Select(x => x.BinderCardId);
+
+            var removedCardIds = originalDbBinderCardIds.Where(x => !newBinderCardIds.Contains(x)).ToList();
+
+            foreach (var removedCardId in removedCardIds)
+            {
+                var dbBinderCard = dbBinderCards.FirstOrDefault(x => x.BinderCardId == removedCardId);
+
+                if (dbBinderCard == null)
+                {
+                    continue;
+                }
+
+                dbBinderCard.IsActive = false;
+                dbBinderCard.DateModified = currentDateModified;
             }
 
             await _dbContext.SaveChangesAsync(cancellationToken);

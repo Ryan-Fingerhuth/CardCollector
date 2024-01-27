@@ -1,6 +1,7 @@
 import { ICardDto } from "..";
 
 const emptyCard = (): ICardDto => ({
+  binderCardId: null,
   id: 0,
   cardName: "",
   cardDescription: "",

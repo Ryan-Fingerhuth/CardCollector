@@ -22,6 +22,8 @@ namespace CardCollector.Data.Migrations
                 name: "BinderCards",
                 columns: table => new
                 {
+                    BinderCardId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     SetId = table.Column<int>(type: "int", nullable: false),
                     CardId = table.Column<int>(type: "int", nullable: false),
                     Order = table.Column<int>(type: "int", nullable: false),
@@ -32,7 +34,7 @@ namespace CardCollector.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BinderCards", x => new { x.SetId, x.CardId });
+                    table.PrimaryKey("PK_BinderCards", x => x.BinderCardId);
                     table.ForeignKey(
                         name: "FK_BinderCards_Cards_CardId",
                         column: x => x.CardId,
@@ -51,6 +53,11 @@ namespace CardCollector.Data.Migrations
                 name: "IX_BinderCards_CardId",
                 table: "BinderCards",
                 column: "CardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BinderCards_SetId",
+                table: "BinderCards",
+                column: "SetId");
         }
 
         /// <inheritdoc />

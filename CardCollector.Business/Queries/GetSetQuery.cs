@@ -41,7 +41,6 @@ namespace CardCollector.Business.Queries
                 var setDto = set.ConvertBaseToDto();
 
                 var setCards = _dbContext.SetCards.Include(x => x.Card).Where(x => x.SetId == request.SetId).ToList();
-
                 var cardDtos = setCards.Select(x => new CardDto
                 {
                     Id = x.Card.Id,
@@ -57,6 +56,26 @@ namespace CardCollector.Business.Queries
                 }).OrderBy(y => y.SetOrder).ToList();
 
                 setDto.Cards = cardDtos;
+
+                var binderCards = _dbContext.BinderCards.Include(x => x.Card).Where(x => x.SetId == request.SetId).ToList();
+
+                var binderCardDtos = binderCards.Select(x => new CardDto
+                {
+                    BinderCardId = x.BinderCardId,
+                    Id = x.Card.Id,
+                    CardName = x.Card.CardName,
+                    CardDescription = x.Card.CardDescription,
+                    OriginalSetName = x.Card.OriginalSetName,
+                    YearReleased = x.Card.YearReleased,
+                    FullImageGuid = x.Card.FullImageGuid,
+                    ThumbnailImageGuid = x.Card.ThumbnailImageGuid,
+                    ImageData = null,
+                    SetOrder = x.Order,
+                    CardObtained = x.Obtained
+                }).OrderBy(y => y.SetOrder).ToList();
+
+                setDto.CardsInBinder = binderCardDtos;
+                
                 result.Result = setDto;
                 return result;
             }

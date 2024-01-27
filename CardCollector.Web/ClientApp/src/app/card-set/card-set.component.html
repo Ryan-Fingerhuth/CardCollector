@@ -250,10 +250,12 @@
                     ></i>
                   </div>
                   <!-- <div>{{ card.uniqueId }}</div> -->
-                  <div *ngIf="card.id === 0" class="empty-card">Empty Slot</div>
+                  <div *ngIf="card.id === emptyCardId" class="empty-card">
+                    Empty Slot
+                  </div>
                   <div style="position: relative; z-index: 1">
                     <img
-                      *ngIf="card.id > 0"
+                      *ngIf="card.id !== emptyCardId"
                       [src]="
                         cardService.getImage(card.thumbnailImageGuid, true)
                       "
@@ -261,7 +263,7 @@
                       [ngClass]="!card.cardObtained ? 'card-opacity' : ''"
                     />
                     <div
-                      *ngIf="card.id !== 0"
+                      *ngIf="card.id !== emptyCardId"
                       class="card-info"
                       style="
                         position: absolute;
@@ -276,7 +278,7 @@
                       {{ card.cardName }}
                     </div>
                     <div
-                      *ngIf="card.id !== 0"
+                      *ngIf="card.id !== emptyCardId"
                       class="card-info"
                       style="
                         position: absolute;

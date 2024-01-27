@@ -4,6 +4,7 @@ namespace CardCollector.Library.Dtos
 {
     public class BinderCard : BaseEntity
     {
+        public int BinderCardId { get; set; }
         public int SetId { get; set; }
         public int CardId { get; set; }
         public int Order { get; set; }

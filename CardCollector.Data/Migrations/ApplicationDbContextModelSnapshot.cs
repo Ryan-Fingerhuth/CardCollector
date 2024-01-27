@@ -89,8 +89,11 @@ namespace CardCollector.Data.Migrations
 
             modelBuilder.Entity("CardCollector.Library.Dtos.BinderCard", b =>
                 {
-                    b.Property<int>("SetId")
+                    b.Property<int>("BinderCardId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BinderCardId"));
 
                     b.Property<int>("CardId")
                         .HasColumnType("int");
@@ -112,9 +115,14 @@ namespace CardCollector.Data.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.HasKey("SetId", "CardId");
+                    b.Property<int>("SetId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BinderCardId");
 
                     b.HasIndex("CardId");
+
+                    b.HasIndex("SetId");
 
                     b.ToTable("BinderCards", (string)null);
                 });
